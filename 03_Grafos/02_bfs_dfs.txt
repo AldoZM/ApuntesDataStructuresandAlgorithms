@@ -1,0 +1,169 @@
+════════════════════════════════════════════════════════════════
+🗂️  TEMA: BFS y DFS (Recorridos de Grafos)
+📁  CATEGORÍA: 03_Grafos
+════════════════════════════════════════════════════════════════
+
+🤔 ¿QUÉ ES?
+──────────────────────────────────────────────────────────────
+Dos formas de explorar un mundo desconocido 🗺️:
+
+1. BFS (Breadth-First Search): Como lanzar una piedra al agua 💧. 
+   Ves las ondas expandirse nivel por nivel. Primero visitas a todos
+   tus vecinos directos, luego a los vecinos de tus vecinos, y así 
+   sucesivamente. ¡No dejas a nadie atrás en tu nivel!
+
+2. DFS (Depth-First Search): Como explorar un laberinto 🌀. Sigues
+   un solo camino hasta el fondo, hasta que ya no puedas avanzar. 
+   Cuando llegas a un callejón sin salida, regresas (backtrack) y 
+   pruebas el siguiente camino disponible.
+
+💬 DICHO DE OTRA FORMA
+──────────────────────────────────────────────────────────────
+Son los dos algoritmos fundamentales para recorrer cualquier grafo 
+o árbol. 
+
+- BFS usa una Queue (FIFO) y garantiza encontrar el camino más corto
+  en grafos no ponderados.
+- DFS usa un Stack (LIFO) o Recursión. Es ideal para explorar todas 
+  las posibilidades o detectar ciclos.
+
+En ambos casos, es CRUCIAL usar una estructura `visited` (como un array
+de bools o un set) para no entrar en bucles infinitos.
+
+🎨 DIAGRAMA
+──────────────────────────────────────────────────────────────
+Grafo:
+    [1]
+   /   \
+ [2]───[3]
+  |     |
+ [4]───[5]
+
+BFS desde 1: 1 → 2,3 → 4,5
+Orden: [1, 2, 3, 4, 5] (Nivel por nivel)
+
+DFS desde 1: 1 → 2 → 4 → 5 → 3
+Orden: [1, 2, 4, 5, 3] (Hasta el fondo)
+
+⚙️ ¿CÓMO FUNCIONA? (Operaciones principales)
+──────────────────────────────────────────────────────────────
+
+BFS (con Queue):
+1. Metes el nodo inicial a la Queue y lo marcas como visitado.
+2. Mientras la Queue no esté vacía:
+   - Sacas el nodo del frente.
+   - Metes a todos sus vecinos NO visitados a la Queue y los marcas.
+
+DFS (con Recursión):
+1. Marcas el nodo actual como visitado.
+2. Para cada vecino NO visitado:
+   - Llamas a la función DFS recursivamente con ese vecino.
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+// BFS iterativo
+función BFS(inicio):
+    q = crear Queue
+    q.enqueue(inicio)
+    marcar inicio como visitado
+    MIENTRAS q NO vacía:
+        u = q.dequeue()
+        PARA cada vecino v de u:
+            SI v NO visitado:
+                q.enqueue(v)
+                marcar v visitado
+
+// DFS recursivo
+función DFS(u):
+    marcar u como visitado
+    PARA cada vecino v de u:
+        SI v NO visitado:
+            DFS(v)
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <stack>
+using namespace std;
+
+void bfs(int start, vector<vector<int>>& adj, vector<bool>& visited) {
+    queue<int> q;
+    q.push(start);
+    visited[start] = true;
+
+    while (!q.empty()) {
+        int u = q.front(); q.pop();
+        cout << u << " ";
+        for (int v : adj[u]) {
+            if (!visited[v]) {
+                visited[v] = true;
+                q.push(v);
+            }
+        }
+    }
+}
+
+void dfs(int u, vector<vector<int>>& adj, vector<bool>& visited) {
+    visited[u] = true;
+    cout << u << " ";
+    for (int v : adj[u]) {
+        if (!visited[v]) dfs(v, adj, visited);
+    }
+}
+
+int main() {
+    int V = 6;
+    vector<vector<int>> adj(V);
+    // Definir grafo...
+    
+    vector<bool> visited(V, false);
+    cout << "Recorrido BFS: ";
+    bfs(0, adj, visited); // Suponiendo que empezamos en 0
+    
+    fill(visited.begin(), visited.end(), false);
+    cout << "\nRecorrido DFS: ";
+    dfs(0, adj, visited);
+    
+    return 0;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Algoritmo   │ Tiempo      │ Espacio
+  ────────────┼─────────────┼──────────────
+  BFS         │ O(V + E)    │ O(V)
+  DFS         │ O(V + E)    │ O(V)
+
+* V = Vértices, E = Edges.
+* El espacio O(V) es para la Queue/Stack y el array `visited`.
+
+🎯 EN ENTREVISTAS (Tips Google-level)
+──────────────────────────────────────────────────────────────
+✅ BFS para Shortest Path: Si te piden el camino más corto en un grafo
+   SIN pesos (o una cuadrícula), BFS es la única opción correcta.
+
+💡 DFS para Backtracking: Si el problema pide "encuentra todas las 
+   rutas posibles" o "prueba todas las combinaciones", DFS es tu mejor
+   amigo.
+
+⚠️ Cycle Detection: 
+   - Undirected: Si encuentras un vecino visitado que no es tu padre.
+   - Directed: Necesitas 3 estados (Blanco, Gris, Negro). Si ves un 
+     Gris, ¡hay ciclo!
+
+🔑 Nivel de cada nodo: BFS es excelente para guardar la distancia 
+   (nivel) de cada nodo respecto al origen.
+
+📋 RESUMEN RÁPIDO
+──────────────────────────────────────────────────────────────
+• BFS = Queue = Nivel por nivel = Camino más corto.
+• DFS = Stack/Recursión = Hasta el fondo = Exploración total.
+• ¡Siempre usa un array `visited`!
+• Ambos tardan O(V + E).
+• Úsalos en matrices (grid), redes sociales, mapas y juegos.
+════════════════════════════════════════════════════════════════
