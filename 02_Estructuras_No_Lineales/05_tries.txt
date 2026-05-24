@@ -1,0 +1,169 @@
+════════════════════════════════════════════════════════════════
+🗂️  TEMA: Tries (Árboles de Prefijos)
+📁  CATEGORÍA: 02_Estructuras_No_Lineales
+════════════════════════════════════════════════════════════════
+
+🤔 ¿QUÉ ES?
+──────────────────────────────────────────────────────────────
+Un diccionario físico 📖 donde navegas letra por letra. Para buscar
+la palabra "GATO":
+1. Vas a la sección G.
+2. Dentro de G, buscas la A.
+3. Dentro de GA, buscas la T.
+4. Dentro de GAT, buscas la O.
+¡Encontrado!
+
+Cada nivel del árbol representa una letra. Si compartes el mismo
+inicio (prefijo), compartes los mismos nodos. Por ejemplo, "GATO" y 
+"GOTA" comparten la 'G', pero luego se bifurcan.
+
+💬 DICHO DE OTRA FORMA
+──────────────────────────────────────────────────────────────
+Un Trie (se pronuncia como "try") es un árbol especializado para
+guardar strings. Cada nodo representa un caracter. 
+
+Su gran ventaja es la eficiencia para búsquedas de prefijos y 
+autocompletado. A diferencia de un Hash Map, el tiempo de búsqueda
+en un Trie depende únicamente de la longitud de la palabra (L), no
+del número de palabras guardadas (N).
+
+🎨 DIAGRAMA
+──────────────────────────────────────────────────────────────
+Insertando: "CAT", "CAR", "DO", "DOG"
+
+      [root]
+      /    \
+    [C]    [D]
+     |      |
+    [A]    [O]*  <-- "DO" es palabra (isEnd=true)
+    / \     |
+  [T]*[R]* [G]*  <-- "CAT", "CAR", "DOG" son palabras
+
+* : Indica el final de una palabra (isEnd = true).
+
+⚙️ ¿CÓMO FUNCIONA? (Operaciones principales)
+──────────────────────────────────────────────────────────────
+
+1. insert(word): Empiezas en el root. Para cada letra, si no existe el
+   hijo, lo creas. Al final de la palabra, marcas `isEnd = true`.
+2. search(word): Sigues el camino de las letras. Si llegas al final
+   y el nodo tiene `isEnd = true`, la palabra existe.
+3. startsWith(prefix): Igual que search, pero no importa si `isEnd` 
+   es true; con que el camino exista, el prefijo es válido. O(L).
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+// Insertar palabra en el Trie
+función insertar(palabra):
+    actual = root
+    PARA cada letra EN palabra:
+        SI actual.hijos[letra] NO existe:
+            actual.hijos[letra] = nuevo Nodo()
+        actual = actual.hijos[letra]
+    actual.esFinDePalabra = VERDADERO
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <unordered_map>
+#include <string>
+using namespace std;
+
+struct TrieNode {
+    unordered_map<char, TrieNode*> children;
+    bool isEndOfWord = false;
+};
+
+class Trie {
+private:
+    TrieNode* root;
+
+public:
+    Trie() { root = new TrieNode(); }
+
+    // Insertar -> O(L) donde L es la longitud de la palabra
+    void insert(string word) {
+        TrieNode* curr = root;
+        for (char c : word) {
+            if (curr->children.find(c) == curr->children.end()) {
+                curr->children[c] = new TrieNode();
+            }
+            curr = curr->children[c];
+        }
+        curr->isEndOfWord = true;
+    }
+
+    // Buscar palabra completa -> O(L)
+    bool search(string word) {
+        TrieNode* curr = root;
+        for (char c : word) {
+            if (curr->children.find(c) == curr->children.end()) return false;
+            curr = curr->children[c];
+        }
+        return curr->isEndOfWord;
+    }
+
+    // Buscar prefijo -> O(L)
+    bool startsWith(string prefix) {
+        TrieNode* curr = root;
+        for (char c : prefix) {
+            if (curr->children.find(c) == curr->children.end()) return false;
+            curr = curr->children[c];
+        }
+        return true;
+    }
+};
+
+int main() {
+    Trie t;
+    t.insert("gato");
+    t.insert("goma");
+
+    cout << "¿Existe gato? " << t.search("gato") << endl;    // 1 (true)
+    cout << "¿Existe prefijo go? " << t.startsWith("go") << endl; // 1 (true)
+    cout << "¿Existe gatito? " << t.search("gatito") << endl; // 0 (false)
+
+    return 0;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Operación        │ Tiempo    │ Espacio
+  ─────────────────┼───────────┼──────────────────────────────
+  Insert           │ O(L)      │ O(ALPHABET_SIZE * L * N)
+  Search           │ O(L)      │ O(1)
+  StartsWith       │ O(L)      │ O(1)
+
+* L = Longitud de la palabra.
+* N = Número de palabras.
+* Nota: El espacio puede ser grande si las palabras no comparten prefijos.
+
+🎯 EN ENTREVISTAS (Tips Google-level)
+──────────────────────────────────────────────────────────────
+✅ Cuándo usar: Si el problema menciona "autocompletar", "diccionario",
+   o "buscar todas las palabras que empiecen con...", usa un Trie.
+
+💡 Trie + DFS: Una combinación clásica para problemas como 
+   "Word Search II" (encontrar palabras en una cuadrícula de letras).
+
+⚠️ Hash Map vs Trie: 
+   - Hash Map: Busca la palabra completa en O(1) promedio.
+   - Trie: Puede buscar prefijos y es más rápido si hay muchas colisiones
+     en el hash map.
+
+🔑 Memoria: Si te preocupa el espacio, menciona que se puede usar un
+   "Compressed Trie" (Radix Tree) donde los nodos con un solo hijo 
+   se fusionan.
+
+📋 RESUMEN RÁPIDO
+──────────────────────────────────────────────────────────────
+• Árbol de letras, nivel por nivel.
+• Ideal para búsquedas de prefijos y autocompletado.
+• Tiempo de búsqueda dependiente solo del largo de la palabra.
+• `startsWith` es su operación estrella.
+• Puede usar mucha memoria, pero ahorra espacio si hay muchos 
+  prefijos compartidos.
+════════════════════════════════════════════════════════════════
