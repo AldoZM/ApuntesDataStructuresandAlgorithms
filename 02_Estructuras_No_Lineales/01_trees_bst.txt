@@ -1,0 +1,170 @@
+════════════════════════════════════════════════════════════════
+🗂️  TEMA: Binary Search Trees (Árboles Binarios de Búsqueda)
+📁  CATEGORÍA: 02_Estructuras_No_Lineales
+════════════════════════════════════════════════════════════════
+
+🤔 ¿QUÉ ES?
+──────────────────────────────────────────────────────────────
+Un árbol genealógico 🌳 de cabeza. La raíz (root) está hasta arriba.
+Cada persona (nodo) puede tener máximo dos hijos.
+
+Pero es un árbol inteligente con una regla de oro:
+- Todo lo que está a la IZQUIERDA de un nodo es MENOR.
+- Todo lo que está a la DERECHA de un nodo es MAYOR.
+
+Es como una biblioteca 📚 donde los libros están tan bien ordenados
+que puedes encontrar cualquiera en segundos, sin revisar todos los 
+estantes.
+
+💬 DICHO DE OTRA FORMA
+──────────────────────────────────────────────────────────────
+Un Binary Search Tree (BST) es una estructura de datos no lineal
+formada por nodos. Cada nodo contiene un valor y punteros a sus hijos
+izquierdo y derecho.
+
+La propiedad de orden (izq < raíz < der) permite que las operaciones
+de búsqueda, inserción y eliminación se realicen en tiempo 
+logarítmico O(log n), siempre y cuando el árbol esté balanceado.
+
+🎨 DIAGRAMA
+──────────────────────────────────────────────────────────────
+BST de ejemplo:
+
+         [8]          ← ROOT
+       /     \
+    [3]       [10]
+   /   \         \
+ [1]    [6]       [14]
+       /   \      /
+     [4]   [7]  [13]
+
+- Leaf Nodes (hojas): 1, 4, 7, 13 (no tienen hijos).
+- Height (altura): 3 (niveles desde la raíz).
+
+⚙️ ¿CÓMO FUNCIONA? (Operaciones principales)
+──────────────────────────────────────────────────────────────
+
+1. Search: Comparas con la raíz. ¿Es menor? Vas a la izquierda. 
+   ¿Es mayor? Vas a la derecha. Repites hasta encontrarlo o llegar 
+   a un callejón sin salida (NULL).
+2. Insert: Buscas el lugar donde debería estar el valor siguiendo la
+   regla de orden y lo agregas como una nueva hoja.
+3. Delete: Es la más compleja. Tiene 3 casos:
+   - Nodo es una hoja: Solo lo borras.
+   - Nodo tiene 1 hijo: El hijo sube a ocupar el lugar del padre.
+   - Nodo tiene 2 hijos: Buscas al sucesor (el más pequeño del lado
+     derecho) para que ocupe su lugar.
+4. Traversal (Recorrido): 
+   - Inorder: Izquierda -> Raíz -> Derecha (¡Te da los números en orden!).
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+// Búsqueda recursiva en un BST
+función buscar(nodo, valor):
+    SI nodo es NULL: return FALSO
+    SI nodo.valor == valor: return VERDADERO
+    SI valor < nodo.valor:
+        return buscar(nodo.izq, valor)
+    SINO:
+        return buscar(nodo.der, valor)
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node *left, *right;
+    Node(int val) : data(val), left(nullptr), right(nullptr) {}
+};
+
+class BST {
+public:
+    Node* root;
+    BST() : root(nullptr) {}
+
+    // Insertar -> O(log n) promedio
+    Node* insert(Node* node, int val) {
+        if (!node) return new Node(val);
+        if (val < node->data)
+            node->left = insert(node->left, val);
+        else
+            node->right = insert(node->right, val);
+        return node;
+    }
+
+    // Búsqueda -> O(log n) promedio
+    bool search(Node* node, int val) {
+        if (!node) return false;
+        if (node->data == val) return true;
+        if (val < node->data) return search(node->left, val);
+        return search(node->right, val);
+    }
+
+    // Inorder Traversal -> O(n)
+    void inorder(Node* node) {
+        if (!node) return;
+        inorder(node->left);
+        cout << node->data << " ";
+        inorder(node->right);
+    }
+};
+
+int main() {
+    BST tree;
+    tree.root = tree.insert(tree.root, 8);
+    tree.insert(tree.root, 3);
+    tree.insert(tree.root, 10);
+    tree.insert(tree.root, 1);
+    tree.insert(tree.root, 6);
+
+    cout << "Inorder: ";
+    tree.inorder(tree.root); // 1 3 6 8 10 
+    cout << endl;
+
+    cout << "¿Está el 6? " << (tree.search(tree.root, 6) ? "Sí" : "No") << endl;
+
+    return 0;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Operación   │ Promedio   │ Peor caso (Degenerado)
+  ────────────┼────────────┼───────────────────────────
+  Search      │ O(log n)   │ O(n)
+  Insert      │ O(log n)   │ O(n)
+  Delete      │ O(log n)   │ O(n)
+  Traversal   │ O(n)       │ O(n)
+  Espacio     │ O(n)       │ O(n)
+
+* Peor caso ocurre cuando el árbol se vuelve una línea (como linked list).
+
+🎯 EN ENTREVISTAS (Tips Google-level)
+──────────────────────────────────────────────────────────────
+✅ "Inorder Traversal = Sorted Array": Si recorres un BST en modo 
+   Inorder, siempre obtendrás los elementos ordenados de menor a mayor.
+
+💡 Lowest Common Ancestor (LCA): Un problema de Google súper común. 
+   En un BST es fácil: el LCA es el primer nodo cuyo valor está ENTRE
+   los dos valores que buscas.
+
+⚠️ Balanceo: Un BST normal puede volverse muy ineficiente (O(n)) si 
+   insertas los números ya ordenados. Para evitarlo existen los 
+   Self-balancing Trees (como AVL).
+
+🔑 Pregunta clave: "¿Es un Binary Tree o un Binary Search Tree?". 
+   El segundo tiene la propiedad de orden, el primero no.
+
+📋 RESUMEN RÁPIDO
+──────────────────────────────────────────────────────────────
+• Izquierda menor, Derecha mayor.
+• Búsqueda rápida O(log n) como adivinar un número.
+• Inorder traversal = lista ordenada.
+• El peor caso es O(n) si el árbol no está balanceado.
+• Términos: Root (cima), Leaf (hoja), Parent (padre), Child (hijo).
+• Altura del árbol = longitud del camino más largo a una hoja.
+════════════════════════════════════════════════════════════════
