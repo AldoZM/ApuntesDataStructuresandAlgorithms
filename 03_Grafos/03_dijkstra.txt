@@ -1,0 +1,169 @@
+════════════════════════════════════════════════════════════════
+🗂️  TEMA: Algoritmo de Dijkstra (Camino más Corto)
+📁  CATEGORÍA: 03_Grafos
+════════════════════════════════════════════════════════════════
+
+🤔 ¿QUÉ ES?
+──────────────────────────────────────────────────────────────
+El GPS de tu teléfono 📱. Cuando pides la ruta más rápida de tu 
+casa al trabajo, el GPS no intenta probar absolutamente todos los
+caminos posibles al azar.
+
+En su lugar, siempre expande primero el camino que parece más 
+prometedor (el más corto que ha encontrado hasta ahora). Va 
+construyendo la ruta óptima paso a paso, actualizando sus cálculos
+si encuentra un "atajo" mejor.
+
+Es un algoritmo "Greedy" (Codicioso) que encuentra el camino más corto
+desde un nodo origen a todos los demás nodos en un grafo con pesos.
+
+💬 DICHO DE OTRA FORMA
+──────────────────────────────────────────────────────────────
+Dijkstra resuelve el problema del "Single-Source Shortest Path" en
+un grafo ponderado (weighted graph). 
+
+Funciona manteniendo una lista de distancias tentativas y usando un
+Min-Heap (Priority Queue) para elegir siempre el nodo con la distancia
+mínima actual. 
+
+⚠️ Restricción Vital: NO funciona si el grafo tiene aristas con 
+PESOS NEGATIVOS. (Para eso se usa Bellman-Ford).
+
+🎨 DIAGRAMA
+──────────────────────────────────────────────────────────────
+Grafo Ponderado:
+       [2]
+  (A)-------(B)
+   | \       |
+(4)|  \(1)   |(3)
+   |   \     |
+  (C)-------(D)
+       (5)
+
+Distancias desde A:
+1. Inicio: {A:0, B:∞, C:∞, D:∞}
+2. Visitar A: Vecinos B(2), C(4), D(1). 
+   Heap elige D(1).
+3. Visitar D: Vecinos B(1+3=4), C(1+5=6). 
+   ¿4 < dist[B]? No. ¿6 < dist[C]? No.
+4. Heap elige B(2).
+5. Heap elige C(4).
+
+Final: {A:0, B:2, C:4, D:1}
+
+⚙️ ¿CÓMO FUNCIONA? (Paso a paso)
+──────────────────────────────────────────────────────────────
+
+1. Inicializas todas las distancias como Infinito (∞), excepto el
+   nodo origen que es 0.
+2. Metes (distancia 0, origen) a una Priority Queue (Min-Heap).
+3. Mientras la Queue no esté vacía:
+   - Sacas el nodo `u` con la menor distancia.
+   - Si la distancia sacada es mayor a la que ya conocemos, ignora.
+   - Para cada vecino `v` de `u`:
+     - Calculas `nueva_dist = dist[u] + peso(u, v)`.
+     - SI `nueva_dist < dist[v]`:
+       - Actualizas `dist[v] = nueva_dist`.
+       - Metes `(nueva_dist, v)` a la Priority Queue.
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+función Dijkstra(grafo, origen):
+    distancias = array de tamaño V con INFINITO
+    distancias[origen] = 0
+    pq = crear Min-Heap de pares (distancia, nodo)
+    pq.push(0, origen)
+
+    MIENTRAS pq NO vacía:
+        (d, u) = pq.pop_min()
+        SI d > distancias[u]: continuar
+        
+        PARA cada vecino v de u con peso w:
+            SI distancias[u] + w < distancias[v]:
+                distancias[v] = distancias[u] + w
+                pq.push(distancias[v], v)
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+const int INF = 1e9;
+
+void dijkstra(int start, vector<vector<pair<int, int>>>& adj) {
+    int V = adj.size();
+    vector<int> dist(V, INF);
+    // Min-heap: priority_queue<T, container, comparison>
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+
+    dist[start] = 0;
+    pq.push({0, start});
+
+    while (!pq.empty()) {
+        int d = pq.top().first;
+        int u = pq.top().second;
+        pq.pop();
+
+        if (d > dist[u]) continue;
+
+        for (auto& edge : adj[u]) {
+            int v = edge.first;
+            int weight = edge.second;
+
+            if (dist[u] + weight < dist[v]) {
+                dist[v] = dist[u] + weight;
+                pq.push({dist[v], v});
+            }
+        }
+    }
+
+    for(int i = 0; i < V; i++) 
+        cout << "Distancia a " << i << ": " << dist[i] << endl;
+}
+
+int main() {
+    int V = 4;
+    vector<vector<pair<int, int>>> adj(V);
+    // Definir grafo con pesos...
+    dijkstra(0, adj);
+    return 0;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Operación        │ Tiempo                │ Razón
+  ─────────────────┼───────────────────────┼──────────────────
+  Dijkstra         │ O((V + E) log V)      │ Priority Queue
+  Espacio          │ O(V + E)              │ Grafo + distancias
+
+* V = Vértices, E = Aristas.
+
+🎯 EN ENTREVISTAS (Tips Google-level)
+──────────────────────────────────────────────────────────────
+✅ Cuándo usar: "Shortest Path" en grafos con PESOS positivos. Si no
+   hay pesos, usa BFS (es más rápido O(V+E)).
+
+💡 Pesos Negativos: Si el entrevistador pregunta "¿Y si hay pesos
+   negativos?", responde: "Dijkstra fallaría, usaría Bellman-Ford".
+
+⚠️ C++ Priority Queue: Por defecto es un MAX-heap. Para Dijkstra 
+   necesitas un MIN-heap, así que usa `greater<>` o guarda las 
+   distancias negativas.
+
+🔑 Variante: "Cheapest Flights Within K Stops" es un problema común 
+   de Google que modifica Dijkstra limitando la profundidad.
+
+📋 RESUMEN RÁPIDO
+──────────────────────────────────────────────────────────────
+• Algoritmo Codicioso (Greedy).
+• Usa un Min-Heap para elegir siempre el camino más corto actual.
+• Encuentra distancias mínimas desde UN origen a TODOS los demás.
+• No admite pesos negativos.
+• Tiempo: O(E log V).
+• Es la base de los sistemas de navegación modernos.
+════════════════════════════════════════════════════════════════
