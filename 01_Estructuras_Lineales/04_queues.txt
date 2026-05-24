@@ -1,0 +1,132 @@
+════════════════════════════════════════════════════════════════
+🗂️  TEMA: Queues (Filas / Colas)
+📁  CATEGORÍA: 01_Estructuras_Lineales
+════════════════════════════════════════════════════════════════
+
+🤔 ¿QUÉ ES?
+──────────────────────────────────────────────────────────────
+La fila para entrar al cine 🎟️ o al banco 🏦. El primero que llega 
+es el primero en ser atendido. No puedes "colarte" al frente; llegas 
+al final y esperas tu turno.
+
+Es una estructura "FIFO" (First In, First Out): el primero que entra
+es el primero en salir. Es lo opuesto al Stack.
+
+💬 DICHO DE OTRA FORMA
+──────────────────────────────────────────────────────────────
+Una Queue es una estructura lineal que restringe el acceso:
+- Solo puedes AGREGAR (Enqueue) por el final (Back/Rear).
+- Solo puedes QUITAR (Dequeue) por el frente (Front).
+
+Existen variaciones importantes:
+1. Deque: Puedes insertar/eliminar por ambos extremos.
+2. Priority Queue: Los elementos salen según su importancia, no 
+   solo por orden de llegada (implementada usualmente con un Heap).
+
+🎨 DIAGRAMA
+──────────────────────────────────────────────────────────────
+enqueue(A) → enqueue(B) → enqueue(C)
+
+FRONT                    BACK
+  ↓                       ↓
+ [A] ──→ [B] ──→ [C]
+
+dequeue() → devuelve A y lo quita, queda:
+
+FRONT         BACK
+  ↓             ↓
+ [B] ──→ [C]
+
+⚙️ ¿CÓMO FUNCIONA? (Operaciones principales)
+──────────────────────────────────────────────────────────────
+
+1. enqueue(x): Agregas el elemento `x` al final de la fila. O(1).
+2. dequeue(): Quitas el primer elemento del frente. O(1).
+3. front() / peek(): Miras quién es el primero sin quitarlo. O(1).
+4. isEmpty(): Verificas si hay alguien en la fila. O(1).
+5. size(): Devuelves cuántas personas hay esperando. O(1).
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+// BFS (Breadth First Search) básico usando una Queue
+función BFS(inicio):
+    fila = crear Queue
+    fila.enqueue(inicio)
+    marcar inicio como visitado
+
+    MIENTRAS fila NO esté vacía:
+        actual = fila.dequeue()
+        PARA cada vecino de actual:
+            SI vecino NO visitado:
+                fila.enqueue(vecino)
+                marcar vecino como visitado
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <queue>    // STL Queue
+#include <deque>    // STL Deque (Double-ended queue)
+using namespace std;
+
+int main() {
+    // 1. Queue estándar (FIFO)
+    queue<int> q;
+    
+    q.push(10); // Enqueue
+    q.push(20);
+    q.push(30);
+
+    cout << "Primero en la fila: " << q.front() << endl; // 10
+    cout << "Último en la fila: " << q.back() << endl;   // 30
+
+    q.pop(); // Dequeue (quita el 10)
+    cout << "Nuevo primero: " << q.front() << endl;     // 20
+
+    // 2. Deque (Doble extremo)
+    deque<int> dq;
+    dq.push_back(100);
+    dq.push_front(50); // [50, 100]
+    dq.pop_back();     // [50]
+    
+    cout << "Frente de deque: " << dq.front() << endl;
+
+    return 0;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Operación        │ Tiempo  │ Espacio
+  ─────────────────┼─────────┼──────────────
+  enqueue(x)       │ O(1)    │ O(1)
+  dequeue()        │ O(1)    │ O(1)
+  front() / peek() │ O(1)    │ O(1)
+  isEmpty()        │ O(1)    │ O(1)
+  Total (n datos)  │ -       │ O(n)
+
+🎯 EN ENTREVISTAS (Tips Google-level)
+──────────────────────────────────────────────────────────────
+✅ Sin Queue no hay BFS: Si el problema pide "camino más corto" en un
+   grafo sin pesos o explorar un árbol por niveles, vas a usar una Queue.
+
+💡 Priority Queue: Úsala cuando necesites el "máximo" o "mínimo" 
+   elemento de forma constante mientras insertas nuevos datos.
+
+⚠️ Implementación con Array: Cuidado, si implementas una Queue con un
+   Array simple, el `dequeue` podría ser O(n) si tienes que mover todos 
+   los elementos. Por eso se usan "Circular Queues".
+
+🔑 "Sliding Window Maximum": Un problema clásico de Google que se 
+   resuelve de forma óptima usando un Deque.
+
+📋 RESUMEN RÁPIDO
+──────────────────────────────────────────────────────────────
+• FIFO: First In, First Out.
+• Operaciones O(1) en el frente y el final.
+• Ideal para: Procesamiento de tareas, buffers, algoritmos de grafos
+  como BFS.
+• Deque: Permite meter/sacar por ambos lados (muy flexible).
+• Priority Queue: Saca al que tiene más "rango", no al que llegó primero.
+════════════════════════════════════════════════════════════════
