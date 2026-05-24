@@ -1,0 +1,133 @@
+════════════════════════════════════════════════════════════════
+🗂️  TEMA: Two Pointers (Dos Punteros)
+📁  CATEGORÍA: 06_Patrones_Entrevista
+════════════════════════════════════════════════════════════════
+
+🤔 ¿QUÉ ES?
+──────────────────────────────────────────────────────────────
+Dos personas en extremos opuestos de un pasillo 🚶‍♂️...🚶‍♀️ caminando 
+hacia el centro para encontrarse. O un corredor lento y uno rápido 
+en la misma pista 🏃‍♂️💨...🏃‍♂️.
+
+En lugar de usar un solo índice para recorrer un array (un loop 
+simple), usas DOS. Estos punteros se mueven de forma coordinada
+para resolver problemas de búsqueda o comparación mucho más rápido
+que la fuerza bruta.
+
+Es uno de los patrones más útiles para entrevistas técnicas porque 
+suele reducir soluciones de O(n²) a O(n).
+
+💬 DICHO DE OTRA FORMA
+──────────────────────────────────────────────────────────────
+El patrón Two Pointers utiliza dos variables de índice para recorrer
+una estructura de datos lineal (array, string, linked list). 
+
+Existen dos variantes principales:
+1. Opposite Ends: Los punteros empiezan en los extremos y se mueven
+   hacia el centro. (Ej: Two Sum en array ordenado, Palíndromos).
+2. Fast & Slow: Un puntero avanza más rápido que el otro. (Ej: Detectar
+   ciclos en Linked List, encontrar el medio).
+
+🎨 DIAGRAMA (Opposite Ends)
+──────────────────────────────────────────────────────────────
+Problema: Encontrar par que sume 10 en array ordenado.
+[ 1, 3, 4, 6, 8, 9 ]
+  L              R   -> 1 + 9 = 10. ¡ENCONTRADO! 🎉
+
+Si la suma fuera menor a 10, moveríamos L a la derecha.
+Si la suma fuera mayor a 10, moveríamos R a la izquierda.
+
+⚙️ ¿CÓMO FUNCIONA? (Paso a paso)
+──────────────────────────────────────────────────────────────
+
+Opposite Ends:
+1. Inicializas `left = 0` y `right = n - 1`.
+2. Mientras `left < right`:
+   - Evalúas la condición con `arr[left]` y `arr[right]`.
+   - Si se cumple la meta, terminas.
+   - Si no, decides qué puntero mover según la lógica del problema.
+
+Fast & Slow (Floyd's Algorithm):
+1. Inicializas `slow = start` y `fast = start`.
+2. En cada paso: `slow` avanza 1, `fast` avanza 2.
+3. Si `fast` alcanza el final, no hay ciclo.
+4. Si `slow == fast`, ¡hay un ciclo!
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+// Two Sum en Array Ordenado
+función tieneSuma(arr, meta):
+    izq = 0
+    der = arr.tamaño - 1
+    MIENTRAS izq < der:
+        sumaActual = arr[izq] + arr[der]
+        SI sumaActual == meta: return VERDADERO
+        SI sumaActual < meta:  izq++
+        SINO:                  der--
+    return FALSO
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+// Verificar si un string es palíndromo -> O(n) tiempo, O(1) espacio
+bool isPalindrome(string s) {
+    int left = 0;
+    int right = s.length() - 1;
+
+    while (left < right) {
+        if (s[left] != s[right]) return false;
+        left++;
+        right--;
+    }
+    return true;
+}
+
+int main() {
+    string word = "reconocer";
+    cout << "¿Es palíndromo? " << (isPalindrome(word) ? "SÍ" : "NO") << endl;
+    
+    return 0;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Caso        │ Tiempo        │ Espacio
+  ────────────┼───────────────┼────────────────────────────────
+  Two Pointers│ O(n)          │ O(1)
+  Fuerza Bruta│ O(n²)         │ O(1)
+
+* La magia del patrón es que evitas el segundo loop anidado.
+
+🎯 EN ENTREVISTAS (Tips Google-level)
+──────────────────────────────────────────────────────────────
+✅ Cuándo pensar en esto:
+   - El array está ORDENADO.
+   - Buscas pares, tripletas o sub-rangos.
+   - Tienes que comparar elementos de forma simétrica.
+
+💡 Container With Most Water: Un problema clásico de Google que 
+   se resuelve perfectamente con Two Pointers opuestos.
+
+⚠️ Linked Lists: Siempre que oigas "Linked List", piensa si el 
+   puntero Fast & Slow te puede ayudar a encontrar el medio o un ciclo.
+
+🔑 Strings: "Reverse String" o "Valid Palindrome" son los ejercicios
+   de calentamiento típicos para este patrón.
+
+📋 RESUMEN RÁPIDO
+──────────────────────────────────────────────────────────────
+• Dos índices moviéndose coordinados.
+• Reduce O(n²) a O(n).
+• Memoria constante O(1) casi siempre.
+• Variantes: Opuestos (extremos → centro) y Fast/Slow.
+• Requisito común: Array ordenado.
+• Indispensable para optimizar búsquedas de pares o ciclos.
+════════════════════════════════════════════════════════════════
