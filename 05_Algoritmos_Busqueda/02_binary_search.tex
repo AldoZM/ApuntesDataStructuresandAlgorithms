@@ -1,10 +1,93 @@
-════════════════════════════════════════════════════════════════
-🗂️  TEMA: Binary Search (Búsqueda Binaria)
-📁  CATEGORÍA: 05_Algoritmos_Busqueda
-════════════════════════════════════════════════════════════════
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
 
-🤔 ¿QUÉ ES?
-──────────────────────────────────────────────────────────────
+% Configuración para código C++
+\definecolor{codegreen}{rgb}{0,0.6,0}        
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}     
+\definecolor{codepurple}{rgb}{0.58,0,0.82}   
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    backgroundcolor=\color{backcolour},      
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},       
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    language=C++,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
+}
+
+% Macros para las secciones de los apuntes
+\newcommand{\quees}[1]{
+    \section*{🤔 ¿QUÉ ES?}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\dichodeotraforma}[1]{
+    \section*{💬 DICHO DE OTRA FORMA}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\diagrama}[1]{
+    \section*{🎨 DIAGRAMA}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\comofunciona}[1]{
+    \section*{⚙️ ¿CÓMO FUNCIONA?}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\complejidad}[1]{
+    \section*{📱 COMPLEJIDAD (Big-O)}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\entrevistas}[1]{
+    \section*{🎯 EN ENTREVISTAS}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\resumen}[1]{
+    \section*{📋 RESUMEN RÁPIDO}
+    \hrulefill \\
+    #1
+}
+
+\begin{document}
+
+\title{Binary Search (Búsqueda Binaria)}
+\author{Aldo Zepeda Montoya}
+\date{\today}
+\maketitle
+
+\subsection*{CATEGORÍA: 05_Algoritmos_Busqueda}
+
+\quees{
 El juego de adivinar el número 🔢 entre 1 y 100. 
 
 Dices "50" y te dicen: "¡Más alto!". 
@@ -17,9 +100,9 @@ Ahora sabes que está entre 51 y 74. Vuelves a descartar la mitad.
 En solo 7 intentos puedes adivinar cualquier número entre 128 opciones. 
 Es increíblemente rápido porque el problema se encoge 
 exponencialmente en cada paso.
+}
 
-💬 DICHO DE OTRA FORMA
-──────────────────────────────────────────────────────────────
+\dichodeotraforma{
 Binary Search es un algoritmo de búsqueda eficiente que funciona sobre
 un conjunto de datos ORDENADO. 
 
@@ -29,9 +112,9 @@ mayor, busca en la derecha.
 
 Este enfoque de "Divide y Vencerás" reduce la complejidad de tiempo
 a O(log n), lo cual es ideal para datasets masivos.
+}
 
-🎨 DIAGRAMA
-──────────────────────────────────────────────────────────────
+\diagrama{\begin{verbatim}
 Buscar 23 en array ordenado:
 [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25]
  idx: 0  1  2  3  4   5   6   7   8   9  10  11  12
@@ -48,10 +131,9 @@ Paso 3: izq=10, der=12, mid=11.
         arr[11] es 23. ¿23 == 23? ¡SÍ! 🎉 🎉
 
 Solo 3 pasos para 13 elementos.
+\end{verbatim}}
 
-⚙️ ¿CÓMO FUNCIONA? (Requisitos y Pasos)
-──────────────────────────────────────────────────────────────
-
+\begin{lstlisting}[language=C++]
 Requisito: El array DEBE estar ordenado de menor a mayor.
 
 Pasos:
@@ -120,9 +202,9 @@ int main() {
   Average     │ O(log n)      │ Se divide el problema a la mitad
   Worst       │ O(log n)      │ No existe o queda 1 solo elemento
   Espacio     │ O(1)          │ Versión iterativa
+\end{lstlisting}
 
-🎯 EN ENTREVISTAS (Tips Google-level)
-──────────────────────────────────────────────────────────────
+\entrevistas{
 ✅ Off-by-one errors: El bug más común es usar `left < right` en lugar
    de `left <= right`. ¡Ten cuidado!
 
@@ -137,9 +219,9 @@ int main() {
 🔑 Binary Search on Answer: No solo sirve para buscar en arrays. Si te
    preguntan "¿cuál es el mínimo valor de X que cumple esta condición?",
    puedes hacer Binary Search sobre el RANGO de posibles valores de X.
+}
 
-📋 RESUMEN RÁPIDO
-──────────────────────────────────────────────────────────────
+\resumen{
 • Solo funciona con datos ordenados.
 • Divide el espacio de búsqueda a la mitad en cada paso.
 • Tiempo logarítmico O(log n): Súper veloz.
@@ -147,3 +229,6 @@ int main() {
 • Previene overflow usando la fórmula correcta de `mid`.
 • Es una de las herramientas más poderosas para optimizar búsquedas.
 ════════════════════════════════════════════════════════════════
+}
+
+\end{document}
