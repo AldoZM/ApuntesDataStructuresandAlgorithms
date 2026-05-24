@@ -1,0 +1,144 @@
+════════════════════════════════════════════════════════════════
+🗂️  TEMA: Quick Sort (Ordenamiento Rápido)
+📁  CATEGORÍA: 04_Algoritmos_Ordenamiento
+════════════════════════════════════════════════════════════════
+
+🤔 ¿QUÉ ES?
+──────────────────────────────────────────────────────────────
+Elegir a un jugador de referencia ⚽ en el equipo (el Pivot). 
+
+Una vez que eliges al Pivot (por ejemplo, el último de la fila), 
+separas a todos los demás en dos grupos:
+1. Los que son "peores" (número menor) van a la izquierda del Pivot.
+2. Los que son "mejores" (número mayor) van a la derecha del Pivot.
+
+Ahora el Pivot quedó en su lugar correcto para siempre. Luego, haces
+lo mismo con los dos grupos que quedaron a los lados, hasta que todos
+estén ordenados.
+
+💬 DICHO DE OTRA FORMA
+──────────────────────────────────────────────────────────────
+Quick Sort es un algoritmo de ordenamiento por comparación, 
+recursivo e In-place. 
+
+Se basa en la operación "Partition": elegir un elemento como Pivot y 
+reorganizar el array de modo que los menores queden a la izquierda y 
+los mayores a la derecha. 
+
+Aunque su peor caso es O(n²), en la práctica es mucho más rápido que 
+Merge Sort debido a que tiene una excelente "Cache Locality" y no 
+requiere memoria extra significativa.
+
+🎨 DIAGRAMA
+──────────────────────────────────────────────────────────────
+Array: [3, 6, 8, 10, 1, 2, 5]  (Pivot = 5)
+
+Partition:
+- Elementos < 5: [3, 1, 2]
+- Pivot: 5
+- Elementos > 5: [6, 8, 10]
+
+Estado: [3, 1, 2] [5] [6, 8, 10]
+(El 5 ya no se mueve más).
+
+Se repite el proceso para [3, 1, 2] y para [6, 8, 10].
+
+⚙️ ¿CÓMO FUNCIONA? (Estrategia)
+──────────────────────────────────────────────────────────────
+
+1. Caso base: Si el rango tiene 0 o 1 elementos, ya está ordenado.
+2. Partition:
+   - Eliges un Pivot (el primero, el último, el medio o uno aleatorio).
+   - Reacomodas el array: elementos < Pivot a la izquierda, > a la der.
+   - Devuelves la posición final del Pivot.
+3. Llamas recursivamente a Quick Sort para la mitad izquierda.
+4. Llamas recursivamente a Quick Sort para la mitad derecha.
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+función quickSort(arr, inicio, fin):
+    SI inicio < fin:
+        p_idx = partition(arr, inicio, fin)
+        quickSort(arr, inicio, p_idx - 1)
+        quickSort(arr, p_idx + 1, fin)
+
+función partition(arr, inicio, fin):
+    pivot = arr[fin]
+    i = inicio - 1
+    PARA j desde inicio hasta fin - 1:
+        SI arr[j] < pivot:
+            i++
+            intercambiar(arr[i], arr[j])
+    intercambiar(arr[i+1], arr[fin])
+    return i + 1
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int partition(vector<int>& arr, int low, int high) {
+    int pivot = arr[high]; // Elegimos el último como pivot
+    int i = low - 1;       // Índice del elemento más pequeño
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+    swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+
+void quickSort(vector<int>& arr, int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int main() {
+    vector<int> data = {10, 7, 8, 9, 1, 5};
+    quickSort(data, 0, data.size() - 1);
+    for(int x : data) cout << x << " "; // 1 5 7 8 9 10
+    return 0;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Caso        │ Tiempo        │ Cuándo ocurre
+  ────────────┼───────────────┼────────────────────────────────
+  Best        │ O(n log n)    │ El pivot siempre parte a la mitad
+  Average     │ O(n log n)    │ Pivot aleatorio / balanceado
+  Worst       │ O(n²)         │ Array ya ordenado + pivot extremo
+  Espacio     │ O(log n)      │ Stack de recursión
+
+🎯 EN ENTREVISTAS (Tips Google-level)
+──────────────────────────────────────────────────────────────
+✅ std::sort: En C++, `std::sort` usa "Introsort", que empieza con 
+   Quick Sort y cambia a Heap Sort si la recursión es muy profunda.
+
+💡 Pivot Selection: Para evitar el peor caso O(n²), menciona que se 
+   puede usar un Pivot aleatorio o la técnica "Median of Three".
+
+⚠️ No es estable: A diferencia de Merge Sort, Quick Sort NO garantiza
+   mantener el orden relativo de elementos iguales.
+
+🔑 In-place: Su gran ventaja es que no necesita arrays extras, solo 
+   memoria para las llamadas recursivas (el stack).
+
+📋 RESUMEN RÁPIDO
+──────────────────────────────────────────────────────────────
+• El más rápido en la práctica.
+• Usa la estrategia "Divide y Vencerás".
+• In-place (ahorra memoria).
+• Peor caso O(n²) pero muy raro con buen pivot.
+• No es estable.
+• Operación clave: `partition`.
+════════════════════════════════════════════════════════════════
