@@ -1,0 +1,189 @@
+════════════════════════════════════════════════════════════════
+🗂️  TEMA: Linked Lists (Listas Enlazadas)
+📁  CATEGORÍA: 01_Estructuras_Lineales
+════════════════════════════════════════════════════════════════
+
+🤔 ¿QUÉ ES?
+──────────────────────────────────────────────────────────────
+Una cacería del tesoro 🗺️. Cada pista (node) te dice dónde está la 
+SIGUIENTE pista. 
+
+No sabes dónde está la pista #5 sin seguir la cadena desde el inicio: 
+pista 1 → pista 2 → pista 3 → pista 4 → pista 5. 
+
+A diferencia de los arrays (vagones pegaditos), los nodos de una 
+Linked List pueden estar en cualquier parte de la memoria. Lo único
+que los mantiene unidos es que cada uno sabe la dirección (pointer)
+del siguiente.
+
+💬 DICHO DE OTRA FORMA
+──────────────────────────────────────────────────────────────
+Una Linked List es una estructura lineal donde los elementos no se
+guardan en posiciones contiguas de memoria. Cada elemento es un objeto
+llamado "Node", que contiene:
+1. El valor (data).
+2. Un puntero (next) al siguiente nodo.
+
+Esto permite insertar y eliminar elementos en los extremos en O(1) 
+sin tener que desplazar a nadie, pero sacrificas el acceso aleatorio
+(no puedes ir directo al índice `i`).
+
+🎨 DIAGRAMA
+──────────────────────────────────────────────────────────────
+Singly Linked List:
+HEAD
+ ↓
+[3|•]──→[7|•]──→[1|•]──→[9|NULL]
+ node0   node1   node2   node3
+
+Doubly Linked List:
+HEAD                      TAIL
+ ↓                         ↓
+[NULL|3|•]⇄[•|7|•]⇄[•|1|•]⇄[•|9|NULL]
+
+Insertar 5 después del node1 (valor 7):
+ANTES:   [3]──→[7]──→[1]──→[9]
+                ↓
+DESPUÉS: [3]──→[7]──→[5]──→[1]──→[9]   ← O(1) si ya tienes el puntero
+
+⚙️ ¿CÓMO FUNCIONA? (Operaciones principales)
+──────────────────────────────────────────────────────────────
+
+1. Acceso/Búsqueda: Tienes que empezar en el HEAD e ir saltando de 
+   nodo en nodo. O(n).
+2. Inserción:
+   - Al Head: Creas nodo, apuntas su `next` al viejo head, actualizas
+     head. O(1).
+   - En medio: Llegas a la posición, ajustas los punteros para incluir
+     el nuevo nodo.
+3. Eliminación:
+   - Del Head: Mueves el head al `head->next`. O(1).
+   - En medio: Ajustas el puntero del nodo anterior para que "salte"
+     al nodo que quieres borrar.
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+// Insertar al inicio
+función insertarAlInicio(valor):
+    nuevoNodo = crear Nodo(valor)
+    nuevoNodo.next = head
+    head = nuevoNodo
+
+// Buscar valor
+función buscar(valor):
+    actual = head
+    MIENTRAS actual != NULL:
+        SI actual.valor == valor: return VERDADERO
+        actual = actual.next
+    return FALSO
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+using namespace std;
+
+// Definición del Nodo
+struct Node {
+    int data;
+    Node* next;
+    Node(int val) : data(val), next(nullptr) {} // Constructor
+};
+
+class LinkedList {
+public:
+    Node* head;
+    LinkedList() : head(nullptr) {}
+
+    // Insertar al inicio -> O(1)
+    void insertHead(int val) {
+        Node* newNode = new Node(val);
+        newNode->next = head;
+        head = newNode;
+    }
+
+    // Insertar al final -> O(n) (sin tail pointer)
+    void insertTail(int val) {
+        Node* newNode = new Node(val);
+        if (!head) {
+            head = newNode;
+            return;
+        }
+        Node* temp = head;
+        while (temp->next) temp = temp->next; // Recorrer hasta el final
+        temp->next = newNode;
+    }
+
+    // Buscar -> O(n)
+    bool search(int val) {
+        Node* temp = head;
+        while (temp) {
+            if (temp->data == val) return true;
+            temp = temp->next;
+        }
+        return false;
+    }
+
+    // Imprimir lista
+    void print() {
+        Node* temp = head;
+        while (temp) {
+            cout << temp->data << " -> ";
+            temp = temp->next;
+        }
+        cout << "NULL" << endl;
+    }
+};
+
+int main() {
+    LinkedList list;
+    list.insertHead(10);
+    list.insertHead(20);
+    list.insertTail(5);
+    
+    list.print(); // 20 -> 10 -> 5 -> NULL
+    
+    cout << "¿Está el 10? " << (list.search(10) ? "Sí" : "No") << endl;
+    
+    return 0;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Operación        │ Tiempo  │ vs Array
+  ─────────────────┼─────────┼──────────────────────────────
+  Access por índice│ O(n)    │ Array: O(1) ← array gana
+  Search           │ O(n)    │ Igual
+  Insert head      │ O(1)    │ Array: O(n) ← linked list gana
+  Insert tail      │ O(1)*   │ Array: O(1) amort. → Igual
+  Insert medio     │ O(n)    │ Igual (pero no desplaza datos)
+  Delete head      │ O(1)    │ Array: O(n) ← linked list gana
+  *con tail pointer
+
+🎯 EN ENTREVISTAS (Tips Google-level)
+──────────────────────────────────────────────────────────────
+✅ Patrón "Fast & Slow Pointers" (Tortoise and Hare):
+   - Sirve para detectar ciclos (si se encuentran, hay ciclo).
+   - Sirve para encontrar el medio (cuando fast llega al final, slow 
+     está en el medio).
+
+💡 Dummy Node: Crear un nodo falso al inicio ayuda a simplificar casos
+   borde (como insertar en una lista vacía o borrar el head).
+
+⚠️ Memory Management: En C++, recuerda que cada `new` necesita un `delete`
+   para evitar memory leaks (fugas de memoria).
+
+🔑 Pregunta clave: "¿Es singly o doubly?". Si es doubly, puedes ir hacia
+   atrás, lo que facilita borrar un nodo si ya tienes el puntero.
+
+📋 RESUMEN RÁPIDO
+──────────────────────────────────────────────────────────────
+• Cadena de nodos dispersos en memoria.
+• Acceso secuencial (no puedes saltar).
+• Excelente para insertar/eliminar al inicio O(1).
+• No desperdicia memoria (solo usa lo que necesita).
+• Invertir una Linked List es un problema clásico (usar 3 punteros).
+• Usa más memoria por elemento que un array (por el puntero next).
+════════════════════════════════════════════════════════════════
