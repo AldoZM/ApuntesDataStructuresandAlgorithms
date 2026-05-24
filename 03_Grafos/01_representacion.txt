@@ -1,0 +1,142 @@
+════════════════════════════════════════════════════════════════
+🗂️  TEMA: Representación de Grafos
+📁  CATEGORÍA: 03_Grafos
+════════════════════════════════════════════════════════════════
+
+🤔 ¿QUÉ ES?
+──────────────────────────────────────────────────────────────
+Un mapa de ciudades 🗺️ con carreteras entre ellas. 
+
+En computación, las ciudades se llaman Nodos (o Vértices) y las 
+carreteras se llaman Aristas (o Edges). Un grafo es simplemente un 
+conjunto de nodos conectados entre sí. 
+
+Puedes tener:
+- Grafos Dirigidos: Carreteras de un solo sentido (A → B).
+- Grafos No Dirigidos: Carreteras de doble sentido (A ↔ B).
+- Grafos Ponderados: Carreteras con costo o distancia (A --5--> B).
+
+💬 DICHO DE OTRA FORMA
+──────────────────────────────────────────────────────────────
+Un Grafo G = (V, E) es una estructura no lineal. Para trabajar con 
+ellos en código, necesitamos guardarlos en memoria de alguna forma. 
+
+Las dos formas más comunes son:
+1. Adjacency Matrix (Matriz de Adyacencia): Una tabla de V x V.
+2. Adjacency List (Lista de Adyacencia): Un array de listas.
+
+La elección depende de si el grafo es "Denso" (muchas conexiones) o 
+"Disperso" (pocas conexiones).
+
+🎨 DIAGRAMA
+──────────────────────────────────────────────────────────────
+Grafo de ejemplo: A-B, A-C, B-C, C-D
+
+Adjacency Matrix (4x4):      Adjacency List:
+     A  B  C  D              A: [B, C]
+  A [0, 1, 1, 0]             B: [A, C]
+  B [1, 0, 1, 0]             C: [A, B, D]
+  C [1, 1, 0, 1]             D: [C]
+  D [0, 0, 1, 0]
+
+- En la Matrix: 1 significa que hay conexión, 0 que no.
+- En la List: Cada nodo tiene su propia lista de vecinos.
+
+⚙️ ¿CÓMO FUNCIONA? (Pros y Contras)
+──────────────────────────────────────────────────────────────
+
+1. Adjacency Matrix:
+   - Pros: Muy rápido O(1) para saber si A y B están conectados.
+   - Contras: Usa mucha memoria O(V²), incluso si hay pocos edges.
+   - Cuándo usar: Grafos pequeños o muy densos.
+
+2. Adjacency List:
+   - Pros: Ahorra mucha memoria O(V + E). Es la más usada.
+   - Contras: Saber si A y B están conectados puede tardar O(V).
+   - Cuándo usar: Casi siempre (la mayoría de los grafos reales son
+     dispersos).
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+// Agregar arista en Lista de Adyacencia (no dirigido)
+función agregarArista(u, v):
+    adj[u].agregar(v)
+    adj[v].agregar(u)
+
+// Agregar arista en Matriz de Adyacencia
+función agregarAristaMatrix(u, v):
+    matrix[u][v] = 1
+    matrix[v][u] = 1
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int V = 4; // Número de vértices
+    
+    // 1. Representación con Lista de Adyacencia (Recomendado)
+    vector<vector<int>> adj(V);
+
+    // Agregar A-B (0-1), A-C (0-2), B-C (1-2), C-D (2-3)
+    adj[0].push_back(1); adj[1].push_back(0);
+    adj[0].push_back(2); adj[2].push_back(0);
+    adj[1].push_back(2); adj[2].push_back(1);
+    adj[2].push_back(3); adj[3].push_back(2);
+
+    cout << "Lista de Adyacencia de C (nodo 2): ";
+    for(int vecino : adj[2]) {
+        cout << vecino << " ";
+    }
+    cout << endl;
+
+    // 2. Representación con Matriz de Adyacencia
+    vector<vector<int>> matrix(V, vector<int>(V, 0));
+    matrix[0][1] = 1; matrix[1][0] = 1;
+    // ... completar resto
+
+    return 0;
+}
+
+⏱️ COMPLEJIDAD (Comparativa)
+──────────────────────────────────────────────────────────────
+
+  Operación        │ Matrix   │ List
+  ─────────────────┼──────────┼──────────────
+  Espacio          │ O(V²)    │ O(V + E)
+  Agregar Edge     │ O(1)     │ O(1)
+  Verificar Edge   │ O(1)     │ O(Grado del nodo)
+  Iterar Vecinos   │ O(V)     │ O(Grado del nodo)
+
+* V = Vértices, E = Edges (Aristas).
+
+🎯 EN ENTREVISTAS (Tips Google-level)
+──────────────────────────────────────────────────────────────
+✅ Default: En el 90% de las entrevistas, usa Adjacency List. Es más
+   eficiente en memoria y espacio.
+
+💡 Representación con Map: A veces los nodos no son números (0, 1, 2)
+   sino nombres ("CDMX", "NY"). En ese caso, usa:
+   `unordered_map<string, vector<string>> adj;`
+
+⚠️ Edge List: Existe una tercera forma llamada "Edge List" que es 
+   simplemente un array de pares `[(0,1), (0,2), ...]`. Útil para 
+   algoritmos como Kruskal.
+
+🔑 Grafo Implícito: A veces el grafo no te lo dan, sino que es una
+   matriz (grid) donde puedes moverte arriba, abajo, izq, der. Ahí el
+   "grafo" son las celdas y sus vecinos.
+
+📋 RESUMEN RÁPIDO
+──────────────────────────────────────────────────────────────
+• Nodos = Ciudades, Aristas = Caminos.
+• Matrix: Rápida pero traga mucha memoria O(V²).
+• List: Eficiente en memoria, la favorita de los devs O(V + E).
+• Dirigido (flecha) vs No Dirigido (línea).
+• Ponderado (tiene peso/costo) vs No Ponderado.
+• Grado de un nodo = cuántos vecinos tiene.
+════════════════════════════════════════════════════════════════
