@@ -1,0 +1,114 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{amsmath}
+\geometry{a4paper, margin=1in}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstset{backgroundcolor=\color{backcolour},commentstyle=\color{codegreen},keywordstyle=\color{magenta},numberstyle=\tiny\color{codegray},stringstyle=\color{codepurple},basicstyle=\ttfamily\small,breakatwhitespace=false,breaklines=true,captionpos=b,keepspaces=true,numbers=left,numbersep=5pt,showspaces=false,showstringspaces=false,showtabs=false,tabsize=2,language=C++}
+\newcommand{\quees}[1]{\section*{🤔 ¿QUÉ ES?}\hrulefill \\ #1}
+\newcommand{\dichodeotraforma}[1]{\section*{💬 DICHO DE OTRA FORMA}\hrulefill \\ #1}
+\newcommand{\diagrama}[1]{\section*{🎨 DIAGRAMA}\hrulefill \\ #1}
+\newcommand{\comofunciona}[1]{\section*{⚙️ ¿CÓMO FUNCIONA?}\hrulefill \\ #1}
+\newcommand{\complejidad}[1]{\section*{⏱️ COMPLEJIDAD (Big-O)}\hrulefill \\ #1}
+\newcommand{\entrevistas}[1]{\section*{🎯 EN ENTREVISTAS}\hrulefill \\ #1}
+\newcommand{\resumen}[1]{\section*{📋 RESUMEN RÁPIDO}\hrulefill \\ #1}
+\begin{document}
+\title{Recursión y Memoization}
+\date{}
+\maketitle
+\quees{Las muñecas rusas Matryoshka 🪆. 
+
+Abres una muñeca grande y adentro hay otra igual pero más pequeña. 
+Sigues abriendo muñecas hasta que llegas a la más pequeñita de todas,
+la cual ya no tiene nada adentro. Ese es tu "punto de parada".
+
+Recursión es una función que se llama a sí misma para resolver una
+versión más pequeña del mismo problema. Sigues bajando niveles hasta
+llegar al "Caso Base" (la muñeca más chica), y luego vas regresando 
+hacia arriba con las respuestas de cada nivel.}
+\dichodeotraforma{La Recursión es un paradigma de programación donde una función se
+define en términos de sí misma. 
+
+Para que una función recursiva sea correcta, DEBE tener:
+1. Caso Base: La condición de salida que detiene las llamadas.
+2. Caso Recursivo: La lógica que rompe el problema en una parte más
+   pequeña y hace la auto-llamada.
+
+Si olvidas el Caso Base, la función se llamará infinitamente hasta 
+agotar la memoria del sistema (Stack Overflow).}
+\diagrama{\begin{verbatim}
+Llamada inicial: fact(3)
+
+[ fact(1) ] -> retorna 1 (¡Caso Base!)
+[ fact(2) ] -> espera a fact(1)... recibe 1, retorna 2 * 1 = 2
+[ fact(3) ] -> espera a fact(2)... recibe 2, retorna 3 * 2 = 6
+
+Resultado Final: 6
+\end{verbatim}}
+\comofunciona{- Recursión: Más elegante, fácil de leer para problemas de árboles o 
+  gráfos. Usa memoria en el "Call Stack" para cada llamada.
+- Iteración (Loops): Más eficiente en memoria (O(1) espacio extra). 
+  A veces es más difícil de pensar para problemas complejos.
+
+Memoization (La mejora):
+Como vimos en DP, si una función recursiva se llama con los mismos 
+argumentos muchas veces, guardamos el resultado en un caché 
+(Memoization) para que la segunda llamada sea O(1).}
+\section*{📝 PSEUDOCÓDIGO}
+\hrulefill
+\begin{verbatim}
+función factorial(n):
+    SI n <= 1: return 1 // Caso Base
+    return n * factorial(n - 1) // Caso Recursivo
+\end{verbatim}
+\section*{💻 CÓDIGO C++}
+\hrulefill
+\begin{lstlisting}[language=C++]
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Recursión Simple
+long long factorial(int n) {
+    if (n <= 1) return 1;
+    return n * factorial(n - 1);
+}
+
+// Recursión con Memoization (Fibonacci)
+long long fibMemo(int n, vector<long long>& memo) {
+    if (n <= 1) return n;
+    if (memo[n] != -1) return memo[n]; // Revisar caché
+    
+    return memo[n] = fibMemo(n - 1, memo) + fibMemo(n - 2, memo);
+}
+
+int main() {
+    cout << "Factorial de 5: " << factorial(5) << endl; // 120
+    
+    int n = 40;
+    vector<long long> memo(n + 1, -1);
+    cout << "Fibonacci de " << n << ": " << fibMemo(n, memo) << endl;
+    
+    return 0;
+}
+\end{lstlisting}
+\complejidad{Algoritmo        │ Tiempo (Normal) │ Con Memoization
+  ─────────────────┼─────────────────┼────────────────────────
+  Factorial        │ O(n)            │ O(n)
+  Fibonacci        │ O(2\textasciicircum{}n) 💀       │ O(n) ⚡
+  Espacio          │ O(n) (Stack)    │ O(n) (Stack + Cache)}
+\entrevistas{}
+\resumen{• Función que se llama a sí misma.
+• Requiere Caso Base y Caso Recursivo.
+• Úsala para árboles, grafos y problemas de "Divide y Vencerás".
+• Memoization: El truco para que la recursión sea ultra rápida.
+• Cuidado con el Stack Overflow en inputs grandes.
+• Cada nivel de recursión = O(1) de espacio extra en el stack.
+════════════════════════════════════════════════════════════════}
+\end{document}

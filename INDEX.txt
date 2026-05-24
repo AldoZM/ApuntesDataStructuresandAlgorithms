@@ -8,46 +8,46 @@
 ──────────────────────────────────────────────────────────────────────────────
 
 📂 00_Fundamentos/
-   ├── 01_big_o_notation.txt      ← Mide qué tan rápido/lento es tu código
-   └── 02_complejidad_espacial.txt ← Mide cuánta memoria usa tu código
+   ├── 01_big_o_notation.tex      ← Mide qué tan rápido/lento es tu código
+   └── 02_complejidad_espacial.tex ← Mide cuánta memoria usa tu código
 
 📂 01_Estructuras_Lineales/
-   ├── 01_arrays.txt              ← Lista de cajitas numeradas en fila
-   ├── 02_linked_lists.txt        ← Cadena de nodos que se apuntan entre sí
-   ├── 03_stacks.txt              ← Pila de platos (LIFO)
-   └── 04_queues.txt              ← Fila del banco (FIFO)
+   ├── 01_arrays.tex              ← Lista de cajitas numeradas en fila
+   ├── 02_linked_lists.tex        ← Cadena de nodos que se apuntan entre sí
+   ├── 03_stacks.tex              ← Pila de platos (LIFO)
+   └── 04_queues.tex              ← Fila del banco (FIFO)
 
 📂 02_Estructuras_No_Lineales/
-   ├── 01_trees_bst.txt           ← Árbol con regla: izq < raíz < der
-   ├── 02_avl_trees.txt           ← BST que se autobalancea
-   ├── 03_heaps.txt               ← Árbol donde el mayor/menor siempre está arriba
-   ├── 04_hash_tables.txt         ← Cajones con llave mágica de acceso instantáneo
-   ├── 05_tries.txt               ← Árbol de letras para buscar palabras
-   └── 06_union_find.txt          ← Agrupa elementos en conjuntos conectados
+   ├── 01_trees_bst.tex           ← Árbol con regla: izq < raíz < der
+   ├── 02_avl_trees.tex           ← BST que se autobalancea
+   ├── 03_heaps.tex               ← Árbol donde el mayor/menor siempre está arriba
+   ├── 04_hash_tables.tex         ← Cajones con llave mágica de acceso instantáneo
+   ├── 05_tries.tex               ← Árbol de letras para buscar palabras
+   └── 06_union_find.tex          ← Agrupa elementos en conjuntos conectados
 
 📂 03_Grafos/
-   ├── 01_representacion.txt      ← Cómo guardar un grafo en memoria
-   ├── 02_bfs_dfs.txt             ← Dos formas de explorar un grafo
-   └── 03_dijkstra.txt            ← Camino más corto con pesos
+   ├── 01_representacion.tex      ← Cómo guardar un grafo en memoria
+   ├── 02_bfs_dfs.tex             ← Dos formas de explorar un grafo
+   └── 03_dijkstra.tex            ← Camino más corto con pesos
 
 📂 04_Algoritmos_Ordenamiento/
-   ├── 01_bubble_insertion_selection.txt ← Los 3 básicos O(n²)
-   ├── 02_merge_sort.txt          ← Divide y vencerás, O(n log n) siempre
-   └── 03_quick_sort.txt          ← Rápido en práctica, O(n log n) promedio
+   ├── 01_bubble_insertion_selection.tex ← Los 3 básicos O(n²)
+   ├── 02_merge_sort.tex          ← Divide y vencerás, O(n log n) siempre
+   └── 03_quick_sort.tex          ← Rápido en práctica, O(n log n) promedio
 
 📂 05_Algoritmos_Busqueda/
-   ├── 01_linear_search.txt       ← Busca uno por uno, O(n)
-   └── 02_binary_search.txt       ← Adivina partiendo a la mitad, O(log n)
+   ├── 01_linear_search.tex       ← Busca uno por uno, O(n)
+   └── 02_binary_search.tex       ← Adivina partiendo a la mitad, O(log n)
 
 📂 06_Patrones_Entrevista/        ← ⭐ LOS MÁS IMPORTANTES PARA GOOGLE
-   ├── 01_two_pointers.txt        ← Dos índices que se mueven en el array
-   ├── 02_sliding_window.txt      ← Ventana que se desliza por el array
-   ├── 03a_dp_intro.txt           ← DP: guardar resultados para no repetir trabajo
-   ├── 03b_dp_memoization.txt     ← DP top-down con caché
-   ├── 03c_dp_tabulation.txt      ← DP bottom-up con tabla
-   ├── 04_backtracking.txt        ← Prueba todo, deshaz si no funciona
-   ├── 05_bit_manipulation.txt    ← Operaciones a nivel de bits
-   └── 06_recursion_y_memoization.txt ← Función que se llama a sí misma
+   ├── 01_two_pointers.tex        ← Dos índices que se mueven en el array
+   ├── 02_sliding_window.tex      ← Ventana que se desliza por el array
+   ├── 03a_dp_intro.tex           ← DP: guardar resultados para no repetir trabajo
+   ├── 03b_dp_memoization.tex     ← DP top-down con caché
+   ├── 03c_dp_tabulation.tex      ← DP bottom-up con tabla
+   ├── 04_backtracking.tex        ← Prueba todo, deshaz si no funciona
+   ├── 05_bit_manipulation.tex    ← Operaciones a nivel de bits
+   └── 06_recursion_y_memoization.tex ← Función que se llama a sí misma
 
 ──────────────────────────────────────────────────────────────────────────────
 📖 ORDEN SUGERIDO DE ESTUDIO
@@ -67,8 +67,8 @@
 
   big_o_notation     → se usa en TODOS los demás archivos
   arrays             → base para sliding_window y two_pointers
-  stacks             → necesario para entender DFS en bfs_dfs.txt
-  queues             → necesario para entender BFS en bfs_dfs.txt
+  stacks             → necesario para entender DFS en bfs_dfs.tex
+  queues             → necesario para entender BFS en bfs_dfs.tex
   trees_bst          → prerequisito para avl_trees, heaps, tries
   bfs_dfs            → prerequisito para dijkstra
   dp_intro           → prerequisito para dp_memoization y dp_tabulation

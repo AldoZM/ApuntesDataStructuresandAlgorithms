@@ -1,0 +1,130 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{amsmath}
+\geometry{a4paper, margin=1in}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstset{backgroundcolor=\color{backcolour},commentstyle=\color{codegreen},keywordstyle=\color{magenta},numberstyle=\tiny\color{codegray},stringstyle=\color{codepurple},basicstyle=\ttfamily\small,breakatwhitespace=false,breaklines=true,captionpos=b,keepspaces=true,numbers=left,numbersep=5pt,showspaces=false,showstringspaces=false,showtabs=false,tabsize=2,language=C++}
+\newcommand{\quees}[1]{\section*{🤔 ¿QUÉ ES?}\hrulefill \\ #1}
+\newcommand{\dichodeotraforma}[1]{\section*{💬 DICHO DE OTRA FORMA}\hrulefill \\ #1}
+\newcommand{\diagrama}[1]{\section*{🎨 DIAGRAMA}\hrulefill \\ #1}
+\newcommand{\comofunciona}[1]{\section*{⚙️ ¿CÓMO FUNCIONA?}\hrulefill \\ #1}
+\newcommand{\complejidad}[1]{\section*{⏱️ COMPLEJIDAD (Big-O)}\hrulefill \\ #1}
+\newcommand{\entrevistas}[1]{\section*{🎯 EN ENTREVISTAS}\hrulefill \\ #1}
+\newcommand{\resumen}[1]{\section*{📋 RESUMEN RÁPIDO}\hrulefill \\ #1}
+\begin{document}
+\title{Introducción a Dynamic Programming (DP)}
+\date{}
+\maketitle
+\quees{Un estudiante inteligente que guarda sus apuntes 📒. 
+
+Imagina que en un examen te preguntan 50 veces cuánto es 123 x 456.
+En lugar de hacer la multiplicación cada vez (y perder tiempo),
+la haces la primera vez, anotas el resultado en tu cuaderno, y 
+las siguientes 49 veces ¡solo lo consultas!
+
+Dynamic Programming es simplemente eso: guardar resultados de 
+sub-problemas ya resueltos para no repetir trabajo innecesariamente. 
+Es el arte de intercambiar un poco de memoria por mucho tiempo.}
+\dichodeotraforma{Dynamic Programming (DP) es una técnica de optimización para resolver
+problemas complejos dividiéndolos en sub-problemas más pequeños. 
+
+Para usar DP, el problema debe cumplir dos condiciones:
+1. Overlapping Subproblems: El mismo sub-problema se calcula varias
+   veces (como en Fibonacci).
+2. Optimal Substructure: La solución óptima del problema global se
+   puede construir a partir de las soluciones óptimas de sus partes.}
+\diagrama{\begin{verbatim}
+Sin DP (Calculas lo mismo muchas veces):
+             fib(5)
+           /        \
+      fib(4)         fib(3)
+      /    \        /      \
+  fib(3)  fib(2)  fib(2)  fib(1)
+  /    \
+fib(2) fib(1)
+
+¡Nota cómo fib(3) y fib(2) se repiten! 💀
+
+Con DP (Memoization):
+Calculas fib(3) una vez, lo guardas, y cuando fib(4) lo necesite,
+simplemente lo lee de la memoria. ⚡
+\end{verbatim}}
+\comofunciona{Existen dos formas de implementar DP:
+
+1. Top-Down (Memoization):
+   - Empiezas con el problema grande.
+   - Lo divides recursivamente.
+   - Guardas el resultado en un Hash Map o Array antes de regresarlo.
+
+2. Bottom-Up (Tabulation):
+   - Empiezas con los casos más pequeños (base cases).
+   - Llenas una tabla (array) paso a paso hasta llegar al resultado.
+   - Generalmente se hace con un loop iterativo.}
+\section*{📝 PSEUDOCÓDIGO}
+\hrulefill
+\begin{verbatim}
+// Fibonacci Sin DP: O(2^n) - Pésimo
+función fib(n):
+    SI n <= 1: return n
+    return fib(n-1) + fib(n-2)
+
+// Fibonacci Con DP (Memo): O(n) - Excelente
+función fib(n, memo):
+    SI n EN memo: return memo[n]
+    SI n <= 1: return n
+    memo[n] = fib(n-1, memo) + fib(n-2, memo)
+    return memo[n]
+\end{verbatim}
+\section*{💻 CÓDIGO C++}
+\hrulefill
+\begin{lstlisting}[language=C++]
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Fibonacci sin DP (muy lento para n > 40)
+long long fibNaive(int n) {
+    if (n <= 1) return n;
+    return fibNaive(n - 1) + fibNaive(n - 2);
+}
+
+// Fibonacci con DP (Tabulation - Bottom Up)
+long long fibDP(int n) {
+    if (n <= 1) return n;
+    vector<long long> dp(n + 1);
+    dp[0] = 0;
+    dp[1] = 1;
+    for (int i = 2; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+    return dp[n];
+}
+
+int main() {
+    int n = 50;
+    cout << "Fibonacci de " << n << " es: " << fibDP(n) << endl;
+    return 0;
+}
+\end{lstlisting}
+\complejidad{Enfoque        │ Tiempo    │ Espacio
+  ───────────────┼───────────┼────────────────────────────────
+  Fuerza Bruta   │ O(2\textasciicircum{}n)    │ O(n) (stack)
+  DP (Memo/Tab)  │ O(n)      │ O(n) (tabla)
+
+* La DP reduce la complejidad de exponencial a lineal en muchos casos.}
+\entrevistas{}
+\resumen{• DP = Recursión + Memoria.
+• No calcules lo mismo dos veces.
+• Overlapping Subproblems: La clave para usar DP.
+• Top-Down: Fácil de pensar (recursivo).
+• Bottom-Up: Más eficiente (iterativo).
+• Esencial para problemas de optimización.
+════════════════════════════════════════════════════════════════}
+\end{document}

@@ -1,0 +1,122 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{amsmath}
+\geometry{a4paper, margin=1in}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstset{backgroundcolor=\color{backcolour},commentstyle=\color{codegreen},keywordstyle=\color{magenta},numberstyle=\tiny\color{codegray},stringstyle=\color{codepurple},basicstyle=\ttfamily\small,breakatwhitespace=false,breaklines=true,captionpos=b,keepspaces=true,numbers=left,numbersep=5pt,showspaces=false,showstringspaces=false,showtabs=false,tabsize=2,language=C++}
+\newcommand{\quees}[1]{\section*{🤔 ¿QUÉ ES?}\hrulefill \\ #1}
+\newcommand{\dichodeotraforma}[1]{\section*{💬 DICHO DE OTRA FORMA}\hrulefill \\ #1}
+\newcommand{\diagrama}[1]{\section*{🎨 DIAGRAMA}\hrulefill \\ #1}
+\newcommand{\comofunciona}[1]{\section*{⚙️ ¿CÓMO FUNCIONA?}\hrulefill \\ #1}
+\newcommand{\complejidad}[1]{\section*{⏱️ COMPLEJIDAD (Big-O)}\hrulefill \\ #1}
+\newcommand{\entrevistas}[1]{\section*{🎯 EN ENTREVISTAS}\hrulefill \\ #1}
+\newcommand{\resumen}[1]{\section*{📋 RESUMEN RÁPIDO}\hrulefill \\ #1}
+\begin{document}
+\title{Sliding Window (Ventana Deslizante)}
+\date{}
+\maketitle
+\quees{Una ventana de tren 🚂 donde ves paisajes mientras el tren avanza. 
+La ventana tiene un tamaño fijo (por ejemplo, 3 metros de ancho).
+
+Al avanzar, entra nuevo paisaje por un lado y sale el paisaje viejo
+por el otro. No tienes que redibujar todo el paisaje cada vez, ¡solo
+actualizas los bordes!
+
+En programación, este patrón sirve para procesar sub-arreglos o 
+sub-cadenas sin tener que recalcular todo desde cero en cada paso, 
+lo cual ahorra muchísimo tiempo.}
+\dichodeotraforma{El patrón Sliding Window convierte un problema de loops anidados O(n*k) 
+en un problema de un solo loop O(n). 
+
+Se usa cuando te piden algo sobre elementos CONTIGUOS de un array o 
+string. Existen dos tipos:
+1. Fixed Size: La ventana siempre mide K elementos.
+2. Variable Size: La ventana crece o se encoge según una condición
+   (usualmente usando dos punteros).}
+\diagrama{\begin{verbatim}
+Array: [ 1, 3, 2, 6, -1, 4 ]
+Meta: Suma de cada ventana de tamaño 3.
+
+Paso 1: [ 1, 3, 2 ] , 6, -1, 4  -> Suma = 6
+Paso 2: 1, [ 3, 2, 6 ] , -1, 4  -> Suma = 11 (6 - 1 + 6)
+Paso 3: 1, 3, [ 2, 6, -1 ] , 4  -> Suma = 7  (11 - 3 + (-1))
+
+¡Solo restas el que sale y sumas el que entra! ⚡
+\end{verbatim}}
+\comofunciona{Fixed Size Window:
+1. Calculas el resultado de la primera ventana (índices 0 a K-1).
+2. Empiezas un loop desde el índice K hasta el final.
+3. En cada paso:
+   - Sumas el nuevo elemento (`arr[i]`).
+   - Restas el elemento que sale (`arr[i - K]`).
+   - Actualizas el resultado máximo/mínimo.
+
+Variable Size Window:
+1. Usas dos punteros: `start` y `end` (ambos en 0).
+2. Mueves `end` para expandir la ventana y cumplir una condición.
+3. Si la condición se rompe, mueves `start` para encoger la ventana.}
+\section*{📝 PSEUDOCÓDIGO}
+\hrulefill
+\begin{verbatim}
+función sumaMaxima(arr, k):
+    sumaActual = suma de los primeros k elementos
+    maximaSuma = sumaActual
+    PARA i desde k hasta arr.tamaño - 1:
+        sumaActual = sumaActual + arr[i] - arr[i - k]
+        maximaSuma = max(maximaSuma, sumaActual)
+    return maximaSuma
+\end{verbatim}
+\section*{💻 CÓDIGO C++}
+\hrulefill
+\begin{lstlisting}[language=C++]
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+// Máxima suma de un subarray de tamaño K -> O(n)
+int maxSubarraySum(vector<int>& arr, int k) {
+    if (arr.size() < k) return -1;
+
+    int window_sum = 0;
+    for (int i = 0; i < k; i++) window_sum += arr[i];
+
+    int max_sum = window_sum;
+
+    for (int i = k; i < arr.size(); i++) {
+        // Deslizar la ventana: sumar el nuevo, restar el viejo
+        window_sum += arr[i] - arr[i - k];
+        max_sum = max(max_sum, window_sum);
+    }
+
+    return max_sum;
+}
+
+int main() {
+    vector<int> data = {2, 1, 5, 1, 3, 2};
+    int k = 3;
+    cout << "Máxima suma (k=3): " << maxSubarraySum(data, k) << endl; // 9 (5+1+3)
+    return 0;
+}
+\end{lstlisting}
+\complejidad{Caso            │ Tiempo        │ Espacio
+  ────────────────┼───────────────┼────────────────────────────────
+  Sliding Window  │ O(n)          │ O(1)
+  Fuerza Bruta    │ O(n * k)      │ O(1)
+
+* La diferencia es abismal cuando `n` y `k` son grandes.}
+\entrevistas{}
+\resumen{• Elementos contiguos.
+• Evita recalcular: Actualiza los bordes de la ventana.
+• Reduce O(n*k) a O(n).
+• Dos tipos: Fija y Variable.
+• Ideal para sumas de rango, promedios móviles y búsqueda de sub-strings.
+════════════════════════════════════════════════════════════════}
+\end{document}
