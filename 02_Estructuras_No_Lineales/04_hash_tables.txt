@@ -1,0 +1,144 @@
+════════════════════════════════════════════════════════════════
+🗂️  TEMA: Hash Tables (Tablas Hash / Mapas)
+📁  CATEGORÍA: 02_Estructuras_No_Lineales
+════════════════════════════════════════════════════════════════
+
+🤔 ¿QUÉ ES?
+──────────────────────────────────────────────────────────────
+Un casillero de escuela 🎒. Cada estudiante tiene un número de
+casillero asignado por una fórmula mágica (la Hash Function).
+
+Para guardar la mochila de "Carlos", aplicas la fórmula: 
+Hash("Carlos") = 42. Vas directo al casillero 42 y la guardas. 
+Para buscarla, vuelves a aplicar la fórmula: Hash("Carlos") = 42,
+y vas DIRECTO al casillero 42.
+
+¡No tienes que revisar todos los casilleros uno por uno! Es como 
+tener un acceso instantáneo a cualquier dato si conoces su "llave".
+
+💬 DICHO DE OTRA FORMA
+──────────────────────────────────────────────────────────────
+Una Hash Table es una estructura que asocia Llaves (Keys) con Valores
+(Values). Usa una función matemática para convertir la Key en un 
+índice de un array.
+
+El objetivo principal es lograr operaciones de búsqueda, inserción y 
+eliminación en tiempo constante promedio O(1). Es la estructura más 
+eficiente para búsquedas rápidas en la industria.
+
+🎨 DIAGRAMA
+──────────────────────────────────────────────────────────────
+Key: "Carlos"  --> [ Hash Function ] --> Index: 2
+Key: "Maria"   --> [ Hash Function ] --> Index: 5
+
+Array Interno (Buckets):
+[0] : NULL
+[1] : NULL
+[2] : {Key: "Carlos", Value: "Mochila Azul"}
+[3] : NULL
+[4] : NULL
+[5] : {Key: "Maria",  Value: "Mochila Roja"}
+
+Colisión (Collision):
+Si Hash("Juan") también da 2, ocurre una colisión. 
+Solución común: Chaining (una Linked List en el índice 2).
+
+[2] : ["Carlos"] -> ["Juan"] -> NULL
+
+⚙️ ¿CÓMO FUNCIONA? (Operaciones principales)
+──────────────────────────────────────────────────────────────
+
+1. Hash Function: Convierte cualquier Key (string, objeto, etc.) en
+   un número entero dentro del rango del array.
+2. Insert (set): Calculas el hash, vas al índice y guardas el par {K,V}.
+3. Search (get): Calculas el hash, vas al índice y devuelves el valor.
+4. Delete: Calculas el hash y eliminas la entrada en ese índice.
+5. Rehashing: Si la tabla se llena mucho (Load Factor > 0.75), se crea
+   un array más grande y se vuelven a calcular todos los hashes.
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+// Insertar en un Hash Map (con Chaining)
+función insertar(llave, valor):
+    índice = hash(llave) % tamaño_tabla
+    lista = buckets[índice]
+    SI llave ya existe en lista:
+        actualizar valor
+    SINO:
+        agregar {llave, valor} al final de la lista
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <unordered_map> // Hash Map estándar en C++
+#include <unordered_set> // Hash Set (solo llaves únicas)
+#include <string>
+using namespace std;
+
+int main() {
+    // 1. Declaración
+    unordered_map<string, int> edades;
+
+    // 2. Insertar -> O(1) promedio
+    edades["Carlos"] = 25;
+    edades["Maria"] = 30;
+    edades.insert({"Juan", 22});
+
+    // 3. Acceder -> O(1) promedio
+    cout << "Edad de Maria: " << edades["Maria"] << endl;
+
+    // 4. Verificar existencia
+    if (edades.find("Pedro") == edades.end()) {
+        cout << "Pedro no está en la tabla." << endl;
+    }
+
+    // 5. Eliminar -> O(1)
+    edades.erase("Carlos");
+
+    // 6. Recorrer
+    for (auto const& [nombre, edad] : edades) {
+        cout << nombre << " tiene " << edad << " años." << endl;
+    }
+
+    return 0;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Operación   │ Promedio   │ Peor caso
+  ────────────┼────────────┼──────────────
+  Insert      │ O(1)       │ O(n)
+  Search      │ O(1)       │ O(n)
+  Delete      │ O(1)       │ O(n)
+  Espacio     │ O(n)       │ O(n)
+
+* El peor caso O(n) ocurre si la función hash es muy mala y todos los
+  elementos caen en el mismo casillero (colisión masiva).
+
+🎯 EN ENTREVISTAS (Tips Google-level)
+──────────────────────────────────────────────────────────────
+✅ Regla de Oro: Si necesitas buscar algo en O(1), LA respuesta es
+   un Hash Map o Hash Set. 
+
+💡 "Two Sum": El problema más famoso que se resuelve con Hash Map. 
+   Guardas el complemento de lo que buscas para encontrarlo en O(1).
+
+⚠️ map vs unordered_map (C++):
+   - `unordered_map`: Usa Hash Table, O(1) promedio, no tiene orden.
+   - `map`: Usa Red-Black Tree, O(log n), mantiene las llaves ordenadas.
+
+🔑 Collision Handling: Debes saber explicar Chaining (listas) y 
+   Open Addressing (buscar el siguiente hueco libre).
+
+📋 RESUMEN RÁPIDO
+──────────────────────────────────────────────────────────────
+• Key -> Hash Function -> Index.
+• Acceso, búsqueda e inserción instantáneos O(1).
+• La función hash debe ser rápida y distribuir bien los datos.
+• Colisiones: Cuando dos llaves quieren el mismo lugar.
+• Load Factor: Qué tan llena está la tabla.
+• Estructura más usada en la vida real por su velocidad.
+════════════════════════════════════════════════════════════════
