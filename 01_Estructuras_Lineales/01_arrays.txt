@@ -1,0 +1,144 @@
+════════════════════════════════════════════════════════════════
+🗂️  TEMA: Arrays (Vectores)
+📁  CATEGORÍA: 01_Estructuras_Lineales
+════════════════════════════════════════════════════════════════
+
+🤔 ¿QUÉ ES?
+──────────────────────────────────────────────────────────────
+Los vagones de un tren 🚂 numerados en orden. El vagón 0, el vagón 1,
+el vagón 2... Cada vagón tiene exactamente UN pasajero (dato).
+
+Para subir a cualquier vagón, solo dices el número (el índice) y 
+¡listo! No tienes que pasar por todos los vagones anteriores. 
+Esto es posible porque todos los vagones están pegaditos uno tras
+otro en la vía.
+
+Un array es una colección de elementos del mismo tipo guardados en 
+posiciones de memoria CONTIGUAS (una tras otra).
+
+💬 DICHO DE OTRA FORMA
+──────────────────────────────────────────────────────────────
+El Array es la estructura de datos más básica y fundamental. Su
+característica principal es el acceso aleatorio (Random Access) en
+tiempo constante O(1). 
+
+En lenguajes modernos como C++, solemos usar "Dynamic Arrays" 
+(como `std::vector`), que pueden crecer automáticamente si se llenan,
+aunque por debajo siguen siendo un bloque de memoria contigua.
+
+🎨 DIAGRAMA
+──────────────────────────────────────────────────────────────
+Índice:  [0] [1] [2] [3] [4]
+Valor:   [ 5][ 2][ 8][ 1][ 9]
+          ↑
+    Dirección de memoria contigua →→→→→→→→→→
+
+Insertar 99 en el índice 2:
+ANTES:   [ 5][ 2][ 8][ 1][ 9]
+          ↓   ↓   ← desplazar →
+DESPUÉS: [ 5][ 2][99][ 8][ 1][ 9]   ← O(n) porque movimos 8, 1 y 9
+
+⚙️ ¿CÓMO FUNCIONA? (Operaciones principales)
+──────────────────────────────────────────────────────────────
+
+1. Acceso: Vas directo al índice `i`. Es instantáneo.
+2. Búsqueda: Tienes que revisar uno por uno hasta encontrar el valor.
+3. Inserción:
+   - Al final: Si hay espacio, es instantáneo.
+   - Al inicio/medio: Tienes que "empujar" a todos los de la derecha
+     un lugar para hacer espacio.
+4. Eliminación:
+   - Al final: Borras y ya.
+   - Al inicio/medio: Tienes que "jalar" a todos los de la derecha
+     un lugar a la izquierda para cerrar el hueco.
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+// Insertar en medio
+función insertar(array, valor, posicion):
+    PARA i desde tamaño hasta posicion + 1:
+        array[i] = array[i-1] // desplazar a la derecha
+    array[posicion] = valor
+
+// Eliminar en medio
+función eliminar(array, posicion):
+    PARA i desde posicion hasta tamaño - 2:
+        array[i] = array[i+1] // desplazar a la izquierda
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <vector>   // En C++ usamos vector para arrays dinámicos
+#include <algorithm>
+using namespace std;
+
+int main() {
+    // 1. Declaración e inicialización
+    vector<int> arr = {5, 2, 8, 1, 9};
+
+    // 2. Acceso por índice -> O(1)
+    cout << "Elemento en idx 2: " << arr[2] << endl; // 8
+
+    // 3. Insertar al final -> O(1) amortizado
+    arr.push_back(10); // [5, 2, 8, 1, 9, 10]
+
+    // 4. Insertar en medio -> O(n)
+    // Insertamos el 99 en la posición 2
+    arr.insert(arr.begin() + 2, 99); // [5, 2, 99, 8, 1, 9, 10]
+
+    // 5. Eliminar en medio -> O(n)
+    // Borramos el elemento en la posición 4
+    arr.erase(arr.begin() + 4); // [5, 2, 99, 8, 9, 10]
+
+    // 6. Tamaño del array
+    cout << "Tamaño: " << arr.size() << endl;
+
+    // 7. Recorrer el array -> O(n)
+    for(int x : arr) {
+        cout << x << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Operación        │ Tiempo    │ Espacio
+  ─────────────────┼───────────┼─────────
+  Access           │ O(1)      │ O(1)
+  Search unsorted  │ O(n)      │ O(1)
+  Search sorted    │ O(log n)  │ O(1)
+  Insert end       │ O(1)*     │ O(1)
+  Insert middle    │ O(n)      │ O(1)
+  Delete end       │ O(1)      │ O(1)
+  Delete middle    │ O(n)      │ O(1)
+  *amortizado en dynamic array (vector)
+
+🎯 EN ENTREVISTAS (Tips Google-level)
+──────────────────────────────────────────────────────────────
+✅ Arrays son la estructura de datos más común en entrevistas. Domínalos.
+
+💡 Patrones clave:
+   - "Two Pointers": Usar un índice al inicio y otro al final.
+   - "Sliding Window": Una ventana que se desliza para encontrar subarrays.
+   - "Prefix Sum": Pre-calcular sumas para responder rangos en O(1).
+
+⚠️ Off-by-one errors: El error más común es salirte del rango (acceder
+   a arr[n] cuando el tamaño es n). Siempre usa `i < n`.
+
+🔑 Pregunta clave: "¿El array está ordenado?". Si está ordenado, casi
+   siempre la respuesta involucra Binary Search O(log n).
+
+📋 RESUMEN RÁPIDO
+──────────────────────────────────────────────────────────────
+• Array = bloque de memoria contigua.
+• Acceso instantáneo O(1) si conoces el índice.
+• Insertar/Eliminar en medio es LENTO O(n) por los desplazamientos.
+• En C++: `std::vector` es el rey.
+• Muy eficiente en espacio (mínimo overhead).
+• Ideal para cuando conoces el tamaño o solo agregas/quitas al final.
+════════════════════════════════════════════════════════════════
