@@ -1,93 +1,7 @@
-﻿\documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage[spanish]{babel}
-\usepackage{listings}
-\usepackage{xcolor}
-\usepackage{geometry}
-\geometry{a4paper, margin=1in}
+﻿\chapter[\emj{🫧}~Ordenamientos Básicos (Bubble, Insertion, Selection)]{\emj{🫧}~Ordenamientos Básicos (Bubble, Insertion, Selection)}
 
-% Configuración para código C++
-\definecolor{codegreen}{rgb}{0,0.6,0}        
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}     
-\definecolor{codepurple}{rgb}{0.58,0,0.82}   
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\begin{dsaquees}
 
-\lstset{
-    backgroundcolor=\color{backcolour},      
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{magenta},
-    numberstyle=\tiny\color{codegray},       
-    stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\small,
-    breakatwhitespace=false,
-    breaklines=true,
-    captionpos=b,
-    keepspaces=true,
-    numbers=left,
-    numbersep=5pt,
-    showspaces=false,
-    showstringspaces=false,
-    showtabs=false,
-    tabsize=2,
-    language=C++,
-    inputencoding=utf8,
-    extendedchars=true,
-    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
-}
-
-% Macros para las secciones de los apuntes
-\newcommand{\quees}[1]{
-    \section*{🤔 ¿QUÉ ES?}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\dichodeotraforma}[1]{
-    \section*{💬 DICHO DE OTRA FORMA}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\diagrama}[1]{
-    \section*{🎨 DIAGRAMA}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\comofunciona}[1]{
-    \section*{⚙️ ¿CÓMO FUNCIONA?}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\complejidad}[1]{
-    \section*{📱 COMPLEJIDAD (Big-O)}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\entrevistas}[1]{
-    \section*{🎯 EN ENTREVISTAS}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\resumen}[1]{
-    \section*{📋 RESUMEN RÁPIDO}
-    \hrulefill \\
-    #1
-}
-
-\begin{document}
-
-\title{Ordenamientos Básicos (Bubble, Insertion, Selection)}
-\author{Aldo Zepeda Montoya}
-\date{\today}
-\maketitle
-
-\subsection*{CATEGORÍA: 04\_Algoritmos\_Ordenamiento}
-
-\quees{
 Tres formas manuales de ordenar cosas en la vida real:
 
 1. Bubble Sort 🫧 (Burbujas): Imagina burbujas subiendo en un refresco.
@@ -102,10 +16,12 @@ Tres formas manuales de ordenar cosas en la vida real:
 3. Selection Sort 🔍 (Selección): Buscas el objeto más pequeño de 
    todo el grupo y lo pones al principio. Luego buscas el más pequeño
    de los que quedan y lo pones en segundo lugar, y así...
-}
 
-\dichodeotraforma{
-Son algoritmos de ordenamiento O(n^2). Aunque son lentos para grandes
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
+Son algoritmos de ordenamiento $O(n^2)$. Aunque son lentos para grandes
 cantidades de datos, son fundamentales para entender la lógica de 
 sorting.
 
@@ -113,9 +29,11 @@ sorting.
 - Insertion Sort: Divide el array en una parte ordenada y otra no. 
   Es muy eficiente para arrays que ya están casi ordenados.
 - Selection Sort: Se basa en encontrar el mínimo en cada iteración.
-}
 
-\diagrama{\begin{verbatim}
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
 Bubble Sort (Paso 1):
 [64, 34, 25, 12] -> 64 > 34? SÍ -> [34, 64, 25, 12]
 [34, 64, 25, 12] -> 64 > 25? SÍ -> [34, 25, 64, 12]
@@ -129,7 +47,8 @@ Mano: [25, 34, 64] | Pendiente: [12]
 Selection Sort (Paso 1):
 [64, 34, 25, 12] -> Mínimo es 12.
 Intercambio 64 y 12 -> [12, 34, 25, 64]
-\end{verbatim}}
+\end{verbatim}
+\end{dsadiagrama}
 
 \begin{lstlisting}[language=C++]
 Bubble: 
@@ -226,14 +145,16 @@ int main() {
    pasada completa no hubo cambios, ¡el array ya está ordenado!
 \end{lstlisting}
 
-\resumen{
-• Los 3 son O(n^2) en el peor caso.
+\begin{dsaresumen}
+
+• Los 3 son $O(n^2)$ en el peor caso.
 • Bubble: El más sencillo e ineficiente.
 • Insertion: El mejor para casos pequeños o casi listos.
 • Selection: Hace el mínimo de swaps posibles (útil si escribir en 
   memoria es muy caro).
 • In-place: No necesitan memoria extra.
 ════════════════════════════════════════════════════════════════
-}
 
-\end{document}
+\end{dsaresumen}
+
+

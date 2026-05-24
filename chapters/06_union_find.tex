@@ -1,93 +1,7 @@
-﻿\documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage[spanish]{babel}
-\usepackage{listings}
-\usepackage{xcolor}
-\usepackage{geometry}
-\geometry{a4paper, margin=1in}
+﻿\chapter[\emj{🤝}~Union-Find (Disjoint Set Union - DSU)]{\emj{🤝}~Union-Find (Disjoint Set Union - DSU)}
 
-% Configuración para código C++
-\definecolor{codegreen}{rgb}{0,0.6,0}        
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}     
-\definecolor{codepurple}{rgb}{0.58,0,0.82}   
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\begin{dsaquees}
 
-\lstset{
-    backgroundcolor=\color{backcolour},      
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{magenta},
-    numberstyle=\tiny\color{codegray},       
-    stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\small,
-    breakatwhitespace=false,
-    breaklines=true,
-    captionpos=b,
-    keepspaces=true,
-    numbers=left,
-    numbersep=5pt,
-    showspaces=false,
-    showstringspaces=false,
-    showtabs=false,
-    tabsize=2,
-    language=C++,
-    inputencoding=utf8,
-    extendedchars=true,
-    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
-}
-
-% Macros para las secciones de los apuntes
-\newcommand{\quees}[1]{
-    \section*{🤔 ¿QUÉ ES?}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\dichodeotraforma}[1]{
-    \section*{💬 DICHO DE OTRA FORMA}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\diagrama}[1]{
-    \section*{🎨 DIAGRAMA}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\comofunciona}[1]{
-    \section*{⚙️ ¿CÓMO FUNCIONA?}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\complejidad}[1]{
-    \section*{📱 COMPLEJIDAD (Big-O)}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\entrevistas}[1]{
-    \section*{🎯 EN ENTREVISTAS}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\resumen}[1]{
-    \section*{📋 RESUMEN RÁPIDO}
-    \hrulefill \\
-    #1
-}
-
-\begin{document}
-
-\title{Union-Find (Disjoint Set Union - DSU)}
-\author{Aldo Zepeda Montoya}
-\date{\today}
-\maketitle
-
-\subsection*{CATEGORÍA: 02\_Estructuras\_No\_Lineales}
-
-\quees{
 Los clubes de la escuela 🏫. Al principio, cada estudiante es su
 propio club (un conjunto de 1 persona). 
 
@@ -99,9 +13,11 @@ entonces ¡están en el mismo club!
 Es una estructura que gestiona grupos de elementos que no se 
 traslapan y te permite unirlos o preguntar si están conectados 
 muy rápido.
-}
 
-\dichodeotraforma{
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
 Union-Find (o DSU) es una estructura de datos que mantiene un 
 conjunto de elementos divididos en varios conjuntos disjuntos. 
 Soporta dos operaciones principales:
@@ -112,9 +28,11 @@ Soporta dos operaciones principales:
 
 Con optimizaciones como "Path Compression" y "Union by Rank", estas
 operaciones se vuelven prácticamente instantáneas O(α(n)).
-}
 
-\diagrama{\begin{verbatim}
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
 Estado Inicial: {0} {1} {2} {3} {4}
 (Cada uno apunta a sí mismo como líder)
 
@@ -126,7 +44,8 @@ Union(1, 2): {0, 1, 2} {3} {4}
 
 Path Compression (al buscar el líder de 2):
   [0] ← [1], [0] ← [2] (Ahora 2 apunta directo al líder 0)
-\end{verbatim}}
+\end{verbatim}
+\end{dsadiagrama}
 
 \begin{lstlisting}[language=C++]
 1. Find(i): Sigue los punteros `parent` desde `i` hasta llegar al 
@@ -227,7 +146,8 @@ int main() {
   para cualquier valor real de `n`, es menor a 5.
 \end{lstlisting}
 
-\entrevistas{
+\begin{dsaentrevistas}
+
 ✅ Cuándo usar: Problemas de conectividad, componentes conectados 
    en grafos, o detectar ciclos en grafos no dirigidos.
 
@@ -239,9 +159,11 @@ int main() {
    Union-Find puede degradarse a O(n).
 
 🔑 Problema Clásico: "Number of Islands" o "Redundant Connection".
-}
 
-\resumen{
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
 • Gestiona grupos de elementos y sus uniones.
 • Operaciones: `find` (quién es el jefe) y `union` (hacerse amigos).
 • Casi O(1) gracias a Path Compression y Union by Rank.
@@ -249,6 +171,7 @@ int main() {
 • Solo funciona para conjuntos disjuntos (un elemento no puede estar
   en dos grupos a la vez).
 ════════════════════════════════════════════════════════════════
-}
 
-\end{document}
+\end{dsaresumen}
+
+

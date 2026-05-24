@@ -1,93 +1,7 @@
-﻿\documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage[spanish]{babel}
-\usepackage{listings}
-\usepackage{xcolor}
-\usepackage{geometry}
-\geometry{a4paper, margin=1in}
+﻿\chapter[\emj{🗃️}~Hash Tables (Tablas Hash / Mapas)]{\emj{🗃️}~Hash Tables (Tablas Hash / Mapas)}
 
-% Configuración para código C++
-\definecolor{codegreen}{rgb}{0,0.6,0}        
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}     
-\definecolor{codepurple}{rgb}{0.58,0,0.82}   
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\begin{dsaquees}
 
-\lstset{
-    backgroundcolor=\color{backcolour},      
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{magenta},
-    numberstyle=\tiny\color{codegray},       
-    stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\small,
-    breakatwhitespace=false,
-    breaklines=true,
-    captionpos=b,
-    keepspaces=true,
-    numbers=left,
-    numbersep=5pt,
-    showspaces=false,
-    showstringspaces=false,
-    showtabs=false,
-    tabsize=2,
-    language=C++,
-    inputencoding=utf8,
-    extendedchars=true,
-    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
-}
-
-% Macros para las secciones de los apuntes
-\newcommand{\quees}[1]{
-    \section*{🤔 ¿QUÉ ES?}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\dichodeotraforma}[1]{
-    \section*{💬 DICHO DE OTRA FORMA}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\diagrama}[1]{
-    \section*{🎨 DIAGRAMA}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\comofunciona}[1]{
-    \section*{⚙️ ¿CÓMO FUNCIONA?}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\complejidad}[1]{
-    \section*{📱 COMPLEJIDAD (Big-O)}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\entrevistas}[1]{
-    \section*{🎯 EN ENTREVISTAS}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\resumen}[1]{
-    \section*{📋 RESUMEN RÁPIDO}
-    \hrulefill \\
-    #1
-}
-
-\begin{document}
-
-\title{Hash Tables (Tablas Hash / Mapas)}
-\author{Aldo Zepeda Montoya}
-\date{\today}
-\maketitle
-
-\subsection*{CATEGORÍA: 02\_Estructuras\_No\_Lineales}
-
-\quees{
 Un casillero de escuela 🎒. Cada estudiante tiene un número de
 casillero asignado por una fórmula mágica (la Hash Function).
 
@@ -98,9 +12,11 @@ y vas DIRECTO al casillero 42.
 
 ¡No tienes que revisar todos los casilleros uno por uno! Es como 
 tener un acceso instantáneo a cualquier dato si conoces su "llave".
-}
 
-\dichodeotraforma{
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
 Una Hash Table es una estructura que asocia Llaves (Keys) con Valores
 (Values). Usa una función matemática para convertir la Key en un 
 índice de un array.
@@ -108,9 +24,11 @@ Una Hash Table es una estructura que asocia Llaves (Keys) con Valores
 El objetivo principal es lograr operaciones de búsqueda, inserción y 
 eliminación en tiempo constante promedio O(1). Es la estructura más 
 eficiente para búsquedas rápidas en la industria.
-}
 
-\diagrama{\begin{verbatim}
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
 Key: "Carlos"  --> [ Hash Function ] --> Index: 2
 Key: "Maria"   --> [ Hash Function ] --> Index: 5
 
@@ -127,7 +45,8 @@ Si Hash("Juan") también da 2, ocurre una colisión.
 Solución común: Chaining (una Linked List en el índice 2).
 
 [2] : ["Carlos"] -> ["Juan"] -> NULL
-\end{verbatim}}
+\end{verbatim}
+\end{dsadiagrama}
 
 \begin{lstlisting}[language=C++]
 1. Hash Function: Convierte cualquier Key (string, objeto, etc.) en
@@ -201,7 +120,8 @@ int main() {
   elementos caen en el mismo casillero (colisión masiva).
 \end{lstlisting}
 
-\entrevistas{
+\begin{dsaentrevistas}
+
 ✅ Regla de Oro: Si necesitas buscar algo en O(1), LA respuesta es
    un Hash Map o Hash Set. 
 
@@ -214,9 +134,11 @@ int main() {
 
 🔑 Collision Handling: Debes saber explicar Chaining (listas) y 
    Open Addressing (buscar el siguiente hueco libre).
-}
 
-\resumen{
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
 • Key -> Hash Function -> Index.
 • Acceso, búsqueda e inserción instantáneos O(1).
 • La función hash debe ser rápida y distribuir bien los datos.
@@ -224,6 +146,7 @@ int main() {
 • Load Factor: Qué tan llena está la tabla.
 • Estructura más usada en la vida real por su velocidad.
 ════════════════════════════════════════════════════════════════
-}
 
-\end{document}
+\end{dsaresumen}
+
+

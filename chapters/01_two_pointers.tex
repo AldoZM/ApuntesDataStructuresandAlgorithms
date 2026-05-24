@@ -1,28 +1,7 @@
-﻿\documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage[spanish]{babel}
-\usepackage{listings}
-\usepackage{xcolor}
-\usepackage{geometry}
-\usepackage{amsmath}
-\geometry{a4paper, margin=1in}
-\definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
-\lstset{backgroundcolor=\color{backcolour},commentstyle=\color{codegreen},keywordstyle=\color{magenta},numberstyle=\tiny\color{codegray},stringstyle=\color{codepurple},basicstyle=\ttfamily\small,breakatwhitespace=false,breaklines=true,captionpos=b,keepspaces=true,numbers=left,numbersep=5pt,showspaces=false,showstringspaces=false,showtabs=false,tabsize=2,language=C++}
-\newcommand{\quees}[1]{\section*{🤔 ¿QUÉ ES?}\hrulefill \\ #1}
-\newcommand{\dichodeotraforma}[1]{\section*{💬 DICHO DE OTRA FORMA}\hrulefill \\ #1}
-\newcommand{\diagrama}[1]{\section*{🎨 DIAGRAMA}\hrulefill \\ #1}
-\newcommand{\comofunciona}[1]{\section*{⚙️ ¿CÓMO FUNCIONA?}\hrulefill \\ #1}
-\newcommand{\complejidad}[1]{\section*{⏱️ COMPLEJIDAD (Big-O)}\hrulefill \\ #1}
-\newcommand{\entrevistas}[1]{\section*{🎯 EN ENTREVISTAS}\hrulefill \\ #1}
-\newcommand{\resumen}[1]{\section*{📋 RESUMEN RÁPIDO}\hrulefill \\ #1}
-\begin{document}
-\title{Two Pointers (Dos Punteros)}
-\date{}
-\maketitle
-\quees{Dos personas en extremos opuestos de un pasillo 🚶‍♂️...🚶‍♀️ caminando 
+﻿\chapter[\emj{👆}~Two Pointers (Dos Punteros)]{\emj{👆}~Two Pointers (Dos Punteros)}
+
+\begin{dsaquees}
+Dos personas en extremos opuestos de un pasillo 🚶‍♂️...🚶‍♀️ caminando 
 hacia el centro para encontrarse. O un corredor lento y uno rápido 
 en la misma pista 🏃‍♂️💨...🏃‍♂️.
 
@@ -32,24 +11,30 @@ para resolver problemas de búsqueda o comparación mucho más rápido
 que la fuerza bruta.
 
 Es uno de los patrones más útiles para entrevistas técnicas porque 
-suele reducir soluciones de O(n^2) a O(n).}
-\dichodeotraforma{El patrón Two Pointers utiliza dos variables de índice para recorrer
+suele reducir soluciones de $O(n^2)$ a O(n).
+\end{dsaquees}
+\begin{dsaotraforma}
+El patrón Two Pointers utiliza dos variables de índice para recorrer
 una estructura de datos lineal (array, string, linked list). 
 
 Existen dos variantes principales:
 1. Opposite Ends: Los punteros empiezan en los extremos y se mueven
    hacia el centro. (Ej: Two Sum en array ordenado, Palíndromos).
 2. Fast \& Slow: Un puntero avanza más rápido que el otro. (Ej: Detectar
-   ciclos en Linked List, encontrar el medio).}
-\diagrama{\begin{verbatim}
+   ciclos en Linked List, encontrar el medio).
+\end{dsaotraforma}
+\begin{dsadiagrama}
+\begin{verbatim}
 Problema: Encontrar par que sume 10 en array ordenado.
 [ 1, 3, 4, 6, 8, 9 ]
   L              R   -> 1 + 9 = 10. ¡ENCONTRADO! 🎉
 
 Si la suma fuera menor a 10, moveríamos L a la derecha.
 Si la suma fuera mayor a 10, moveríamos R a la izquierda.
-\end{verbatim}}
-\comofunciona{Opposite Ends:
+\end{verbatim}
+\end{dsadiagrama}
+\begin{dsacomofunciona}
+Opposite Ends:
 1. Inicializas `left = 0` y `right = n - 1`.
 2. Mientras `left < right`:
    - Evalúas la condición con `arr[left]` y `arr[right]`.
@@ -60,7 +45,8 @@ Fast \& Slow (Floyd's Algorithm):
 1. Inicializas `slow = start` y `fast = start`.
 2. En cada paso: `slow` avanza 1, `fast` avanza 2.
 3. Si `fast` alcanza el final, no hay ciclo.
-4. Si `slow == fast`, ¡hay un ciclo!}
+4. Si `slow == fast`, ¡hay un ciclo!
+\end{dsacomofunciona}
 \section*{📝 PSEUDOCÓDIGO}
 \hrulefill
 \begin{verbatim}
@@ -104,18 +90,24 @@ int main() {
     return 0;
 }
 \end{lstlisting}
-\complejidad{Caso        │ Tiempo        │ Espacio
+\begin{dsacomplejidad}
+Caso        │ Tiempo        │ Espacio
   ────────────┼───────────────┼────────────────────────────────
   Two Pointers│ O(n)          │ O(1)
-  Fuerza Bruta│ O(n^2)         │ O(1)
+  Fuerza Bruta│ $O(n^2)$         │ O(1)
 
-* La magia del patrón es que evitas el segundo loop anidado.}
-\entrevistas{}
-\resumen{• Dos índices moviéndose coordinados.
-• Reduce O(n^2) a O(n).
+* La magia del patrón es que evitas el segundo loop anidado.
+\end{dsacomplejidad}
+\begin{dsaentrevistas}
+
+\end{dsaentrevistas}
+\begin{dsaresumen}
+• Dos índices moviéndose coordinados.
+• Reduce $O(n^2)$ a O(n).
 • Memoria constante O(1) casi siempre.
 • Variantes: Opuestos (extremos → centro) y Fast/Slow.
 • Requisito común: Array ordenado.
 • Indispensable para optimizar búsquedas de pares o ciclos.
-════════════════════════════════════════════════════════════════}
-\end{document}
+════════════════════════════════════════════════════════════════
+\end{dsaresumen}
+

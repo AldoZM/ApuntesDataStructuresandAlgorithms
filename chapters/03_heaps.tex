@@ -1,106 +1,22 @@
-﻿\documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage[spanish]{babel}
-\usepackage{listings}
-\usepackage{xcolor}
-\usepackage{geometry}
-\geometry{a4paper, margin=1in}
+﻿\chapter[\emj{🏔️}~Heaps (Montículos)]{\emj{🏔️}~Heaps (Montículos)}
 
-% Configuración para código C++
-\definecolor{codegreen}{rgb}{0,0.6,0}        
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}     
-\definecolor{codepurple}{rgb}{0.58,0,0.82}   
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\begin{dsaquees}
 
-\lstset{
-    backgroundcolor=\color{backcolour},      
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{magenta},
-    numberstyle=\tiny\color{codegray},       
-    stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\small,
-    breakatwhitespace=false,
-    breaklines=true,
-    captionpos=b,
-    keepspaces=true,
-    numbers=left,
-    numbersep=5pt,
-    showspaces=false,
-    showstringspaces=false,
-    showtabs=false,
-    tabsize=2,
-    language=C++,
-    inputencoding=utf8,
-    extendedchars=true,
-    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
-}
-
-% Macros para las secciones de los apuntes
-\newcommand{\quees}[1]{
-    \section*{🤔 ¿QUÉ ES?}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\dichodeotraforma}[1]{
-    \section*{💬 DICHO DE OTRA FORMA}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\diagrama}[1]{
-    \section*{🎨 DIAGRAMA}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\comofunciona}[1]{
-    \section*{⚙️ ¿CÓMO FUNCIONA?}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\complejidad}[1]{
-    \section*{📱 COMPLEJIDAD (Big-O)}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\entrevistas}[1]{
-    \section*{🎯 EN ENTREVISTAS}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\resumen}[1]{
-    \section*{📋 RESUMEN RÁPIDO}
-    \hrulefill \\
-    #1
-}
-
-\begin{document}
-
-\title{Heaps (Montículos)}
-\author{Aldo Zepeda Montoya}
-\date{\today}
-\maketitle
-
-\subsection*{CATEGORÍA: 02\_Estructuras\_No\_Lineales}
-
-\quees{
 Un torneo de fútbol ⚽ donde el mejor equipo SIEMPRE llega a la 
 final (está en la cima). 
 
 Si el mejor equipo pierde o se retira (lo sacas), el siguiente mejor
 sube automáticamente a ocupar su lugar. No sabes exactamente quién es
 el tercer o cuarto mejor sin hacer más comparaciones, pero SIEMPRE 
-tienes al #1 disponible de inmediato.
+tienes al \#1 disponible de inmediato.
 
 Es un árbol binario especial donde la raíz siempre tiene el valor 
 máximo (Max-Heap) o mínimo (Min-Heap) de toda la estructura.
-}
 
-\dichodeotraforma{
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
 Un Heap es un árbol binario completo (lleno de arriba a abajo, de
 izquierda a derecha) que cumple la "Propiedad de Heap":
 - Max-Heap: El padre siempre es mayor o igual que sus hijos.
@@ -109,9 +25,11 @@ izquierda a derecha) que cumple la "Propiedad de Heap":
 A diferencia del BST, no hay orden entre hermanos. Lo único que 
 importa es la relación Padre-Hijo. Por su estructura compacta, 
 se suele implementar eficientemente usando un Array.
-}
 
-\diagrama{\begin{verbatim}
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
 Max-Heap Visual:
           [90]
          /    \
@@ -127,7 +45,8 @@ Fórmulas mágicas para el índice `i`:
 - Parent: (i - 1) / 2
 - Left Child: 2 * i + 1
 - Right Child: 2 * i + 2
-\end{verbatim}}
+\end{verbatim}
+\end{dsadiagrama}
 
 \begin{lstlisting}[language=C++]
 1. Insert: Agregas el nuevo valor al final del array (la hoja más a
@@ -219,7 +138,8 @@ int main() {
    sacándolo uno por uno. O(n log n).
 \end{lstlisting}
 
-\resumen{
+\begin{dsaresumen}
+
 • Árbol binario completo donde el jefe (raíz) es el mayor o menor.
 • Implementado como Array para máxima velocidad y ahorro de memoria.
 • Insertar y sacar el máximo/mínimo es O(log n).
@@ -227,6 +147,7 @@ int main() {
 • Usos: Algoritmo de Dijkstra, colas de prioridad, problemas de "Top K".
 • Heapify (construir desde array) es sorprendentemente O(n).
 ════════════════════════════════════════════════════════════════
-}
 
-\end{document}
+\end{dsaresumen}
+
+

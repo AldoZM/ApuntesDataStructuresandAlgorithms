@@ -1,0 +1,96 @@
+\documentclass[12pt, a4paper, openany]{book}
+\input{preamble_dsa}
+
+\begin{document}
+
+% ─── Portada ───────────────────────────────────────────────────────────────────
+\begin{titlepage}
+  \pagecolor{fondogris}
+  \color{white}
+  \centering
+  \vspace*{2cm}
+  {\fontsize{48}{56}\selectfont\bfseries\color{n-cyan} DSA\par}
+  \vspace{0.5em}
+  {\fontsize{18}{24}\selectfont\color{n-lime} Data Structures \& Algorithms\par}
+  \vspace{0.5em}
+  {\large\color{grisclaro} Apuntes para entrevistas Google-level\par}
+  \vspace{3cm}
+  \begin{center}
+    \color{n-yellow}
+    \rule{0.6\textwidth}{1pt}\\[0.5em]
+    {\normalsize\color{white}
+      \emj{⏱️}~Big-O \quad
+      \emj{📦}~Arrays \quad
+      \emj{🔗}~Listas \quad
+      \emj{🌳}~Árboles\\[0.4em]
+      \emj{🗺️}~Grafos \quad
+      \emj{🔍}~Búsqueda \quad
+      \emj{🔀}~Sorting \quad
+      \emj{🧩}~DP
+    }\\[0.5em]
+    \color{n-yellow}\rule{0.6\textwidth}{1pt}
+  \end{center}
+  \vspace{3cm}
+  {\large\bfseries\color{white} Aldo Zepeda Montoya\par}
+  \vspace{0.5em}
+  {\normalsize\color{grisclaro} zetinaa3@gmail.com\par}
+  \vspace{0.5em}
+  {\normalsize\color{grisclaro} github.com/AldoZM\par}
+  \vfill
+  {\normalsize\color{n-cyan} \today\par}
+\end{titlepage}
+
+% ─── Tabla de contenidos ───────────────────────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ─── Parte 1: Fundamentos ──────────────────────────────────────────────────────
+\part{\emj{🏗️}~Fundamentos}
+\input{chapters/01_big_o_notation}
+\input{chapters/02_complejidad_espacial}
+
+% ─── Parte 2: Estructuras Lineales ────────────────────────────────────────────
+\part{\emj{📐}~Estructuras Lineales}
+\input{chapters/01_arrays}
+\input{chapters/02_linked_lists}
+\input{chapters/03_stacks}
+\input{chapters/04_queues}
+
+% ─── Parte 3: Estructuras No Lineales ─────────────────────────────────────────
+\part{\emj{🌲}~Estructuras No Lineales}
+\input{chapters/01_trees_bst}
+\input{chapters/02_avl_trees}
+\input{chapters/03_heaps}
+\input{chapters/04_hash_tables}
+\input{chapters/05_tries}
+\input{chapters/06_union_find}
+
+% ─── Parte 4: Grafos ──────────────────────────────────────────────────────────
+\part{\emj{🕸️}~Grafos}
+\input{chapters/01_representacion}
+\input{chapters/02_bfs_dfs}
+\input{chapters/03_dijkstra}
+
+% ─── Parte 5: Algoritmos de Ordenamiento ──────────────────────────────────────
+\part{\emj{🔀}~Algoritmos de Ordenamiento}
+\input{chapters/01_bubble_insertion_selection}
+\input{chapters/02_merge_sort}
+\input{chapters/03_quick_sort}
+
+% ─── Parte 6: Algoritmos de Búsqueda ──────────────────────────────────────────
+\part{\emj{🔍}~Algoritmos de Búsqueda}
+\input{chapters/01_linear_search}
+\input{chapters/02_binary_search}
+
+% ─── Parte 7: Patrones de Entrevista ──────────────────────────────────────────
+\part{\emj{🎯}~Patrones de Entrevista}
+\input{chapters/01_two_pointers}
+\input{chapters/02_sliding_window}
+\input{chapters/03a_dp_intro}
+\input{chapters/03b_dp_memoization}
+\input{chapters/03c_dp_tabulation}
+\input{chapters/04_backtracking}
+\input{chapters/05_bit_manipulation}
+\input{chapters/06_recursion_y_memoization}
+
+\end{document}

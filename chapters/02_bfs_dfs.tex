@@ -1,93 +1,7 @@
-﻿\documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage[spanish]{babel}
-\usepackage{listings}
-\usepackage{xcolor}
-\usepackage{geometry}
-\geometry{a4paper, margin=1in}
+﻿\chapter[\emj{🧭}~BFS y DFS (Recorridos de Grafos)]{\emj{🧭}~BFS y DFS (Recorridos de Grafos)}
 
-% Configuración para código C++
-\definecolor{codegreen}{rgb}{0,0.6,0}        
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}     
-\definecolor{codepurple}{rgb}{0.58,0,0.82}   
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\begin{dsaquees}
 
-\lstset{
-    backgroundcolor=\color{backcolour},      
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{magenta},
-    numberstyle=\tiny\color{codegray},       
-    stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\small,
-    breakatwhitespace=false,
-    breaklines=true,
-    captionpos=b,
-    keepspaces=true,
-    numbers=left,
-    numbersep=5pt,
-    showspaces=false,
-    showstringspaces=false,
-    showtabs=false,
-    tabsize=2,
-    language=C++,
-    inputencoding=utf8,
-    extendedchars=true,
-    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
-}
-
-% Macros para las secciones de los apuntes
-\newcommand{\quees}[1]{
-    \section*{🤔 ¿QUÉ ES?}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\dichodeotraforma}[1]{
-    \section*{💬 DICHO DE OTRA FORMA}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\diagrama}[1]{
-    \section*{🎨 DIAGRAMA}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\comofunciona}[1]{
-    \section*{⚙️ ¿CÓMO FUNCIONA?}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\complejidad}[1]{
-    \section*{📱 COMPLEJIDAD (Big-O)}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\entrevistas}[1]{
-    \section*{🎯 EN ENTREVISTAS}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\resumen}[1]{
-    \section*{📋 RESUMEN RÁPIDO}
-    \hrulefill \\
-    #1
-}
-
-\begin{document}
-
-\title{BFS y DFS (Recorridos de Grafos)}
-\author{Aldo Zepeda Montoya}
-\date{\today}
-\maketitle
-
-\subsection*{CATEGORÍA: 03\_Grafos}
-
-\quees{
 Dos formas de explorar un mundo desconocido 🗺️:
 
 1. BFS (Breadth-First Search): Como lanzar una piedra al agua 💧. 
@@ -99,9 +13,11 @@ Dos formas de explorar un mundo desconocido 🗺️:
    un solo camino hasta el fondo, hasta que ya no puedas avanzar. 
    Cuando llegas a un callejón sin salida, regresas (backtrack) y 
    pruebas el siguiente camino disponible.
-}
 
-\dichodeotraforma{
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
 Son los dos algoritmos fundamentales para recorrer cualquier grafo 
 o árbol. 
 
@@ -112,9 +28,11 @@ o árbol.
 
 En ambos casos, es CRUCIAL usar una estructura `visited` (como un array
 de bools o un set) para no entrar en bucles infinitos.
-}
 
-\diagrama{\begin{verbatim}
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
 Grafo:
     [1]
    /   \
@@ -127,7 +45,8 @@ Orden: [1, 2, 3, 4, 5] (Nivel por nivel)
 
 DFS desde 1: 1 → 2 → 4 → 5 → 3
 Orden: [1, 2, 4, 5, 3] (Hasta el fondo)
-\end{verbatim}}
+\end{verbatim}
+\end{dsadiagrama}
 
 \begin{lstlisting}[language=C++]
 BFS (con Queue):
@@ -225,7 +144,8 @@ int main() {
 * El espacio O(V) es para la Queue/Stack y el array `visited`.
 \end{lstlisting}
 
-\entrevistas{
+\begin{dsaentrevistas}
+
 ✅ BFS para Shortest Path: Si te piden el camino más corto en un grafo
    SIN pesos (o una cuadrícula), BFS es la única opción correcta.
 
@@ -240,15 +160,18 @@ int main() {
 
 🔑 Nivel de cada nodo: BFS es excelente para guardar la distancia 
    (nivel) de cada nodo respecto al origen.
-}
 
-\resumen{
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
 • BFS = Queue = Nivel por nivel = Camino más corto.
 • DFS = Stack/Recursión = Hasta el fondo = Exploración total.
 • ¡Siempre usa un array `visited`!
 • Ambos tardan O(V + E).
 • Úsalos en matrices (grid), redes sociales, mapas y juegos.
 ════════════════════════════════════════════════════════════════
-}
 
-\end{document}
+\end{dsaresumen}
+
+

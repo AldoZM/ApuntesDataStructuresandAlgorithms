@@ -1,93 +1,7 @@
-﻿\documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage[spanish]{babel}
-\usepackage{listings}
-\usepackage{xcolor}
-\usepackage{geometry}
-\geometry{a4paper, margin=1in}
+﻿\chapter[\emj{⚖️}~AVL Trees (Árboles Binarios Balanceados)]{\emj{⚖️}~AVL Trees (Árboles Binarios Balanceados)}
 
-% Configuración para código C++
-\definecolor{codegreen}{rgb}{0,0.6,0}        
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}     
-\definecolor{codepurple}{rgb}{0.58,0,0.82}   
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\begin{dsaquees}
 
-\lstset{
-    backgroundcolor=\color{backcolour},      
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{magenta},
-    numberstyle=\tiny\color{codegray},       
-    stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\small,
-    breakatwhitespace=false,
-    breaklines=true,
-    captionpos=b,
-    keepspaces=true,
-    numbers=left,
-    numbersep=5pt,
-    showspaces=false,
-    showstringspaces=false,
-    showtabs=false,
-    tabsize=2,
-    language=C++,
-    inputencoding=utf8,
-    extendedchars=true,
-    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
-}
-
-% Macros para las secciones de los apuntes
-\newcommand{\quees}[1]{
-    \section*{🤔 ¿QUÉ ES?}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\dichodeotraforma}[1]{
-    \section*{💬 DICHO DE OTRA FORMA}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\diagrama}[1]{
-    \section*{🎨 DIAGRAMA}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\comofunciona}[1]{
-    \section*{⚙️ ¿CÓMO FUNCIONA?}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\complejidad}[1]{
-    \section*{📱 COMPLEJIDAD (Big-O)}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\entrevistas}[1]{
-    \section*{🎯 EN ENTREVISTAS}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\resumen}[1]{
-    \section*{📋 RESUMEN RÁPIDO}
-    \hrulefill \\
-    #1
-}
-
-\begin{document}
-
-\title{AVL Trees (Árboles Binarios Balanceados)}
-\author{Aldo Zepeda Montoya}
-\date{\today}
-\maketitle
-
-\subsection*{CATEGORÍA: 02\_Estructuras\_No\_Lineales}
-
-\quees{
 Un móvil de bebé 👶. Si pones mucho peso de un lado, el móvil se
 inclina y queda chueco. Para que funcione bien, debes mover las piezas
 hasta que quede perfectamente equilibrado.
@@ -96,9 +10,11 @@ Un árbol AVL es un Binary Search Tree (BST) que tiene una "manía"
 por el orden: no permite que una rama sea mucho más larga que otra. 
 Si al insertar un número el árbol se desbalancea, el árbol se 
 "tuerce" a sí mismo (rotación) para volver al equilibrio.
-}
 
-\dichodeotraforma{
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
 El AVL es el primer árbol auto-balanceable de la historia. Su regla
 es estricta: para cada nodo, la diferencia de altura entre su hijo
 izquierdo y derecho (llamada Balance Factor) solo puede ser -1, 0 o 1.
@@ -106,9 +22,11 @@ izquierdo y derecho (llamada Balance Factor) solo puede ser -1, 0 o 1.
 Si la diferencia es 2 o -2, el árbol realiza rotaciones (Simples o 
 Dobles) para restaurar el balance. Esto garantiza que la altura del
 árbol sea siempre O(log n), evitando el peor caso de los BST normales.
-}
 
-\diagrama{\begin{verbatim}
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
 Rotación Simple a la Derecha (LL Rotation):
 
       [3] (BF=+2)              [2] (BF=0)
@@ -124,7 +42,8 @@ Rotación Doble (LR Rotation):
  [1] (BF=-1)  --->   [2]      --->       [1]    [3]
    \                /
    [2]            [1]
-\end{verbatim}}
+\end{verbatim}
+\end{dsadiagrama}
 
 \begin{lstlisting}[language=C++]
 1. Insert: Igual que un BST, pero después de insertar, el árbol revisa
@@ -246,7 +165,8 @@ int main() {
    las rotaciones y por qué son necesarias.
 \end{lstlisting}
 
-\resumen{
+\begin{dsaresumen}
+
 • BST que se auto-balancea solo.
 • Balance Factor: diferencia de altura entre hijos (máximo 1).
 • Rotaciones: El truco místico para equilibrar el árbol.
@@ -254,6 +174,7 @@ int main() {
 • Más complejo de programar que un BST normal.
 • Ideal para aplicaciones donde hay MUCHAS búsquedas y pocas inserciones.
 ════════════════════════════════════════════════════════════════
-}
 
-\end{document}
+\end{dsaresumen}
+
+

@@ -1,28 +1,7 @@
-﻿\documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage[spanish]{babel}
-\usepackage{listings}
-\usepackage{xcolor}
-\usepackage{geometry}
-\usepackage{amsmath}
-\geometry{a4paper, margin=1in}
-\definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
-\lstset{backgroundcolor=\color{backcolour},commentstyle=\color{codegreen},keywordstyle=\color{magenta},numberstyle=\tiny\color{codegray},stringstyle=\color{codepurple},basicstyle=\ttfamily\small,breakatwhitespace=false,breaklines=true,captionpos=b,keepspaces=true,numbers=left,numbersep=5pt,showspaces=false,showstringspaces=false,showtabs=false,tabsize=2,language=C++}
-\newcommand{\quees}[1]{\section*{🤔 ¿QUÉ ES?}\hrulefill \\ #1}
-\newcommand{\dichodeotraforma}[1]{\section*{💬 DICHO DE OTRA FORMA}\hrulefill \\ #1}
-\newcommand{\diagrama}[1]{\section*{🎨 DIAGRAMA}\hrulefill \\ #1}
-\newcommand{\comofunciona}[1]{\section*{⚙️ ¿CÓMO FUNCIONA?}\hrulefill \\ #1}
-\newcommand{\complejidad}[1]{\section*{⏱️ COMPLEJIDAD (Big-O)}\hrulefill \\ #1}
-\newcommand{\entrevistas}[1]{\section*{🎯 EN ENTREVISTAS}\hrulefill \\ #1}
-\newcommand{\resumen}[1]{\section*{📋 RESUMEN RÁPIDO}\hrulefill \\ #1}
-\begin{document}
-\title{DP - Memoization (Top-Down)}
-\date{}
-\maketitle
-\quees{Un chef que anota recetas nuevas en un cuaderno 📖. 
+﻿\chapter[\emj{💭}~DP - Memoization (Top-Down)]{\emj{💭}~DP - Memoization (Top-Down)}
+
+\begin{dsaquees}
+Un chef que anota recetas nuevas en un cuaderno 📖. 
 
 Imagina que estás cocinando platillos complejos. La primera vez que
 haces una salsa secreta, tardas mucho tiempo y esfuerzo. En lugar de
@@ -35,8 +14,10 @@ experimentar; simplemente abres tu cuaderno, lees la receta y
 
 En programación, Memoization es el cuaderno donde guardas el resultado
 de una función para ciertos argumentos, para no tener que volver a 
-ejecutar toda la lógica si te vuelven a pedir lo mismo.}
-\dichodeotraforma{Memoization es la técnica de DP basada en Recursión (Top-Down). 
+ejecutar toda la lógica si te vuelven a pedir lo mismo.
+\end{dsaquees}
+\begin{dsaotraforma}
+Memoization es la técnica de DP basada en Recursión (Top-Down). 
 
 Empiezas con el problema original (el más grande) y lo vas rompiendo 
 en partes pequeñas. Antes de regresar el valor de una función, lo
@@ -45,8 +26,10 @@ donde la Key son los argumentos de la función.
 
 Es muy natural de implementar si ya tienes una solución recursiva,
 ya que solo requiere agregar el paso de "Revisar cuaderno" y 
-"Anotar en cuaderno".}
-\diagrama{\begin{verbatim}
+"Anotar en cuaderno".
+\end{dsaotraforma}
+\begin{dsadiagrama}
+\begin{verbatim}
 Llamada: f(5)
 
 1. ¿f(5) está en el cuaderno?
@@ -57,12 +40,15 @@ Llamada: f(5)
      c. Regresa el resultado.
 
 ¡Esto convierte un árbol de recursión gigante en un camino lineal!
-\end{verbatim}}
-\comofunciona{Para cualquier función recursiva:
+\end{verbatim}
+\end{dsadiagrama}
+\begin{dsacomofunciona}
+Para cualquier función recursiva:
 1. Pasa una estructura `memo` como parámetro (o úsala global).
 2. CASO BASE: Define cuándo detener la recursión.
 3. REVISAR MEMO: Si el resultado ya está calculado, regrésalo.
-4. CALCULAR Y GUARDAR: Calcula el valor, guárdalo en `memo` y regrésalo.}
+4. CALCULAR Y GUARDAR: Calcula el valor, guárdalo en `memo` y regrésalo.
+\end{dsacomofunciona}
 \section*{📝 PSEUDOCÓDIGO}
 \hrulefill
 \begin{verbatim}
@@ -122,18 +108,24 @@ int main() {
     return 0;
 }
 \end{lstlisting}
-\complejidad{Aspecto        │ Con Memoization
+\begin{dsacomplejidad}
+Aspecto        │ Con Memoization
   ───────────────┼────────────────────────────────────────────
   Tiempo         │ O(Estados Únicos * Trabajo por Estado)
   Espacio        │ O(Estados Únicos) + Stack de recursión
 
 * Para Coin Change: O(Amount * N\_coins) tiempo. Mucho mejor que
-  O(N\_coins \textasciicircum{} Amount) de la fuerza bruta.}
-\entrevistas{}
-\resumen{• Top-Down: Del problema grande a los pequeños.
+  O(N\_coins \textasciicircum{} Amount) de la fuerza bruta.
+\end{dsacomplejidad}
+\begin{dsaentrevistas}
+
+\end{dsaentrevistas}
+\begin{dsaresumen}
+• Top-Down: Del problema grande a los pequeños.
 • Recursión + Diccionario/Array de resultados.
 • Anota resultados para no repetir trabajo.
 • Transforma complejidad exponencial en lineal/polinomial.
 • Ideal para cuando la estructura del problema es un árbol.
-════════════════════════════════════════════════════════════════}
-\end{document}
+════════════════════════════════════════════════════════════════
+\end{dsaresumen}
+

@@ -1,93 +1,7 @@
-﻿\documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage[spanish]{babel}
-\usepackage{listings}
-\usepackage{xcolor}
-\usepackage{geometry}
-\geometry{a4paper, margin=1in}
+﻿\chapter[\emj{🌳}~Binary Search Trees (Árboles Binarios de Búsqueda)]{\emj{🌳}~Binary Search Trees (Árboles Binarios de Búsqueda)}
 
-% Configuración para código C++
-\definecolor{codegreen}{rgb}{0,0.6,0}        
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}     
-\definecolor{codepurple}{rgb}{0.58,0,0.82}   
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\begin{dsaquees}
 
-\lstset{
-    backgroundcolor=\color{backcolour},      
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{magenta},
-    numberstyle=\tiny\color{codegray},       
-    stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\small,
-    breakatwhitespace=false,
-    breaklines=true,
-    captionpos=b,
-    keepspaces=true,
-    numbers=left,
-    numbersep=5pt,
-    showspaces=false,
-    showstringspaces=false,
-    showtabs=false,
-    tabsize=2,
-    language=C++,
-    inputencoding=utf8,
-    extendedchars=true,
-    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
-}
-
-% Macros para las secciones de los apuntes
-\newcommand{\quees}[1]{
-    \section*{🤔 ¿QUÉ ES?}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\dichodeotraforma}[1]{
-    \section*{💬 DICHO DE OTRA FORMA}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\diagrama}[1]{
-    \section*{🎨 DIAGRAMA}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\comofunciona}[1]{
-    \section*{⚙️ ¿CÓMO FUNCIONA?}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\complejidad}[1]{
-    \section*{📱 COMPLEJIDAD (Big-O)}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\entrevistas}[1]{
-    \section*{🎯 EN ENTREVISTAS}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\resumen}[1]{
-    \section*{📋 RESUMEN RÁPIDO}
-    \hrulefill \\
-    #1
-}
-
-\begin{document}
-
-\title{Binary Search Trees (Árboles Binarios de Búsqueda)}
-\author{Aldo Zepeda Montoya}
-\date{\today}
-\maketitle
-
-\subsection*{CATEGORÍA: 02\_Estructuras\_No\_Lineales}
-
-\quees{
 Un árbol genealógico 🌳 de cabeza. La raíz (root) está hasta arriba.
 Cada persona (nodo) puede tener máximo dos hijos.
 
@@ -98,9 +12,11 @@ Pero es un árbol inteligente con una regla de oro:
 Es como una biblioteca 📚 donde los libros están tan bien ordenados
 que puedes encontrar cualquiera en segundos, sin revisar todos los 
 estantes.
-}
 
-\dichodeotraforma{
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
 Un Binary Search Tree (BST) es una estructura de datos no lineal
 formada por nodos. Cada nodo contiene un valor y punteros a sus hijos
 izquierdo y derecho.
@@ -108,9 +24,11 @@ izquierdo y derecho.
 La propiedad de orden (izq < raíz < der) permite que las operaciones
 de búsqueda, inserción y eliminación se realicen en tiempo 
 logarítmico O(log n), siempre y cuando el árbol esté balanceado.
-}
 
-\diagrama{\begin{verbatim}
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
 BST de ejemplo:
 
          [8]          ← ROOT
@@ -123,7 +41,8 @@ BST de ejemplo:
 
 - Leaf Nodes (hojas): 1, 4, 7, 13 (no tienen hijos).
 - Height (altura): 3 (niveles desde la raíz).
-\end{verbatim}}
+\end{verbatim}
+\end{dsadiagrama}
 
 \begin{lstlisting}[language=C++]
 1. Search: Comparas con la raíz. ¿Es menor? Vas a la izquierda. 
@@ -226,7 +145,8 @@ int main() {
 * Peor caso ocurre cuando el árbol se vuelve una línea (como linked list).
 \end{lstlisting}
 
-\entrevistas{
+\begin{dsaentrevistas}
+
 ✅ "Inorder Traversal = Sorted Array": Si recorres un BST en modo 
    Inorder, siempre obtendrás los elementos ordenados de menor a mayor.
 
@@ -240,9 +160,11 @@ int main() {
 
 🔑 Pregunta clave: "¿Es un Binary Tree o un Binary Search Tree?". 
    El segundo tiene la propiedad de orden, el primero no.
-}
 
-\resumen{
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
 • Izquierda menor, Derecha mayor.
 • Búsqueda rápida O(log n) como adivinar un número.
 • Inorder traversal = lista ordenada.
@@ -250,6 +172,7 @@ int main() {
 • Términos: Root (cima), Leaf (hoja), Parent (padre), Child (hijo).
 • Altura del árbol = longitud del camino más largo a una hoja.
 ════════════════════════════════════════════════════════════════
-}
 
-\end{document}
+\end{dsaresumen}
+
+

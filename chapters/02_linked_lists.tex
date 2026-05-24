@@ -1,93 +1,7 @@
-﻿\documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage[spanish]{babel}
-\usepackage{listings}
-\usepackage{xcolor}
-\usepackage{geometry}
-\geometry{a4paper, margin=1in}
+﻿\chapter[\emj{🔗}~Linked Lists (Listas Enlazadas)]{\emj{🔗}~Linked Lists (Listas Enlazadas)}
 
-% Configuración para código C++
-\definecolor{codegreen}{rgb}{0,0.6,0}        
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}     
-\definecolor{codepurple}{rgb}{0.58,0,0.82}   
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\begin{dsaquees}
 
-\lstset{
-    backgroundcolor=\color{backcolour},      
-    commentstyle=\color{codegreen},
-    keywordstyle=\color{magenta},
-    numberstyle=\tiny\color{codegray},       
-    stringstyle=\color{codepurple},
-    basicstyle=\ttfamily\small,
-    breakatwhitespace=false,
-    breaklines=true,
-    captionpos=b,
-    keepspaces=true,
-    numbers=left,
-    numbersep=5pt,
-    showspaces=false,
-    showstringspaces=false,
-    showtabs=false,
-    tabsize=2,
-    language=C++,
-    inputencoding=utf8,
-    extendedchars=true,
-    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
-}
-
-% Macros para las secciones de los apuntes
-\newcommand{\quees}[1]{
-    \section*{🤔 ¿QUÉ ES?}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\dichodeotraforma}[1]{
-    \section*{💬 DICHO DE OTRA FORMA}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\diagrama}[1]{
-    \section*{🎨 DIAGRAMA}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\comofunciona}[1]{
-    \section*{⚙️ ¿CÓMO FUNCIONA?}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\complejidad}[1]{
-    \section*{📱 COMPLEJIDAD (Big-O)}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\entrevistas}[1]{
-    \section*{🎯 EN ENTREVISTAS}
-    \hrulefill \\
-    #1
-}
-
-\newcommand{\resumen}[1]{
-    \section*{📋 RESUMEN RÁPIDO}
-    \hrulefill \\
-    #1
-}
-
-\begin{document}
-
-\title{Linked Lists (Listas Enlazadas)}
-\author{Aldo Zepeda Montoya}
-\date{\today}
-\maketitle
-
-\subsection*{CATEGORÍA: 01\_Estructuras\_Lineales}
-
-\quees{
 Una cacería del tesoro 🗺️. Cada pista (node) te dice dónde está la 
 SIGUIENTE pista. 
 
@@ -98,9 +12,11 @@ A diferencia de los arrays (vagones pegaditos), los nodos de una
 Linked List pueden estar en cualquier parte de la memoria. Lo único
 que los mantiene unidos es que cada uno sabe la dirección (pointer)
 del siguiente.
-}
 
-\dichodeotraforma{
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
 Una Linked List es una estructura lineal donde los elementos no se
 guardan en posiciones contiguas de memoria. Cada elemento es un objeto
 llamado "Node", que contiene:
@@ -110,9 +26,11 @@ llamado "Node", que contiene:
 Esto permite insertar y eliminar elementos en los extremos en O(1) 
 sin tener que desplazar a nadie, pero sacrificas el acceso aleatorio
 (no puedes ir directo al índice `i`).
-}
 
-\diagrama{\begin{verbatim}
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
 Singly Linked List:
 HEAD
  ↓
@@ -128,7 +46,8 @@ Insertar 5 después del node1 (valor 7):
 ANTES:   [3]──→[7]──→[1]──→[9]
                 ↓
 DESPUÉS: [3]──→[7]──→[5]──→[1]──→[9]   ← O(1) si ya tienes el puntero
-\end{verbatim}}
+\end{verbatim}
+\end{dsadiagrama}
 
 \begin{lstlisting}[language=C++]
 1. Acceso/Búsqueda: Tienes que empezar en el HEAD e ir saltando de 
@@ -245,7 +164,8 @@ int main() {
   *con tail pointer
 \end{lstlisting}
 
-\entrevistas{
+\begin{dsaentrevistas}
+
 ✅ Patrón "Fast \& Slow Pointers" (Tortoise and Hare):
    - Sirve para detectar ciclos (si se encuentran, hay ciclo).
    - Sirve para encontrar el medio (cuando fast llega al final, slow 
@@ -259,9 +179,11 @@ int main() {
 
 🔑 Pregunta clave: "¿Es singly o doubly?". Si es doubly, puedes ir hacia
    atrás, lo que facilita borrar un nodo si ya tienes el puntero.
-}
 
-\resumen{
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
 • Cadena de nodos dispersos en memoria.
 • Acceso secuencial (no puedes saltar).
 • Excelente para insertar/eliminar al inicio O(1).
@@ -269,6 +191,7 @@ int main() {
 • Invertir una Linked List es un problema clásico (usar 3 punteros).
 • Usa más memoria por elemento que un array (por el puntero next).
 ════════════════════════════════════════════════════════════════
-}
 
-\end{document}
+\end{dsaresumen}
+
+

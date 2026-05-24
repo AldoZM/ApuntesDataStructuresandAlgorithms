@@ -1,28 +1,7 @@
-﻿\documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage[spanish]{babel}
-\usepackage{listings}
-\usepackage{xcolor}
-\usepackage{geometry}
-\usepackage{amsmath}
-\geometry{a4paper, margin=1in}
-\definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
-\lstset{backgroundcolor=\color{backcolour},commentstyle=\color{codegreen},keywordstyle=\color{magenta},numberstyle=\tiny\color{codegray},stringstyle=\color{codepurple},basicstyle=\ttfamily\small,breakatwhitespace=false,breaklines=true,captionpos=b,keepspaces=true,numbers=left,numbersep=5pt,showspaces=false,showstringspaces=false,showtabs=false,tabsize=2,language=C++}
-\newcommand{\quees}[1]{\section*{🤔 ¿QUÉ ES?}\hrulefill \\ #1}
-\newcommand{\dichodeotraforma}[1]{\section*{💬 DICHO DE OTRA FORMA}\hrulefill \\ #1}
-\newcommand{\diagrama}[1]{\section*{🎨 DIAGRAMA}\hrulefill \\ #1}
-\newcommand{\comofunciona}[1]{\section*{⚙️ ¿CÓMO FUNCIONA?}\hrulefill \\ #1}
-\newcommand{\complejidad}[1]{\section*{⏱️ COMPLEJIDAD (Big-O)}\hrulefill \\ #1}
-\newcommand{\entrevistas}[1]{\section*{🎯 EN ENTREVISTAS}\hrulefill \\ #1}
-\newcommand{\resumen}[1]{\section*{📋 RESUMEN RÁPIDO}\hrulefill \\ #1}
-\begin{document}
-\title{Introducción a Dynamic Programming (DP)}
-\date{}
-\maketitle
-\quees{Un estudiante inteligente que guarda sus apuntes 📒. 
+﻿\chapter[\emj{🧩}~Introducción a Dynamic Programming (DP)]{\emj{🧩}~Introducción a Dynamic Programming (DP)}
+
+\begin{dsaquees}
+Un estudiante inteligente que guarda sus apuntes 📒. 
 
 Imagina que en un examen te preguntan 50 veces cuánto es 123 x 456.
 En lugar de hacer la multiplicación cada vez (y perder tiempo),
@@ -31,16 +10,20 @@ las siguientes 49 veces ¡solo lo consultas!
 
 Dynamic Programming es simplemente eso: guardar resultados de 
 sub-problemas ya resueltos para no repetir trabajo innecesariamente. 
-Es el arte de intercambiar un poco de memoria por mucho tiempo.}
-\dichodeotraforma{Dynamic Programming (DP) es una técnica de optimización para resolver
+Es el arte de intercambiar un poco de memoria por mucho tiempo.
+\end{dsaquees}
+\begin{dsaotraforma}
+Dynamic Programming (DP) es una técnica de optimización para resolver
 problemas complejos dividiéndolos en sub-problemas más pequeños. 
 
 Para usar DP, el problema debe cumplir dos condiciones:
 1. Overlapping Subproblems: El mismo sub-problema se calcula varias
    veces (como en Fibonacci).
 2. Optimal Substructure: La solución óptima del problema global se
-   puede construir a partir de las soluciones óptimas de sus partes.}
-\diagrama{\begin{verbatim}
+   puede construir a partir de las soluciones óptimas de sus partes.
+\end{dsaotraforma}
+\begin{dsadiagrama}
+\begin{verbatim}
 Sin DP (Calculas lo mismo muchas veces):
              fib(5)
            /        \
@@ -55,8 +38,10 @@ fib(2) fib(1)
 Con DP (Memoization):
 Calculas fib(3) una vez, lo guardas, y cuando fib(4) lo necesite,
 simplemente lo lee de la memoria. ⚡
-\end{verbatim}}
-\comofunciona{Existen dos formas de implementar DP:
+\end{verbatim}
+\end{dsadiagrama}
+\begin{dsacomofunciona}
+Existen dos formas de implementar DP:
 
 1. Top-Down (Memoization):
    - Empiezas con el problema grande.
@@ -66,7 +51,8 @@ simplemente lo lee de la memoria. ⚡
 2. Bottom-Up (Tabulation):
    - Empiezas con los casos más pequeños (base cases).
    - Llenas una tabla (array) paso a paso hasta llegar al resultado.
-   - Generalmente se hace con un loop iterativo.}
+   - Generalmente se hace con un loop iterativo.
+\end{dsacomofunciona}
 \section*{📝 PSEUDOCÓDIGO}
 \hrulefill
 \begin{verbatim}
@@ -113,18 +99,24 @@ int main() {
     return 0;
 }
 \end{lstlisting}
-\complejidad{Enfoque        │ Tiempo    │ Espacio
+\begin{dsacomplejidad}
+Enfoque        │ Tiempo    │ Espacio
   ───────────────┼───────────┼────────────────────────────────
   Fuerza Bruta   │ O(2\textasciicircum{}n)    │ O(n) (stack)
   DP (Memo/Tab)  │ O(n)      │ O(n) (tabla)
 
-* La DP reduce la complejidad de exponencial a lineal en muchos casos.}
-\entrevistas{}
-\resumen{• DP = Recursión + Memoria.
+* La DP reduce la complejidad de exponencial a lineal en muchos casos.
+\end{dsacomplejidad}
+\begin{dsaentrevistas}
+
+\end{dsaentrevistas}
+\begin{dsaresumen}
+• DP = Recursión + Memoria.
 • No calcules lo mismo dos veces.
 • Overlapping Subproblems: La clave para usar DP.
 • Top-Down: Fácil de pensar (recursivo).
 • Bottom-Up: Más eficiente (iterativo).
 • Esencial para problemas de optimización.
-════════════════════════════════════════════════════════════════}
-\end{document}
+════════════════════════════════════════════════════════════════
+\end{dsaresumen}
+

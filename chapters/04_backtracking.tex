@@ -1,28 +1,7 @@
-﻿\documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage[spanish]{babel}
-\usepackage{listings}
-\usepackage{xcolor}
-\usepackage{geometry}
-\usepackage{amsmath}
-\geometry{a4paper, margin=1in}
-\definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
-\lstset{backgroundcolor=\color{backcolour},commentstyle=\color{codegreen},keywordstyle=\color{magenta},numberstyle=\tiny\color{codegray},stringstyle=\color{codepurple},basicstyle=\ttfamily\small,breakatwhitespace=false,breaklines=true,captionpos=b,keepspaces=true,numbers=left,numbersep=5pt,showspaces=false,showstringspaces=false,showtabs=false,tabsize=2,language=C++}
-\newcommand{\quees}[1]{\section*{🤔 ¿QUÉ ES?}\hrulefill \\ #1}
-\newcommand{\dichodeotraforma}[1]{\section*{💬 DICHO DE OTRA FORMA}\hrulefill \\ #1}
-\newcommand{\diagrama}[1]{\section*{🎨 DIAGRAMA}\hrulefill \\ #1}
-\newcommand{\comofunciona}[1]{\section*{⚙️ ¿CÓMO FUNCIONA?}\hrulefill \\ #1}
-\newcommand{\complejidad}[1]{\section*{⏱️ COMPLEJIDAD (Big-O)}\hrulefill \\ #1}
-\newcommand{\entrevistas}[1]{\section*{🎯 EN ENTREVISTAS}\hrulefill \\ #1}
-\newcommand{\resumen}[1]{\section*{📋 RESUMEN RÁPIDO}\hrulefill \\ #1}
-\begin{document}
-\title{Backtracking (Vuelta Atrás)}
-\date{}
-\maketitle
-\quees{Resolver un laberinto 🌀 con un lápiz. 
+﻿\chapter[\emj{↩️}~Backtracking (Vuelta Atrás)]{\emj{↩️}~Backtracking (Vuelta Atrás)}
+
+\begin{dsaquees}
+Resolver un laberinto 🌀 con un lápiz. 
 
 Sigues un camino con la punta del lápiz hasta que llegas a un 
 callejón sin salida. En lugar de rendirte, borras lo que hiciste 
@@ -32,8 +11,10 @@ que dejaste pendiente.
 Backtracking es probar TODAS las posibilidades una por una, pero 
 con la inteligencia de "deshacer" tus pasos cuando te das cuenta 
 de que una ruta no lleva a la solución. Es una búsqueda exhaustiva 
-pero controlada.}
-\dichodeotraforma{Backtracking es una técnica algorítmica para resolver problemas de 
+pero controlada.
+\end{dsaquees}
+\begin{dsaotraforma}
+Backtracking es una técnica algorítmica para resolver problemas de 
 forma recursiva, intentando construir una solución incrementalmente. 
 
 Se basa en la exploración de un "Árbol de Decisiones". Si en algún 
@@ -42,8 +23,10 @@ punto la solución parcial no cumple con las restricciones del problema
 regresa al estado anterior para intentar otra opción.
 
 Es la base para resolver problemas de combinatoria, permutaciones y 
-juegos como el Sudoku o el Ajedrez.}
-\diagrama{\begin{verbatim}
+juegos como el Sudoku o el Ajedrez.
+\end{dsaotraforma}
+\begin{dsadiagrama}
+\begin{verbatim}
 [root]
               /      \
         Elegir 1?   NO elegir 1?
@@ -53,8 +36,10 @@ juegos como el Sudoku o el Ajedrez.}
      [1,2]     [1]     [2]      []
 
 ¡Cada nodo es una decisión! Backtracking recorre este árbol usando DFS.
-\end{verbatim}}
-\comofunciona{Casi todos los problemas de Backtracking siguen este patrón:
+\end{verbatim}
+\end{dsadiagrama}
+\begin{dsacomofunciona}
+Casi todos los problemas de Backtracking siguen este patrón:
 
 1. Caso Base: ¿Ya terminamos de construir la solución?
    - SÍ: Guárdala o imprímela. Regresa.
@@ -63,7 +48,8 @@ juegos como el Sudoku o el Ajedrez.}
    - SÍ: 
      a. Hacer Elección: Modifica el estado actual.
      b. Recursión: Llama a la función para el siguiente nivel.
-     c. Deshacer Elección (BACKTRACK): Regresa el estado como estaba.}
+     c. Deshacer Elección (BACKTRACK): Regresa el estado como estaba.
+\end{dsacomofunciona}
 \section*{📝 PSEUDOCÓDIGO}
 \hrulefill
 \begin{verbatim}
@@ -114,20 +100,26 @@ int main() {
     return 0;
 }
 \end{lstlisting}
-\complejidad{Problema        │ Tiempo Típico │ Razón
+\begin{dsacomplejidad}
+Problema        │ Tiempo Típico │ Razón
   ────────────────┼───────────────┼──────────────────────────────
   Permutaciones   │ O(n!)         │ n * (n-1) * (n-2)...
   Subconjuntos    │ O(2\textasciicircum{}n)        │ Cada elemento se elige o no
   N-Queens        │ O(n!)         │ Menos gracias al pruning
   Sudoku          │ O(9\textasciicircum{}(n*n))    │ Fuerza bruta pura (peor caso)
 
-* El espacio suele ser O(n) por la profundidad del stack de recursión.}
-\entrevistas{}
-\resumen{• DFS + Deshacer cambios.
+* El espacio suele ser O(n) por la profundidad del stack de recursión.
+\end{dsacomplejidad}
+\begin{dsaentrevistas}
+
+\end{dsaentrevistas}
+\begin{dsaresumen}
+• DFS + Deshacer cambios.
 • Explora todas las soluciones posibles.
 • Úsalo para permutaciones, combinaciones y laberintos.
 • Complejidad alta (Exponencial/Factorial).
 • Pruning: Cortar ramas que no sirven para ganar velocidad.
 • Esencial dominar el template: Hacer -> Recursión -> Deshacer.
-════════════════════════════════════════════════════════════════}
-\end{document}
+════════════════════════════════════════════════════════════════
+\end{dsaresumen}
+

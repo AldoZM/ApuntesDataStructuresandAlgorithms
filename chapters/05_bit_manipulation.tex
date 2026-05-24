@@ -1,28 +1,7 @@
-﻿\documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage[spanish]{babel}
-\usepackage{listings}
-\usepackage{xcolor}
-\usepackage{geometry}
-\usepackage{amsmath}
-\geometry{a4paper, margin=1in}
-\definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
-\lstset{backgroundcolor=\color{backcolour},commentstyle=\color{codegreen},keywordstyle=\color{magenta},numberstyle=\tiny\color{codegray},stringstyle=\color{codepurple},basicstyle=\ttfamily\small,breakatwhitespace=false,breaklines=true,captionpos=b,keepspaces=true,numbers=left,numbersep=5pt,showspaces=false,showstringspaces=false,showtabs=false,tabsize=2,language=C++}
-\newcommand{\quees}[1]{\section*{🤔 ¿QUÉ ES?}\hrulefill \\ #1}
-\newcommand{\dichodeotraforma}[1]{\section*{💬 DICHO DE OTRA FORMA}\hrulefill \\ #1}
-\newcommand{\diagrama}[1]{\section*{🎨 DIAGRAMA}\hrulefill \\ #1}
-\newcommand{\comofunciona}[1]{\section*{⚙️ ¿CÓMO FUNCIONA?}\hrulefill \\ #1}
-\newcommand{\complejidad}[1]{\section*{⏱️ COMPLEJIDAD (Big-O)}\hrulefill \\ #1}
-\newcommand{\entrevistas}[1]{\section*{🎯 EN ENTREVISTAS}\hrulefill \\ #1}
-\newcommand{\resumen}[1]{\section*{📋 RESUMEN RÁPIDO}\hrulefill \\ #1}
-\begin{document}
-\title{Bit Manipulation (Manipulación de Bits)}
-\date{}
-\maketitle
-\quees{Los interruptores de luz 💡 de tu casa. 
+﻿\chapter[\emj{🔢}~Bit Manipulation (Manipulación de Bits)]{\emj{🔢}~Bit Manipulation (Manipulación de Bits)}
+
+\begin{dsaquees}
+Los interruptores de luz 💡 de tu casa. 
 
 Cada bit es como un interruptor: 1 significa "encendido" y 0 significa
 "apagado". Manipular bits es jugar con esos interruptores usando 
@@ -32,16 +11,20 @@ reglas lógicas:
 - XOR: Solo enciende si EXACTAMENTE UNO está encendido.
 
 Es la forma más profunda y rápida de hablarle a la computadora,
-directamente en su lenguaje natural de ceros y unos.}
-\dichodeotraforma{Bit Manipulation consiste en aplicar operaciones lógicas (AND, OR, 
+directamente en su lenguaje natural de ceros y unos.
+\end{dsaquees}
+\begin{dsaotraforma}
+Bit Manipulation consiste en aplicar operaciones lógicas (AND, OR, 
 XOR, NOT) y de desplazamiento (Shifts) sobre los bits individuales de 
 un número entero.
 
 A nivel de hardware, estas operaciones son las más rápidas que un 
 procesador puede realizar. Usar bits permite ahorrar muchísima 
 memoria y acelerar algoritmos que de otra forma usarían estructuras
-más pesadas.}
-\diagrama{\begin{verbatim}
+más pesadas.
+\end{dsaotraforma}
+\begin{dsadiagrama}
+\begin{verbatim}
 Sean A = 5 (101) y B = 3 (011)
 
 AND (\&):  101 \& 011 = 001 (1)
@@ -50,15 +33,18 @@ XOR (^):  101 ^ 011 = 110 (6)  <-- ¡Nota: 1^1 = 0!
 
 Left Shift (<<): 5 << 1 = 1010 (10)  (Multiplicar por 2)
 Right Shift (>>): 5 >> 1 = 10 (2)    (Dividir entre 2)
-\end{verbatim}}
-\comofunciona{1. x \textasciicircum{} x = 0: Cualquier número XOR consigo mismo da cero. 
+\end{verbatim}
+\end{dsadiagrama}
+\begin{dsacomofunciona}
+1. x \textasciicircum{} x = 0: Cualquier número XOR consigo mismo da cero. 
    (Base del problema "Single Number").
 2. x \textasciicircum{} 0 = x: Cualquier número XOR cero se queda igual.
 3. n \& (n - 1): ¡Truco de Google! Elimina el bit encendido más a la 
    derecha. Si el resultado es 0, entonces `n` era una potencia de 2.
 4. i \& 1: Si da 0 es par, si da 1 es impar. (Más rápido que `i \% 2`).
 5. n >> 1: Divide entre 2 (truncando).
-6. 1 << n: Calcula 2 elevado a la potencia `n`.}
+6. 1 << n: Calcula 2 elevado a la potencia `n`.
+\end{dsacomofunciona}
 \section*{📝 PSEUDOCÓDIGO}
 \hrulefill
 \begin{verbatim}
@@ -101,19 +87,25 @@ int main() {
     return 0;
 }
 \end{lstlisting}
-\complejidad{Operación        │ Tiempo  │ Espacio
+\begin{dsacomplejidad}
+Operación        │ Tiempo  │ Espacio
   ─────────────────┼─────────┼──────────────
   Bitwise (\&,|,\textasciicircum{},\textasciitilde{})│ O(1)    │ O(1)
   Shifts (<<, >>)  │ O(1)    │ O(1)
 
-* Son las operaciones más eficientes posibles en computación.}
-\entrevistas{}
-\resumen{• Operaciones a nivel de ceros y unos.
+* Son las operaciones más eficientes posibles en computación.
+\end{dsacomplejidad}
+\begin{dsaentrevistas}
+
+\end{dsaentrevistas}
+\begin{dsaresumen}
+• Operaciones a nivel de ceros y unos.
 • Súper rápidas O(1).
 • AND (\&), OR (|), XOR (\textasciicircum{}), NOT (\textasciitilde{}).
 • Shifts: << (x2), >> (/2).
 • n \& (n-1) = Truco para potencias de 2.
 • XOR cancela duplicados (x \textasciicircum{} x = 0).
 • Ideal para problemas de eficiencia extrema.
-════════════════════════════════════════════════════════════════}
-\end{document}
+════════════════════════════════════════════════════════════════
+\end{dsaresumen}
+

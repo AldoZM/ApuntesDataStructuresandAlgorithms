@@ -1,0 +1,176 @@
+% preamble_dsa.tex
+\usepackage{fontspec}
+\usepackage[spanish, es-noquoting, es-noshorthands]{babel}
+\newfontfamily{\emojifont}{Segoe UI Emoji}[Renderer=HarfBuzz, BoldFont=*]
+\newcommand{\emj}[1]{{\emojifont #1}}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=3cm, right=2.5cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{tcolorbox}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{parskip}
+\raggedbottom
+
+\tcbuselibrary{skins, breakable, listings}
+
+% --- Colores Neon ---
+\definecolor{n-cyan}{RGB}{0, 255, 255}
+\definecolor{n-lime}{RGB}{0, 255, 0}
+\definecolor{n-pink}{RGB}{255, 0, 255}
+\definecolor{n-yellow}{RGB}{255, 255, 0}
+\definecolor{n-orange}{RGB}{255, 128, 0}
+
+% --- Colores de Apoyo ---
+\definecolor{azuloscu}{RGB}{30, 64, 175}
+\definecolor{verdeoscu}{RGB}{6, 95, 70}
+\definecolor{naranjaoscu}{RGB}{154, 52, 18}
+\definecolor{rojooscu}{RGB}{153, 27, 27}
+\definecolor{amarillooscu}{RGB}{113, 63, 18}
+\definecolor{moradooscu}{RGB}{88, 28, 135}
+\definecolor{cianoscuro}{RGB}{14, 116, 144}
+\definecolor{grisclaro}{RGB}{200, 200, 200}
+\definecolor{codegray}{RGB}{130, 130, 130}
+
+% --- MODO OSCURO GLOBAL ---
+\definecolor{fondogris}{RGB}{30, 30, 35}
+\pagecolor{fondogris}
+\color{white}
+\makeatletter
+\colorlet{normalcolor@tmp}{white}
+\def\normalcolor{\color{normalcolor@tmp}}
+\makeatother
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=n-cyan,
+  urlcolor=n-lime,
+  citecolor=grisclaro,
+  pdftitle={Apuntes DSA - Data Structures \& Algorithms},
+  pdfauthor={Aldo Zepeda Montoya},
+}
+% Prevent emoji commands from breaking PDF bookmarks
+\pdfstringdefDisableCommands{%
+  \def\emj#1{}%
+}
+
+% --- Estilo de Código C++ ---
+\lstdefinestyle{cpp}{
+  language=C++,
+  basicstyle=\ttfamily\small\color{white},
+  keywordstyle=\color{n-cyan}\bfseries,
+  commentstyle=\color{codegray}\itshape,
+  stringstyle=\color{n-lime},
+  numberstyle=\tiny\color{n-yellow},
+  showstringspaces=false,
+  breaklines=true,
+  frame=single,
+  framerule=0.6pt,
+  rulecolor=\color{n-cyan},
+  backgroundcolor=\color{black!94!white},
+  numbers=left,
+  numbersep=8pt,
+  tabsize=2,
+  inputencoding=utf8,
+  extendedchars=true,
+  literate=
+    {á}{{\'{a}}}1 {é}{{\'{e}}}1 {í}{{\'{i}}}1
+    {ó}{{\'{o}}}1 {ú}{{\'{u}}}1 {ñ}{{\~{n}}}1
+    {Á}{{\'{A}}}1 {É}{{\'{E}}}1 {Í}{{\'{I}}}1
+    {Ó}{{\'{O}}}1 {Ú}{{\'{U}}}1 {Ñ}{{\~{N}}}1
+    {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1,
+}
+\lstset{style=cpp}
+
+% --- tcolorbox environments ---
+\newtcolorbox{dsaquees}{
+  colback=azuloscu!25!black,
+  colframe=n-cyan,
+  colupper=white,
+  fonttitle=\bfseries\large,
+  title={\emj{🤔}~¿Qué es?},
+  breakable,
+  before upper={\parskip=4pt}
+}
+
+\newtcolorbox{dsaotraforma}{
+  colback=moradooscu!25!black,
+  colframe=n-pink,
+  colupper=white,
+  fonttitle=\bfseries\large,
+  title={\emj{💬}~Dicho de otra forma},
+  breakable,
+  before upper={\parskip=4pt}
+}
+
+\newtcolorbox{dsadiagrama}{
+  colback=verdeoscu!25!black,
+  colframe=n-lime,
+  colupper=white,
+  fonttitle=\bfseries\large,
+  title={\emj{🎨}~Diagrama},
+  breakable,
+  before upper={\parskip=4pt}
+}
+
+\newtcolorbox{dsacomofunciona}{
+  colback=cianoscuro!25!black,
+  colframe=n-cyan,
+  colupper=white,
+  fonttitle=\bfseries\large,
+  title={\emj{⚙️}~¿Cómo funciona?},
+  breakable,
+  before upper={\parskip=4pt}
+}
+
+\newtcolorbox{dsacomplejidad}{
+  colback=amarillooscu!25!black,
+  colframe=n-yellow,
+  colupper=white,
+  fonttitle=\bfseries\large,
+  title={\emj{📊}~Complejidad Big-O},
+  breakable,
+  before upper={\parskip=4pt}
+}
+
+\newtcolorbox{dsaentrevistas}{
+  colback=naranjaoscu!25!black,
+  colframe=n-orange,
+  colupper=white,
+  fonttitle=\bfseries\large,
+  title={\emj{🎯}~En entrevistas},
+  breakable,
+  before upper={\parskip=4pt}
+}
+
+\newtcolorbox{dsaresumen}{
+  colback=rojooscu!25!black,
+  colframe=n-pink,
+  colupper=white,
+  fonttitle=\bfseries\large,
+  title={\emj{📋}~Resumen rápido},
+  breakable,
+  before upper={\parskip=4pt}
+}
+
+% --- Formato Capítulos y Partes ---
+\titleformat{\part}[display]
+  {\normalfont\Huge\bfseries\color{n-yellow}\centering}{}{0pt}{\Huge}
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\color{n-cyan}}{\chaptertitlename\ \thechapter}{12pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{0pt}{16pt}
+\titleformat{\section}
+  {\normalfont\large\bfseries\color{n-lime}}{}{0pt}{}
+
+% --- Encabezados ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\color{n-cyan}\thepage}
+\fancyhead[LO]{\color{grisclaro}\nouppercase{\rightmark}}
+\fancyhead[RE]{\color{grisclaro}\nouppercase{\leftmark}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{n-cyan}\leaders\hrule height \headrulewidth\hfill}}
