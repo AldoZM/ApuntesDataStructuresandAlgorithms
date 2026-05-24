@@ -1,0 +1,173 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+% Configuración para código C++
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=C++,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
+}
+
+% Macros para las secciones de los apuntes
+\newcommand{\quees}[1]{
+    \section*{🤔 ¿QUÉ ES?}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\dichodeotraforma}[1]{
+    \section*{💬 DICHO DE OTRA FORMA}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\diagrama}[1]{
+    \section*{🎨 DIAGRAMA}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\comofunciona}[1]{
+    \section*{⚙️ ¿CÓMO FUNCIONA?}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\complejidad}[1]{
+    \section*{📱 COMPLEJIDAD (Big-O)}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\entrevistas}[1]{
+    \section*{🎯 EN ENTREVISTAS}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\resumen}[1]{
+    \section*{📋 RESUMEN RÁPIDO}
+    \hrulefill \\
+    #1
+}
+
+\begin{document}
+
+\title{Complejidad Espacial (Space Complexity)}
+\author{Aldo Zepeda Montoya}
+\date{23 de mayo de 2026}
+\maketitle
+
+\subsection*{CATEGORÍA: 00\_Fundamentos}
+
+\quees{
+Imagina que tu programa es una receta de cocina 🍳. Big-O en tiempo
+mide cuánto TARDAS en cocinar. Complejidad espacial mide cuántas
+OLLAS Y SARTENES necesitas mientras cocinas.
+
+Si para preparar una ensalada de 10 ingredientes necesitas una tabla
+de picar pequeña, pero para 100 ingredientes necesitas una mesa gigante,
+eso significa que el espacio crece con el número de ingredientes.
+
+En programación, la complejidad espacial mide cuánta MEMORIA EXTRA
+(RAM) utiliza tu algoritmo para resolver un problema a medida que el
+input se hace más grande.
+}
+
+\dichodeotraforma{
+La Space Complexity analiza el uso de recursos de memoria. Es crucial
+distinguir entre:
+
+\begin{enumerate}
+    \item \textbf{Input Space:} La memoria para guardar los datos de entrada.
+    \item \textbf{Auxiliary Space:} La memoria EXTRA o temporal que el algoritmo crea.
+\end{enumerate}
+
+En la mayoría de las entrevistas, cuando preguntan "Space Complexity",
+se refieren al Auxiliary Space. Si tu algoritmo modifica el input original
+sin crear estructuras nuevas, se dice que es "In-place" y su complejidad
+espacial es O(1).
+}
+
+\diagrama{
+Cuando usas recursión, cada llamada ocupa un "piso" en el stack:
+
+\begin{verbatim}
+factorial(4)
+  |-- factorial(3)
+       |-- factorial(2)
+            |-- factorial(1)  <-- Tope del stack
+\end{verbatim}
+Cada nivel de recursión consume memoria adicional en el Call Stack.
+}
+
+\comofunciona{
+\begin{description}
+    \item[O(1) --- Espacio Constante] Solo usas unas cuantas variables fijas sin importar el input. Ejemplo: Hacer un swap de dos números usando una variable temporal.
+    \item[O(n) --- Espacio Lineal] Creas una estructura (como un array o vector) proporcional al input. Ejemplo: Copiar una lista de n elementos a una nueva lista.
+    \item[O(n²) --- Espacio Cuadrático] Creas una estructura bidimensional (matriz) de n x n. Ejemplo: Una tabla de adyacencia para un grafo denso.
+\end{description}
+}
+
+\complejidad{
+\begin{tabular}{|l|l|l|}
+\hline
+Algoritmo & Espacio & Razón \\
+\hline
+Acceso a Array & O(1) & No requiere memoria extra \\
+Búsqueda Lineal & O(1) & Solo usa un par de índices \\
+Búsqueda Binaria iter. & O(1) & Solo usa izq/der/mid \\
+Búsqueda Binaria recur. & O(log n) & Log(n) llamadas en el stack \\
+Merge Sort & O(n) & Necesita un array auxiliar \\
+Quick Sort & O(log n) & Promedio de llamadas stack \\
+Crear matriz n x n & O(n²) & Espacio bidimensional \\
+\hline
+\end{tabular}
+}
+
+\entrevistas{
+\begin{itemize}
+    \item En Google preguntan SIEMPRE espacio Y tiempo. No esperes a que pregunten.
+    \item \textbf{"In-place algorithm":} Significa que el algoritmo tiene O(1) espacio auxiliar porque modifica el input original directamente.
+    \item \textbf{Trade-off clásico:} A veces puedes hacer que un programa sea más rápido (tiempo) si estás dispuesto a usar más memoria (espacio). Ejemplo: Memoization en Dynamic Programming.
+\end{itemize}
+}
+
+\resumen{
+\begin{itemize}
+    \item Space Complexity = cuánta RAM EXTRA usa el algoritmo.
+    \item No cuenta el espacio del input original (Auxiliary Space).
+    \item Estructuras de datos (arrays, maps) creadas $\rightarrow$ O(tamaño).
+    \item Recursión $\rightarrow$ cada nivel cuenta como O(1) en el Call Stack.
+    \item O(1) espacio = "In-place", es lo más eficiente en memoria.
+\end{itemize}
+}
+
+\end{document}
