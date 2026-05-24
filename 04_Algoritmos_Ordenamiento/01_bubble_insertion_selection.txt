@@ -1,0 +1,155 @@
+════════════════════════════════════════════════════════════════
+🗂️  TEMA: Ordenamientos Básicos (Bubble, Insertion, Selection)
+📁  CATEGORÍA: 04_Algoritmos_Ordenamiento
+════════════════════════════════════════════════════════════════
+
+🤔 ¿QUÉ ES?
+──────────────────────────────────────────────────────────────
+Tres formas manuales de ordenar cosas en la vida real:
+
+1. Bubble Sort 🫧 (Burbujas): Imagina burbujas subiendo en un refresco.
+   Comparas dos elementos juntos; si el de la izquierda es mayor, lo
+   cambias. Los números más grandes "burbujean" hacia el final en 
+   cada pasada.
+
+2. Insertion Sort 🃏 (Cartas): Como cuando ordenas cartas en tu mano.
+   Tomas una carta nueva y la vas comparando con las que ya tienes
+   ordenadas hasta que encuentras su lugar exacto y la "insertas".
+
+3. Selection Sort 🔍 (Selección): Buscas el objeto más pequeño de 
+   todo el grupo y lo pones al principio. Luego buscas el más pequeño
+   de los que quedan y lo pones en segundo lugar, y así...
+
+💬 DICHO DE OTRA FORMA
+──────────────────────────────────────────────────────────────
+Son algoritmos de ordenamiento O(n²). Aunque son lentos para grandes
+cantidades de datos, son fundamentales para entender la lógica de 
+sorting.
+
+- Bubble Sort: Se basa en intercambios adyacentes.
+- Insertion Sort: Divide el array en una parte ordenada y otra no. 
+  Es muy eficiente para arrays que ya están casi ordenados.
+- Selection Sort: Se basa en encontrar el mínimo en cada iteración.
+
+🎨 DIAGRAMA (Array: [64, 34, 25, 12])
+──────────────────────────────────────────────────────────────
+
+Bubble Sort (Paso 1):
+[64, 34, 25, 12] -> 64 > 34? SÍ -> [34, 64, 25, 12]
+[34, 64, 25, 12] -> 64 > 25? SÍ -> [34, 25, 64, 12]
+[34, 25, 64, 12] -> 64 > 12? SÍ -> [34, 25, 12, 64]* (64 ya está al final)
+
+Insertion Sort (Paso 2 - ordenando el 25):
+Mano: [34, 64] | Pendiente: [25, 12]
+Tomo el 25. ¿25 < 64? SÍ. ¿25 < 34? SÍ.
+Mano: [25, 34, 64] | Pendiente: [12]
+
+Selection Sort (Paso 1):
+[64, 34, 25, 12] -> Mínimo es 12.
+Intercambio 64 y 12 -> [12, 34, 25, 64]
+
+⚙️ ¿CÓMO FUNCIONA? (Resumen de pasos)
+──────────────────────────────────────────────────────────────
+
+Bubble: 
+- Compara pares (i, i+1).
+- Swapea si están en orden incorrecto.
+- Repite n-1 veces.
+
+Insertion:
+- Empieza en el segundo elemento.
+- Compáralo hacia atrás y muévelo hasta que sea mayor que el anterior.
+
+Selection:
+- Encuentra el índice del valor mínimo en el rango [i...n].
+- Intercambia `arr[i]` con `arr[min_idx]`.
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+// Bubble Sort
+PARA i desde 0 hasta n-1:
+    PARA j desde 0 hasta n-i-2:
+        SI arr[j] > arr[j+1]:
+            intercambiar(arr[j], arr[j+1])
+
+// Insertion Sort
+PARA i desde 1 hasta n-1:
+    clave = arr[i]
+    j = i - 1
+    MIENTRAS j >= 0 Y arr[j] > clave:
+        arr[j+1] = arr[j]
+        j--
+    arr[j+1] = clave
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void bubbleSort(vector<int>& arr) {
+    int n = arr.size();
+    for (int i = 0; i < n-1; i++) {
+        for (int j = 0; j < n-i-1; j++) {
+            if (arr[j] > arr[j+1]) swap(arr[j], arr[j+1]);
+        }
+    }
+}
+
+void insertionSort(vector<int>& arr) {
+    int n = arr.size();
+    for (int i = 1; i < n; i++) {
+        int key = arr[i];
+        int j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+}
+
+int main() {
+    vector<int> data = {64, 34, 25, 12, 22};
+    insertionSort(data);
+    for(int x : data) cout << x << " "; // 12 22 25 34 64
+    return 0;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Algoritmo   │ Best      │ Average   │ Worst     │ Stable?
+  ────────────┼───────────┼───────────┼───────────┼─────────
+  Bubble      │ O(n)      │ O(n²)     │ O(n²)     │ SÍ
+  Insertion   │ O(n)      │ O(n²)     │ O(n²)     │ SÍ
+  Selection   │ O(n²)     │ O(n²)     │ O(n²)     │ NO
+
+* Todos usan O(1) de espacio extra (In-place).
+
+🎯 EN ENTREVISTAS (Tips Google-level)
+──────────────────────────────────────────────────────────────
+✅ Insertion Sort es el mejor para arrays "casi ordenados" o para 
+   pocos elementos (n < 20).
+
+💡 Estabilidad (Stability): Significa que elementos con el mismo valor
+   mantienen su orden relativo original. Bubble e Insertion son 
+   estables; Selection NO.
+
+⚠️ Casi nunca usarás estos en producción (C++ usa `std::sort` que es 
+   O(n log n)), pero te los piden para evaluar tus bases.
+
+🔑 Optimización Bubble: Puedes agregar un flag `swapped`. Si en una
+   pasada completa no hubo cambios, ¡el array ya está ordenado!
+
+📋 RESUMEN RÁPIDO
+──────────────────────────────────────────────────────────────
+• Los 3 son O(n²) en el peor caso.
+• Bubble: El más sencillo e ineficiente.
+• Insertion: El mejor para casos pequeños o casi listos.
+• Selection: Hace el mínimo de swaps posibles (útil si escribir en 
+  memoria es muy caro).
+• In-place: No necesitan memoria extra.
+════════════════════════════════════════════════════════════════
