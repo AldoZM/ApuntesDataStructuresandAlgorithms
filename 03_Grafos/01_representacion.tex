@@ -6,7 +6,7 @@
 \usepackage{geometry}
 \geometry{a4paper, margin=1in}
 
-% Configuración para código C++
+\% Configuración para código C++
 \definecolor{codegreen}{rgb}{0,0.6,0}        
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}     
 \definecolor{codepurple}{rgb}{0.58,0,0.82}   
@@ -35,47 +35,47 @@
     literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
 }
 
-% Macros para las secciones de los apuntes
+\% Macros para las secciones de los apuntes
 \newcommand{\quees}[1]{
     \section*{🤔 ¿QUÉ ES?}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\dichodeotraforma}[1]{
     \section*{💬 DICHO DE OTRA FORMA}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\diagrama}[1]{
     \section*{🎨 DIAGRAMA}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\comofunciona}[1]{
     \section*{⚙️ ¿CÓMO FUNCIONA?}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\complejidad}[1]{
     \section*{📱 COMPLEJIDAD (Big-O)}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\entrevistas}[1]{
     \section*{🎯 EN ENTREVISTAS}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\resumen}[1]{
     \section*{📋 RESUMEN RÁPIDO}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \begin{document}
@@ -85,7 +85,7 @@
 \date{\today}
 \maketitle
 
-\subsection*{CATEGORÍA: 03_Grafos}
+\subsection*{CATEGORÍA: 03\_Grafos}
 
 \quees{
 Un mapa de ciudades 🗺️ con carreteras entre ellas. 
@@ -129,7 +129,7 @@ Adjacency Matrix (4x4):      Adjacency List:
 \begin{lstlisting}[language=C++]
 1. Adjacency Matrix:
    - Pros: Muy rápido O(1) para saber si A y B están conectados.
-   - Contras: Usa mucha memoria O(V²), incluso si hay pocos edges.
+   - Contras: Usa mucha memoria O(V^2), incluso si hay pocos edges.
    - Cuándo usar: Grafos pequeños o muy densos.
 
 2. Adjacency List:
@@ -189,7 +189,7 @@ int main() {
 
   Operación        │ Matrix   │ List
   ─────────────────┼──────────┼──────────────
-  Espacio          │ O(V²)    │ O(V + E)
+  Espacio          │ O(V^2)    │ O(V + E)
   Agregar Edge     │ O(1)     │ O(1)
   Verificar Edge   │ O(1)     │ O(Grado del nodo)
   Iterar Vecinos   │ O(V)     │ O(Grado del nodo)
@@ -216,7 +216,7 @@ int main() {
 
 \resumen{
 • Nodos = Ciudades, Aristas = Caminos.
-• Matrix: Rápida pero traga mucha memoria O(V²).
+• Matrix: Rápida pero traga mucha memoria O(V^2).
 • List: Eficiente en memoria, la favorita de los devs O(V + E).
 • Dirigido (flecha) vs No Dirigido (línea).
 • Ponderado (tiene peso/costo) vs No Ponderado.

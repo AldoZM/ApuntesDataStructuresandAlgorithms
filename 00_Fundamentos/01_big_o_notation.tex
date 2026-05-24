@@ -7,7 +7,7 @@
 \usepackage{fancyhdr}
 \geometry{a4paper, margin=1in}
 
-% Configuración para código C++
+\% Configuración para código C++
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
@@ -36,47 +36,47 @@
     literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
 }
 
-% Macros para las secciones de los apuntes
+\% Macros para las secciones de los apuntes
 \newcommand{\quees}[1]{
     \section*{🤔 ¿QUÉ ES?}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\dichodeotraforma}[1]{
     \section*{💬 DICHO DE OTRA FORMA}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\diagrama}[1]{
     \section*{🎨 DIAGRAMA}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\comofunciona}[1]{
     \section*{⚙️ ¿CÓMO FUNCIONA?}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\complejidad}[1]{
     \section*{📱 COMPLEJIDAD (Big-O)}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\entrevistas}[1]{
     \section*{🎯 EN ENTREVISTAS}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\resumen}[1]{
     \section*{📋 RESUMEN RÁPIDO}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \begin{document}
@@ -94,20 +94,20 @@ encontrar uno de sabor fresa. ¿Cuánto tiempo tardarías?
 
 \begin{itemize}
     \item \textbf{Caso 1:} Si sabes que el de fresa SIEMPRE está en la posición 1
-          $\rightarrow$ Lo agarras directo. No importa si hay 10 o 1,000,000 chocolates.
-          $\rightarrow$ Siempre es 1 paso. ¡Rápidísimo! ⚡
+          \$\rightarrow\$ Lo agarras directo. No importa si hay 10 o 1,000,000 chocolates.
+          \$\rightarrow\$ Siempre es 1 paso. ¡Rápidísimo! ⚡
 
     \item \textbf{Caso 2:} Si los chocolates están desordenados y tienes que revisar
           uno por uno hasta encontrar el de fresa
-          $\rightarrow$ Si hay 10 chocolates, revisas hasta 10.
-          $\rightarrow$ Si hay 1,000,000 chocolates, revisas hasta 1,000,000.
-          $\rightarrow$ El tiempo crece igual que la cantidad de chocolates. 📈
+          \$\rightarrow\$ Si hay 10 chocolates, revisas hasta 10.
+          \$\rightarrow\$ Si hay 1,000,000 chocolates, revisas hasta 1,000,000.
+          \$\rightarrow\$ El tiempo crece igual que la cantidad de chocolates. 📈
 
     \item \textbf{Caso 3:} Si por cada chocolate que revisas, tienes que revisar
           TODOS los demás para compararlos
-          $\rightarrow$ Si hay 10 chocolates $\rightarrow$ 10 $\times$ 10 = 100 comparaciones
-          $\rightarrow$ Si hay 100 chocolates $\rightarrow$ 100 $\times$ 100 = 10,000 comparaciones
-          $\rightarrow$ ¡Crece muy rápido y se pone muy lento muy pronto! 🐌
+          \$\rightarrow\$ Si hay 10 chocolates \$\rightarrow\$ 10 \$\times\$ 10 = 100 comparaciones
+          \$\rightarrow\$ Si hay 100 chocolates \$\rightarrow\$ 100 \$\times\$ 100 = 10,000 comparaciones
+          \$\rightarrow\$ ¡Crece muy rápido y se pone muy lento muy pronto! 🐌
 \end{itemize}
 
 Big-O Notation es la forma que tienen los programadores para
@@ -133,7 +133,7 @@ Es tan esperado como que el código funcione.
 Tiempo
   |                                              O(2^n) 💀
   |                                         ,,''
-  |                                    ,,'''        O(n²) 🐌
+  |                                    ,,'''        O(n^2) 🐌
   |                               ,,'''        ,,,''
   |                          ,,'''       ,,,'''
   |                     ,,'''      ,,,'''          O(n log n) 🐢
@@ -150,7 +150,7 @@ Tiempo
   🏃 O(log n)   → Logarítmico → MUY BUENO
   🚶 O(n)       → Lineal       → ACEPTABLE
   🐢 O(n log n) → Linealítmico → BUENO para sorting
-  🐌 O(n²)      → Cuadrático   → MALO (evitar si puedes)
+  🐌 O(n^2)      → Cuadrático   → MALO (evitar si puedes)
   💀 O(2^n)     → Exponencial  → FATAL (solo para n muy pequeño)
 \end{verbatim}
 }
@@ -158,11 +158,11 @@ Tiempo
 \comofunciona{
 \begin{description}
     \item[O(1) --- Tiempo Constante] Sin importar cuántos datos tengas, siempre tarda lo mismo. Ejemplo: acceder a \texttt{arr[5]} directamente por índice.
-    \item[O(log n) --- Tiempo Logarítmico] Cada paso DIVIDE el problema a la mitad. Si tienes 1,024 elementos $\rightarrow$ necesitas máximo 10 pasos ($2^{10} = 1024$). Ejemplo: Binary search.
+    \item[O(log n) --- Tiempo Logarítmico] Cada paso DIVIDE el problema a la mitad. Si tienes 1,024 elementos \$\rightarrow\$ necesitas máximo 10 pasos (\$2^{10} = 1024\$). Ejemplo: Binary search.
     \item[O(n) --- Tiempo Lineal] Si duplicas el input, el tiempo se duplica. Ejemplo: recorrer todos los elementos de una lista una vez.
     \item[O(n log n) --- Tiempo Linealítmico] Un poco peor que lineal. La mayoría de buenos algoritmos de sorting. Ejemplo: Merge Sort.
-    \item[O(n²) --- Tiempo Cuadrático] Dos loops anidados sobre el mismo input. Si duplicas el input, el tiempo se CUADRUPLICA. Ejemplo: Bubble Sort.
-    \item[O(2^n) --- Tiempo Exponencial] Cada elemento nuevo DUPLICA el trabajo. n=30 $\rightarrow$ más de 1,000,000,000 operaciones. Ejemplo: Fibonacci sin memoization.
+    \item[O(n^2) --- Tiempo Cuadrático] Dos loops anidados sobre el mismo input. Si duplicas el input, el tiempo se CUADRUPLICA. Ejemplo: Bubble Sort.
+    \item[O(2^n) --- Tiempo Exponencial] Cada elemento nuevo DUPLICA el trabajo. n=30 \$\rightarrow\$ más de 1,000,000,000 operaciones. Ejemplo: Fibonacci sin memoization.
 \end{description}
 }
 
@@ -184,7 +184,7 @@ bool buscarLineal(vector<int>& arr, int objetivo) {
     return false;
 }
 
-// O(n²) — Cuadrático
+// O(n^2) — Cuadrático
 bool tieneDuplicados(vector<int>& arr) {
     int n = arr.size();
     for (int i = 0; i < n; i++) {
@@ -212,23 +212,23 @@ int busquedaBinaria(vector<int>& arr, int objetivo) {
 \complejidad{
 \begin{tabular}{|l|l|l|l|}
 \hline
-Notación & Nombre & Ejemplo real & ¿Usable? \\
+Notación \& Nombre \& Ejemplo real \& ¿Usable? \\
 \hline
-O(1) & Constante & Array access, hash lookup & ✅ Ideal \\
-O(log n) & Logarítmico & Binary search, BST ops & ✅ Muy bueno \\
-O(n) & Lineal & Loop simple, linear search & ✅ Aceptable \\
-O(n log n) & Linealítmico & Merge sort, Heap sort & ✅ Bueno \\
-O(n²) & Cuadrático & Bubble sort, nested loops & ⚠️ Malo \\
-O(2^n) & Exponencial & Subsets, recursion fatal & ❌ Terrible \\
+O(1) \& Constante \& Array access, hash lookup \& ✅ Ideal \\
+O(log n) \& Logarítmico \& Binary search, BST ops \& ✅ Muy bueno \\
+O(n) \& Lineal \& Loop simple, linear search \& ✅ Aceptable \\
+O(n log n) \& Linealítmico \& Merge sort, Heap sort \& ✅ Bueno \\
+O(n^2) \& Cuadrático \& Bubble sort, nested loops \& ⚠️ Malo \\
+O(2^n) \& Exponencial \& Subsets, recursion fatal \& ❌ Terrible \\
 \hline
 \end{tabular}
 }
 
 \entrevistas{
 \begin{itemize}
-    \item Big-O ignora constantes y términos menores: $O(3n + 5) \rightarrow O(n)$.
+    \item Big-O ignora constantes y términos menores: \$O(3n + 5) \rightarrow O(n)\$.
     \item Siempre menciona tiempo Y espacio.
-    \item \textbf{Regla de oro:} Si ves que tu solución tiene $O(n^2)$ y el problema involucra búsqueda, piensa si un hash map te da $O(n)$ en su lugar.
+    \item \textbf{Regla de oro:} Si ves que tu solución tiene \$O(n^2)\$ y el problema involucra búsqueda, piensa si un hash map te da \$O(n)\$ en su lugar.
 \end{itemize}
 }
 
@@ -236,8 +236,8 @@ O(2^n) & Exponencial & Subsets, recursion fatal & ❌ Terrible \\
 \begin{itemize}
     \item Big-O = qué tan rápido crece el tiempo al crecer el input.
     \item Siempre describe el PEOR caso.
-    \item $O(1) < O(\log n) < O(n) < O(n \log n) < O(n^2) < O(2^n)$.
-    \item Hash maps convierten muchos $O(n^2)$ en $O(n)$.
+    \item \$O(1) < O(\log n) < O(n) < O(n \log n) < O(n^2) < O(2^n)\$.
+    \item Hash maps convierten muchos \$O(n^2)\$ en \$O(n)\$.
 \end{itemize}
 }
 

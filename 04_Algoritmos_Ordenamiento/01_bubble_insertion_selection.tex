@@ -6,7 +6,7 @@
 \usepackage{geometry}
 \geometry{a4paper, margin=1in}
 
-% Configuración para código C++
+\% Configuración para código C++
 \definecolor{codegreen}{rgb}{0,0.6,0}        
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}     
 \definecolor{codepurple}{rgb}{0.58,0,0.82}   
@@ -35,47 +35,47 @@
     literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
 }
 
-% Macros para las secciones de los apuntes
+\% Macros para las secciones de los apuntes
 \newcommand{\quees}[1]{
     \section*{🤔 ¿QUÉ ES?}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\dichodeotraforma}[1]{
     \section*{💬 DICHO DE OTRA FORMA}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\diagrama}[1]{
     \section*{🎨 DIAGRAMA}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\comofunciona}[1]{
     \section*{⚙️ ¿CÓMO FUNCIONA?}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\complejidad}[1]{
     \section*{📱 COMPLEJIDAD (Big-O)}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\entrevistas}[1]{
     \section*{🎯 EN ENTREVISTAS}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\resumen}[1]{
     \section*{📋 RESUMEN RÁPIDO}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \begin{document}
@@ -85,7 +85,7 @@
 \date{\today}
 \maketitle
 
-\subsection*{CATEGORÍA: 04_Algoritmos_Ordenamiento}
+\subsection*{CATEGORÍA: 04\_Algoritmos\_Ordenamiento}
 
 \quees{
 Tres formas manuales de ordenar cosas en la vida real:
@@ -105,7 +105,7 @@ Tres formas manuales de ordenar cosas en la vida real:
 }
 
 \dichodeotraforma{
-Son algoritmos de ordenamiento O(n²). Aunque son lentos para grandes
+Son algoritmos de ordenamiento O(n^2). Aunque son lentos para grandes
 cantidades de datos, son fundamentales para entender la lógica de 
 sorting.
 
@@ -204,9 +204,9 @@ int main() {
 
   Algoritmo   │ Best      │ Average   │ Worst     │ Stable?
   ────────────┼───────────┼───────────┼───────────┼─────────
-  Bubble      │ O(n)      │ O(n²)     │ O(n²)     │ SÍ
-  Insertion   │ O(n)      │ O(n²)     │ O(n²)     │ SÍ
-  Selection   │ O(n²)     │ O(n²)     │ O(n²)     │ NO
+  Bubble      │ O(n)      │ O(n^2)     │ O(n^2)     │ SÍ
+  Insertion   │ O(n)      │ O(n^2)     │ O(n^2)     │ SÍ
+  Selection   │ O(n^2)     │ O(n^2)     │ O(n^2)     │ NO
 
 * Todos usan O(1) de espacio extra (In-place).
 \end{lstlisting}
@@ -227,7 +227,7 @@ int main() {
 \end{lstlisting}
 
 \resumen{
-• Los 3 son O(n²) en el peor caso.
+• Los 3 son O(n^2) en el peor caso.
 • Bubble: El más sencillo e ineficiente.
 • Insertion: El mejor para casos pequeños o casi listos.
 • Selection: Hace el mínimo de swaps posibles (útil si escribir en 

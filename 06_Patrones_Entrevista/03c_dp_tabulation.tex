@@ -11,13 +11,13 @@
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 \lstset{backgroundcolor=\color{backcolour},commentstyle=\color{codegreen},keywordstyle=\color{magenta},numberstyle=\tiny\color{codegray},stringstyle=\color{codepurple},basicstyle=\ttfamily\small,breakatwhitespace=false,breaklines=true,captionpos=b,keepspaces=true,numbers=left,numbersep=5pt,showspaces=false,showstringspaces=false,showtabs=false,tabsize=2,language=C++}
-\newcommand{\quees}[1]{\section*{🤔 ¿QUÉ ES?}\hrulefill \\ #1}
-\newcommand{\dichodeotraforma}[1]{\section*{💬 DICHO DE OTRA FORMA}\hrulefill \\ #1}
-\newcommand{\diagrama}[1]{\section*{🎨 DIAGRAMA}\hrulefill \\ #1}
-\newcommand{\comofunciona}[1]{\section*{⚙️ ¿CÓMO FUNCIONA?}\hrulefill \\ #1}
-\newcommand{\complejidad}[1]{\section*{⏱️ COMPLEJIDAD (Big-O)}\hrulefill \\ #1}
-\newcommand{\entrevistas}[1]{\section*{🎯 EN ENTREVISTAS}\hrulefill \\ #1}
-\newcommand{\resumen}[1]{\section*{📋 RESUMEN RÁPIDO}\hrulefill \\ #1}
+\newcommand{\quees}[1]{\section*{🤔 ¿QUÉ ES?}\hrulefill \\ \#1}
+\newcommand{\dichodeotraforma}[1]{\section*{💬 DICHO DE OTRA FORMA}\hrulefill \\ \#1}
+\newcommand{\diagrama}[1]{\section*{🎨 DIAGRAMA}\hrulefill \\ \#1}
+\newcommand{\comofunciona}[1]{\section*{⚙️ ¿CÓMO FUNCIONA?}\hrulefill \\ \#1}
+\newcommand{\complejidad}[1]{\section*{⏱️ COMPLEJIDAD (Big-O)}\hrulefill \\ \#1}
+\newcommand{\entrevistas}[1]{\section*{🎯 EN ENTREVISTAS}\hrulefill \\ \#1}
+\newcommand{\resumen}[1]{\section*{📋 RESUMEN RÁPIDO}\hrulefill \\ \#1}
 \begin{document}
 \title{DP - Tabulation (Bottom-Up)}
 \date{}
@@ -43,15 +43,15 @@ Es generalmente más eficiente que Memoization porque evita el
 riesgo de causar un Stack Overflow.}
 \diagrama{\begin{verbatim}
 Queremos fib(5).
-Tabla DP de tamaño 6: [ _, _, _, _, _, _ ]
+Tabla DP de tamaño 6: [ \_, \_, \_, \_, \_, \_ ]
 
 1. Llenamos bases: dp[0]=0, dp[1]=1
-   [ 0, 1, _, _, _, _ ]
+   [ 0, 1, \_, \_, \_, \_ ]
 
 2. Llenamos el resto usando dp[i] = dp[i-1] + dp[i-2]:
-   i=2: [ 0, 1, 1, _, _, _ ]
-   i=3: [ 0, 1, 1, 2, _, _ ]
-   i=4: [ 0, 1, 1, 2, 3, _ ]
+   i=2: [ 0, 1, 1, \_, \_, \_ ]
+   i=3: [ 0, 1, 1, 2, \_, \_ ]
+   i=4: [ 0, 1, 1, 2, 3, \_ ]
    i=5: [ 0, 1, 1, 2, 3, 5 ] 🎉 -> Resultado final
 \end{verbatim}}
 \comofunciona{1. Inicializa una tabla (array o matriz) con valores default.

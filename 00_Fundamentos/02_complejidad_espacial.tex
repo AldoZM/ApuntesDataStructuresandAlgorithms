@@ -6,7 +6,7 @@
 \usepackage{geometry}
 \geometry{a4paper, margin=1in}
 
-% Configuración para código C++
+\% Configuración para código C++
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
@@ -35,47 +35,47 @@
     literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
 }
 
-% Macros para las secciones de los apuntes
+\% Macros para las secciones de los apuntes
 \newcommand{\quees}[1]{
     \section*{🤔 ¿QUÉ ES?}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\dichodeotraforma}[1]{
     \section*{💬 DICHO DE OTRA FORMA}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\diagrama}[1]{
     \section*{🎨 DIAGRAMA}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\comofunciona}[1]{
     \section*{⚙️ ¿CÓMO FUNCIONA?}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\complejidad}[1]{
     \section*{📱 COMPLEJIDAD (Big-O)}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\entrevistas}[1]{
     \section*{🎯 EN ENTREVISTAS}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \newcommand{\resumen}[1]{
     \section*{📋 RESUMEN RÁPIDO}
     \hrulefill \\
-    #1
+    \#1
 }
 
 \begin{document}
@@ -132,22 +132,22 @@ Cada nivel de recursión consume memoria adicional en el Call Stack.
 \begin{description}
     \item[O(1) --- Espacio Constante] Solo usas unas cuantas variables fijas sin importar el input. Ejemplo: Hacer un swap de dos números usando una variable temporal.
     \item[O(n) --- Espacio Lineal] Creas una estructura (como un array o vector) proporcional al input. Ejemplo: Copiar una lista de n elementos a una nueva lista.
-    \item[O(n²) --- Espacio Cuadrático] Creas una estructura bidimensional (matriz) de n x n. Ejemplo: Una tabla de adyacencia para un grafo denso.
+    \item[O(n^2) --- Espacio Cuadrático] Creas una estructura bidimensional (matriz) de n x n. Ejemplo: Una tabla de adyacencia para un grafo denso.
 \end{description}
 }
 
 \complejidad{
 \begin{tabular}{|l|l|l|}
 \hline
-Algoritmo & Espacio & Razón \\
+Algoritmo \& Espacio \& Razón \\
 \hline
-Acceso a Array & O(1) & No requiere memoria extra \\
-Búsqueda Lineal & O(1) & Solo usa un par de índices \\
-Búsqueda Binaria iter. & O(1) & Solo usa izq/der/mid \\
-Búsqueda Binaria recur. & O(log n) & Log(n) llamadas en el stack \\
-Merge Sort & O(n) & Necesita un array auxiliar \\
-Quick Sort & O(log n) & Promedio de llamadas stack \\
-Crear matriz n x n & O(n²) & Espacio bidimensional \\
+Acceso a Array \& O(1) \& No requiere memoria extra \\
+Búsqueda Lineal \& O(1) \& Solo usa un par de índices \\
+Búsqueda Binaria iter. \& O(1) \& Solo usa izq/der/mid \\
+Búsqueda Binaria recur. \& O(log n) \& Log(n) llamadas en el stack \\
+Merge Sort \& O(n) \& Necesita un array auxiliar \\
+Quick Sort \& O(log n) \& Promedio de llamadas stack \\
+Crear matriz n x n \& O(n^2) \& Espacio bidimensional \\
 \hline
 \end{tabular}
 }
@@ -164,8 +164,8 @@ Crear matriz n x n & O(n²) & Espacio bidimensional \\
 \begin{itemize}
     \item Space Complexity = cuánta RAM EXTRA usa el algoritmo.
     \item No cuenta el espacio del input original (Auxiliary Space).
-    \item Estructuras de datos (arrays, maps) creadas $\rightarrow$ O(tamaño).
-    \item Recursión $\rightarrow$ cada nivel cuenta como O(1) en el Call Stack.
+    \item Estructuras de datos (arrays, maps) creadas \$\rightarrow\$ O(tamaño).
+    \item Recursión \$\rightarrow\$ cada nivel cuenta como O(1) en el Call Stack.
     \item O(1) espacio = "In-place", es lo más eficiente en memoria.
 \end{itemize}
 }
