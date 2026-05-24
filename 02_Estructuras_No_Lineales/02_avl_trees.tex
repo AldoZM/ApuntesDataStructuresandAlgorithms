@@ -1,10 +1,93 @@
-════════════════════════════════════════════════════════════════
-🗂️  TEMA: AVL Trees (Árboles Binarios Balanceados)
-📁  CATEGORÍA: 02_Estructuras_No_Lineales
-════════════════════════════════════════════════════════════════
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
 
-🤔 ¿QUÉ ES?
-──────────────────────────────────────────────────────────────
+% Configuración para código C++
+\definecolor{codegreen}{rgb}{0,0.6,0}        
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}     
+\definecolor{codepurple}{rgb}{0.58,0,0.82}   
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    backgroundcolor=\color{backcolour},      
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},       
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    language=C++,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
+}
+
+% Macros para las secciones de los apuntes
+\newcommand{\quees}[1]{
+    \section*{🤔 ¿QUÉ ES?}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\dichodeotraforma}[1]{
+    \section*{💬 DICHO DE OTRA FORMA}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\diagrama}[1]{
+    \section*{🎨 DIAGRAMA}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\comofunciona}[1]{
+    \section*{⚙️ ¿CÓMO FUNCIONA?}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\complejidad}[1]{
+    \section*{📱 COMPLEJIDAD (Big-O)}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\entrevistas}[1]{
+    \section*{🎯 EN ENTREVISTAS}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\resumen}[1]{
+    \section*{📋 RESUMEN RÁPIDO}
+    \hrulefill \\
+    #1
+}
+
+\begin{document}
+
+\title{AVL Trees (Árboles Binarios Balanceados)}
+\author{Aldo Zepeda Montoya}
+\date{\today}
+\maketitle
+
+\subsection*{CATEGORÍA: 02_Estructuras_No_Lineales}
+
+\quees{
 Un móvil de bebé 👶. Si pones mucho peso de un lado, el móvil se
 inclina y queda chueco. Para que funcione bien, debes mover las piezas
 hasta que quede perfectamente equilibrado.
@@ -13,9 +96,9 @@ Un árbol AVL es un Binary Search Tree (BST) que tiene una "manía"
 por el orden: no permite que una rama sea mucho más larga que otra. 
 Si al insertar un número el árbol se desbalancea, el árbol se 
 "tuerce" a sí mismo (rotación) para volver al equilibrio.
+}
 
-💬 DICHO DE OTRA FORMA
-──────────────────────────────────────────────────────────────
+\dichodeotraforma{
 El AVL es el primer árbol auto-balanceable de la historia. Su regla
 es estricta: para cada nodo, la diferencia de altura entre su hijo
 izquierdo y derecho (llamada Balance Factor) solo puede ser -1, 0 o 1.
@@ -23,9 +106,9 @@ izquierdo y derecho (llamada Balance Factor) solo puede ser -1, 0 o 1.
 Si la diferencia es 2 o -2, el árbol realiza rotaciones (Simples o 
 Dobles) para restaurar el balance. Esto garantiza que la altura del
 árbol sea siempre O(log n), evitando el peor caso de los BST normales.
+}
 
-🎨 DIAGRAMA
-──────────────────────────────────────────────────────────────
+\diagrama{\begin{verbatim}
 Rotación Simple a la Derecha (LL Rotation):
 
       [3] (BF=+2)              [2] (BF=0)
@@ -41,10 +124,9 @@ Rotación Doble (LR Rotation):
  [1] (BF=-1)  --->   [2]      --->       [1]    [3]
    \                /
    [2]            [1]
+\end{verbatim}}
 
-⚙️ ¿CÓMO FUNCIONA? (Operaciones principales)
-──────────────────────────────────────────────────────────────
-
+\begin{lstlisting}[language=C++]
 1. Insert: Igual que un BST, pero después de insertar, el árbol revisa
    la altura de los nodos hacia arriba. Si encuentra uno desbalanceado,
    aplica una de las 4 rotaciones (LL, RR, LR, RL).
@@ -148,9 +230,9 @@ int main() {
   Espacio     │ O(n)
 
 * A diferencia del BST normal, el peor caso en AVL sigue siendo O(log n).
+\end{lstlisting}
 
-🎯 EN ENTREVISTAS (Tips Google-level)
-──────────────────────────────────────────────────────────────
+\begin{lstlisting}[language=C++]
 ✅ ¿Por qué AVL y no BST?: La respuesta siempre es "Balance Garantizado".
    Un AVL nunca se convertirá en una Linked List.
 
@@ -162,9 +244,9 @@ int main() {
 ⚠️ Implementación: Casi nunca te pedirán programar un AVL completo 
    en una entrevista de 45 min (es muy largo), pero DEBES saber explicar 
    las rotaciones y por qué son necesarias.
+\end{lstlisting}
 
-📋 RESUMEN RÁPIDO
-──────────────────────────────────────────────────────────────
+\resumen{
 • BST que se auto-balancea solo.
 • Balance Factor: diferencia de altura entre hijos (máximo 1).
 • Rotaciones: El truco místico para equilibrar el árbol.
@@ -172,3 +254,6 @@ int main() {
 • Más complejo de programar que un BST normal.
 • Ideal para aplicaciones donde hay MUCHAS búsquedas y pocas inserciones.
 ════════════════════════════════════════════════════════════════
+}
+
+\end{document}
