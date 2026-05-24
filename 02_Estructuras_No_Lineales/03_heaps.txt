@@ -1,0 +1,147 @@
+════════════════════════════════════════════════════════════════
+🗂️  TEMA: Heaps (Montículos)
+📁  CATEGORÍA: 02_Estructuras_No_Lineales
+════════════════════════════════════════════════════════════════
+
+🤔 ¿QUÉ ES?
+──────────────────────────────────────────────────────────────
+Un torneo de fútbol ⚽ donde el mejor equipo SIEMPRE llega a la 
+final (está en la cima). 
+
+Si el mejor equipo pierde o se retira (lo sacas), el siguiente mejor
+sube automáticamente a ocupar su lugar. No sabes exactamente quién es
+el tercer o cuarto mejor sin hacer más comparaciones, pero SIEMPRE 
+tienes al #1 disponible de inmediato.
+
+Es un árbol binario especial donde la raíz siempre tiene el valor 
+máximo (Max-Heap) o mínimo (Min-Heap) de toda la estructura.
+
+💬 DICHO DE OTRA FORMA
+──────────────────────────────────────────────────────────────
+Un Heap es un árbol binario completo (lleno de arriba a abajo, de
+izquierda a derecha) que cumple la "Propiedad de Heap":
+- Max-Heap: El padre siempre es mayor o igual que sus hijos.
+- Min-Heap: El padre siempre es menor o igual que sus hijos.
+
+A diferencia del BST, no hay orden entre hermanos. Lo único que 
+importa es la relación Padre-Hijo. Por su estructura compacta, 
+se suele implementar eficientemente usando un Array.
+
+🎨 DIAGRAMA
+──────────────────────────────────────────────────────────────
+Max-Heap Visual:
+          [90]
+         /    \
+       [80]  [75]
+       / \   / \
+     [60][70][50][55]
+
+Implementado como Array (¡Truco de índices!):
+Idx:  [0] [1] [2] [3] [4] [5] [6]
+Val: [90][80][75][60][70][50][55]
+
+Fórmulas mágicas para el índice `i`:
+- Parent: (i - 1) / 2
+- Left Child: 2 * i + 1
+- Right Child: 2 * i + 2
+
+⚙️ ¿CÓMO FUNCIONA? (Operaciones principales)
+──────────────────────────────────────────────────────────────
+
+1. Insert: Agregas el nuevo valor al final del array (la hoja más a
+   la izquierda disponible). Luego lo comparas con su padre y lo
+   subes si es necesario (Bubble Up / Heapify Up). O(log n).
+2. Extract Max/Min: Sacas la raíz (arr[0]). Mueves el último elemento
+   a la raíz y lo vas bajando comparándolo con sus hijos hasta que
+   esté en su lugar (Bubble Down / Heapify Down). O(log n).
+3. Peek: Miras arr[0]. O(1).
+4. Heapify (Construir Heap): Convertir un array desordenado en un
+   Heap. O(n).
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+// Heapify Up (al insertar)
+función subir(i):
+    MIENTRAS i > 0 Y arr[padre(i)] < arr[i]:
+        intercambiar(arr[padre(i)], arr[i])
+        i = padre(i)
+
+// Heapify Down (al extraer)
+función bajar(i):
+    mayor = i
+    SI hijoIzquierdo(i) existe Y arr[hijoIzquierdo(i)] > arr[mayor]:
+        mayor = hijoIzquierdo(i)
+    SI hijoDerecho(i) existe Y arr[hijoDerecho(i)] > arr[mayor]:
+        mayor = hijoDerecho(i)
+    SI mayor != i:
+        intercambiar(arr[i], arr[mayor])
+        bajar(mayor)
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <vector>
+#include <queue>    // STL priority_queue es un Heap
+using namespace std;
+
+int main() {
+    // 1. Max-Heap (por defecto)
+    priority_queue<int> maxHeap;
+    
+    maxHeap.push(10);
+    maxHeap.push(30);
+    maxHeap.push(20);
+
+    cout << "Máximo en la cima: " << maxHeap.top() << endl; // 30
+
+    maxHeap.pop(); // Quita el 30
+    cout << "Nuevo máximo: " << maxHeap.top() << endl;    // 20
+
+    // 2. Min-Heap
+    priority_queue<int, vector<int>, greater<int>> minHeap;
+    minHeap.push(10);
+    minHeap.push(30);
+    minHeap.push(20);
+
+    cout << "Mínimo en la cima: " << minHeap.top() << endl; // 10
+
+    return 0;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Operación        │ Tiempo    │ Razón
+  ─────────────────┼───────────┼──────────────────────────────
+  Insert           │ O(log n)  │ Altura del árbol
+  Extract Max/Min  │ O(log n)  │ Altura del árbol
+  Peek Max/Min     │ O(1)      │ Es la raíz (arr[0])
+  Heapify (Build)  │ O(n)      │ Análisis matemático avanzado
+  Search           │ O(n)      │ No es un BST, hay que buscar todo
+
+🎯 EN ENTREVISTAS (Tips Google-level)
+──────────────────────────────────────────────────────────────
+✅ "Top K Elements": Si te piden los K elementos más grandes, usa un
+   Min-Heap de tamaño K. Si te piden los más chicos, usa un Max-Heap.
+
+💡 Priority Queue = Heap: En el 99% de los casos, cuando necesites un 
+   Heap en una entrevista, usa `std::priority_queue`. No lo programes
+   desde cero a menos que te lo pidan explícitamente.
+
+⚠️ No es un BST: Recuerda que un Heap NO está ordenado de izquierda a
+   derecha. Solo garantiza la relación Padre > Hijo.
+
+🔑 Heapsort: Puedes ordenar un array metiendo todo a un Heap y 
+   sacándolo uno por uno. O(n log n).
+
+📋 RESUMEN RÁPIDO
+──────────────────────────────────────────────────────────────
+• Árbol binario completo donde el jefe (raíz) es el mayor o menor.
+• Implementado como Array para máxima velocidad y ahorro de memoria.
+• Insertar y sacar el máximo/mínimo es O(log n).
+• Ver el máximo/mínimo es instantáneo O(1).
+• Usos: Algoritmo de Dijkstra, colas de prioridad, problemas de "Top K".
+• Heapify (construir desde array) es sorprendentemente O(n).
+════════════════════════════════════════════════════════════════
