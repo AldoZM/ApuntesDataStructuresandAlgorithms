@@ -1,19 +1,102 @@
-════════════════════════════════════════════════════════════════
-🗂️  TEMA: Queues (Filas / Colas)
-📁  CATEGORÍA: 01_Estructuras_Lineales
-════════════════════════════════════════════════════════════════
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
 
-🤔 ¿QUÉ ES?
-──────────────────────────────────────────────────────────────
+% Configuración para código C++
+\definecolor{codegreen}{rgb}{0,0.6,0}        
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}     
+\definecolor{codepurple}{rgb}{0.58,0,0.82}   
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    backgroundcolor=\color{backcolour},      
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},       
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    language=C++,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
+}
+
+% Macros para las secciones de los apuntes
+\newcommand{\quees}[1]{
+    \section*{🤔 ¿QUÉ ES?}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\dichodeotraforma}[1]{
+    \section*{💬 DICHO DE OTRA FORMA}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\diagrama}[1]{
+    \section*{🎨 DIAGRAMA}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\comofunciona}[1]{
+    \section*{⚙️ ¿CÓMO FUNCIONA?}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\complejidad}[1]{
+    \section*{📱 COMPLEJIDAD (Big-O)}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\entrevistas}[1]{
+    \section*{🎯 EN ENTREVISTAS}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\resumen}[1]{
+    \section*{📋 RESUMEN RÁPIDO}
+    \hrulefill \\
+    #1
+}
+
+\begin{document}
+
+\title{Queues (Filas / Colas)}
+\author{Aldo Zepeda Montoya}
+\date{\today}
+\maketitle
+
+\subsection*{CATEGORÍA: 01_Estructuras_Lineales}
+
+\quees{
 La fila para entrar al cine 🎟️ o al banco 🏦. El primero que llega 
 es el primero en ser atendido. No puedes "colarte" al frente; llegas 
 al final y esperas tu turno.
 
 Es una estructura "FIFO" (First In, First Out): el primero que entra
 es el primero en salir. Es lo opuesto al Stack.
+}
 
-💬 DICHO DE OTRA FORMA
-──────────────────────────────────────────────────────────────
+\dichodeotraforma{
 Una Queue es una estructura lineal que restringe el acceso:
 - Solo puedes AGREGAR (Enqueue) por el final (Back/Rear).
 - Solo puedes QUITAR (Dequeue) por el frente (Front).
@@ -22,9 +105,9 @@ Existen variaciones importantes:
 1. Deque: Puedes insertar/eliminar por ambos extremos.
 2. Priority Queue: Los elementos salen según su importancia, no 
    solo por orden de llegada (implementada usualmente con un Heap).
+}
 
-🎨 DIAGRAMA
-──────────────────────────────────────────────────────────────
+\diagrama{\begin{verbatim}
 enqueue(A) → enqueue(B) → enqueue(C)
 
 FRONT                    BACK
@@ -36,10 +119,9 @@ dequeue() → devuelve A y lo quita, queda:
 FRONT         BACK
   ↓             ↓
  [B] ──→ [C]
+\end{verbatim}}
 
-⚙️ ¿CÓMO FUNCIONA? (Operaciones principales)
-──────────────────────────────────────────────────────────────
-
+\begin{lstlisting}[language=C++]
 1. enqueue(x): Agregas el elemento `x` al final de la fila. O(1).
 2. dequeue(): Quitas el primer elemento del frente. O(1).
 3. front() / peek(): Miras quién es el primero sin quitarlo. O(1).
@@ -105,9 +187,9 @@ int main() {
   front() / peek() │ O(1)    │ O(1)
   isEmpty()        │ O(1)    │ O(1)
   Total (n datos)  │ -       │ O(n)
+\end{lstlisting}
 
-🎯 EN ENTREVISTAS (Tips Google-level)
-──────────────────────────────────────────────────────────────
+\entrevistas{
 ✅ Sin Queue no hay BFS: Si el problema pide "camino más corto" en un
    grafo sin pesos o explorar un árbol por niveles, vas a usar una Queue.
 
@@ -120,9 +202,9 @@ int main() {
 
 🔑 "Sliding Window Maximum": Un problema clásico de Google que se 
    resuelve de forma óptima usando un Deque.
+}
 
-📋 RESUMEN RÁPIDO
-──────────────────────────────────────────────────────────────
+\resumen{
 • FIFO: First In, First Out.
 • Operaciones O(1) en el frente y el final.
 • Ideal para: Procesamiento de tareas, buffers, algoritmos de grafos
@@ -130,3 +212,6 @@ int main() {
 • Deque: Permite meter/sacar por ambos lados (muy flexible).
 • Priority Queue: Saca al que tiene más "rango", no al que llegó primero.
 ════════════════════════════════════════════════════════════════
+}
+
+\end{document}

@@ -1,10 +1,93 @@
-════════════════════════════════════════════════════════════════
-🗂️  TEMA: Stacks (Pilas)
-📁  CATEGORÍA: 01_Estructuras_Lineales
-════════════════════════════════════════════════════════════════
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
 
-🤔 ¿QUÉ ES?
-──────────────────────────────────────────────────────────────
+% Configuración para código C++
+\definecolor{codegreen}{rgb}{0,0.6,0}        
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}     
+\definecolor{codepurple}{rgb}{0.58,0,0.82}   
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    backgroundcolor=\color{backcolour},      
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},       
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    language=C++,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
+}
+
+% Macros para las secciones de los apuntes
+\newcommand{\quees}[1]{
+    \section*{🤔 ¿QUÉ ES?}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\dichodeotraforma}[1]{
+    \section*{💬 DICHO DE OTRA FORMA}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\diagrama}[1]{
+    \section*{🎨 DIAGRAMA}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\comofunciona}[1]{
+    \section*{⚙️ ¿CÓMO FUNCIONA?}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\complejidad}[1]{
+    \section*{📱 COMPLEJIDAD (Big-O)}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\entrevistas}[1]{
+    \section*{🎯 EN ENTREVISTAS}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\resumen}[1]{
+    \section*{📋 RESUMEN RÁPIDO}
+    \hrulefill \\
+    #1
+}
+
+\begin{document}
+
+\title{Stacks (Pilas)}
+\author{Aldo Zepeda Montoya}
+\date{\today}
+\maketitle
+
+\subsection*{CATEGORÍA: 01_Estructuras_Lineales}
+
+\quees{
 Una pila de platos 🍽️ en el fregadero. Solo puedes poner platos
 encima (push) y solo puedes agarrar el de hasta arriba (pop). 
 
@@ -14,18 +97,18 @@ es el primero en salir.
 
 Imagina un tubo de papas Pringles 🥔: la última papa que metieron
 en la fábrica es la primera que te comes al abrir el tubo.
+}
 
-💬 DICHO DE OTRA FORMA
-──────────────────────────────────────────────────────────────
+\dichodeotraforma{
 Un Stack es una estructura de datos lineal de tipo ADT (Abstract Data
 Type) que restringe el acceso a un solo extremo: el "Top". 
 
 Es fundamental para el funcionamiento de las computadoras, ya que
 el "Call Stack" de los lenguajes de programación usa esta lógica
 para gestionar las llamadas a funciones y la recursión.
+}
 
-🎨 DIAGRAMA
-──────────────────────────────────────────────────────────────
+\diagrama{\begin{verbatim}
 push(A) → push(B) → push(C)
 
      [C]  ← TOP (C es el último en entrar)
@@ -36,10 +119,9 @@ pop() → devuelve C y lo quita, queda:
 
      [B]  ← TOP (ahora B es el nuevo tope)
      [A]
+\end{verbatim}}
 
-⚙️ ¿CÓMO FUNCIONA? (Operaciones principales)
-──────────────────────────────────────────────────────────────
-
+\begin{lstlisting}[language=C++]
 1. push(x): Agregas el elemento `x` al tope de la pila. O(1).
 2. pop(): Quitas el elemento del tope. O(1).
 3. peek() / top(): Miras qué hay en el tope sin quitarlo. O(1).
@@ -112,9 +194,9 @@ int main() {
   peek() / top()   │ O(1)    │ O(1)
   isEmpty()        │ O(1)    │ O(1)
   Total (n datos)  │ -       │ O(n)
+\end{lstlisting}
 
-🎯 EN ENTREVISTAS (Tips Google-level)
-──────────────────────────────────────────────────────────────
+\entrevistas{
 ✅ Problema de Oro: "Valid Parentheses". Si ves paréntesis, corchetes 
    o llaves en un problema, ¡usa un stack!
 
@@ -128,9 +210,9 @@ int main() {
 🔑 Patrón "Monotonic Stack": Un stack donde los elementos siempre están
    en orden (creciente o decreciente). Clave para problemas como 
    "Next Greater Element" o "Daily Temperatures".
+}
 
-📋 RESUMEN RÁPIDO
-──────────────────────────────────────────────────────────────
+\resumen{
 • LIFO: Last In, First Out.
 • Todas las operaciones básicas son O(1) (instantáneas).
 • Usos: Historial del navegador (Undo/Redo), procesar expresiones
@@ -138,3 +220,6 @@ int main() {
 • Muy eficiente pero limitado: solo ves el tope.
 • La base de la recursión en cualquier lenguaje.
 ════════════════════════════════════════════════════════════════
+}
+
+\end{document}
