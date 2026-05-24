@@ -1,0 +1,145 @@
+════════════════════════════════════════════════════════════════
+🗂️  TEMA: Backtracking (Vuelta Atrás)
+📁  CATEGORÍA: 06_Patrones_Entrevista
+════════════════════════════════════════════════════════════════
+
+🤔 ¿QUÉ ES?
+──────────────────────────────────────────────────────────────
+Resolver un laberinto 🌀 con un lápiz. 
+
+Sigues un camino con la punta del lápiz hasta que llegas a un 
+callejón sin salida. En lugar de rendirte, borras lo que hiciste 
+(vuelta atrás) hasta la última bifurcación y pruebas el otro camino 
+que dejaste pendiente.
+
+Backtracking es probar TODAS las posibilidades una por una, pero 
+con la inteligencia de "deshacer" tus pasos cuando te das cuenta 
+de que una ruta no lleva a la solución. Es una búsqueda exhaustiva 
+pero controlada.
+
+💬 DICHO DE OTRA FORMA
+──────────────────────────────────────────────────────────────
+Backtracking es una técnica algorítmica para resolver problemas de 
+forma recursiva, intentando construir una solución incrementalmente. 
+
+Se basa en la exploración de un "Árbol de Decisiones". Si en algún 
+punto la solución parcial no cumple con las restricciones del problema 
+(se vuelve inválida), el algoritmo descarta esa rama ("pruning") y 
+regresa al estado anterior para intentar otra opción.
+
+Es la base para resolver problemas de combinatoria, permutaciones y 
+juegos como el Sudoku o el Ajedrez.
+
+🎨 DIAGRAMA (Árbol de Decisiones para Subconjuntos de [1,2])
+──────────────────────────────────────────────────────────────
+               [root]
+              /      \
+        Elegir 1?   NO elegir 1?
+         /    \        /      \
+     Elegir 2? NO?   Elegir 2? NO?
+       |        |       |        |
+     [1,2]     [1]     [2]      []
+
+¡Cada nodo es una decisión! Backtracking recorre este árbol usando DFS.
+
+⚙️ ¿CÓMO FUNCIONA? (Template Universal)
+──────────────────────────────────────────────────────────────
+
+Casi todos los problemas de Backtracking siguen este patrón:
+
+1. Caso Base: ¿Ya terminamos de construir la solución?
+   - SÍ: Guárdala o imprímela. Regresa.
+2. Opciones: Para cada opción disponible en este nivel:
+   - ¿Es válida la opción? (Restricciones).
+   - SÍ: 
+     a. Hacer Elección: Modifica el estado actual.
+     b. Recursión: Llama a la función para el siguiente nivel.
+     c. Deshacer Elección (BACKTRACK): Regresa el estado como estaba.
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+función backtrack(estado, opciones):
+    SI estado es meta:
+        imprimir(estado)
+        return
+
+    PARA cada o EN opciones:
+        SI esValida(o, estado):
+            agregar o a estado // "Hacer"
+            backtrack(estado, opciones_restantes)
+            quitar o de estado // "Deshacer" (La clave ✨)
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+// Problema: Generar todas las permutaciones de un string -> O(n!)
+void permute(string& s, int l, int r) {
+    // Caso Base
+    if (l == r) {
+        cout << s << endl;
+        return;
+    }
+
+    for (int i = l; i <= r; i++) {
+        // 1. Hacer Elección (Swap)
+        swap(s[l], s[i]);
+
+        // 2. Recursión (Ir al siguiente nivel)
+        permute(s, l + 1, r);
+
+        // 3. Deshacer Elección (Backtrack)
+        // Regresamos el string a su estado original para la sig. iteración
+        swap(s[l], s[i]);
+    }
+}
+
+int main() {
+    string str = "ABC";
+    cout << "Permutaciones de ABC:" << endl;
+    permute(str, 0, str.length() - 1);
+    return 0;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Problema        │ Tiempo Típico │ Razón
+  ────────────────┼───────────────┼──────────────────────────────
+  Permutaciones   │ O(n!)         │ n * (n-1) * (n-2)...
+  Subconjuntos    │ O(2^n)        │ Cada elemento se elige o no
+  N-Queens        │ O(n!)         │ Menos gracias al pruning
+  Sudoku          │ O(9^(n*n))    │ Fuerza bruta pura (peor caso)
+
+* El espacio suele ser O(n) por la profundidad del stack de recursión.
+
+🎯 EN ENTREVISTAS (Tips Google-level)
+──────────────────────────────────────────────────────────────
+✅ Cuándo usar: Si te piden "Generar todos los...", "Encontrar todas 
+   las combinaciones...", o problemas de puzzles.
+
+💡 Pruning (Poda): Es la parte más importante para optimizar. Si 
+   puedes detectar que un camino es inválido ANTES de entrar a la 
+   recursión, ahorras tiempo exponencial.
+
+⚠️ El "Deshacer": El error #1 es olvidar resetear el estado (quitar 
+   el elemento de la lista, volver a poner el 0 en la matriz, etc.) 
+   después de la llamada recursiva.
+
+🔑 Visualización: Siempre trata de dibujar el Árbol de Decisiones 
+   en el pizarrón. Ayuda a explicar la lógica al entrevistador.
+
+📋 RESUMEN RÁPIDO
+──────────────────────────────────────────────────────────────
+• DFS + Deshacer cambios.
+• Explora todas las soluciones posibles.
+• Úsalo para permutaciones, combinaciones y laberintos.
+• Complejidad alta (Exponencial/Factorial).
+• Pruning: Cortar ramas que no sirven para ganar velocidad.
+• Esencial dominar el template: Hacer -> Recursión -> Deshacer.
+════════════════════════════════════════════════════════════════
