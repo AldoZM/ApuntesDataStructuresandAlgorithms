@@ -1,0 +1,267 @@
+﻿════════════════════════════════════════════════════════════════
+🗂️  TEMA: Big-O Notation
+📁  CATEGORÍA: 00_Fundamentos
+════════════════════════════════════════════════════════════════
+
+🤔 ¿QUÉ ES?
+──────────────────────────────────────────────────────────────
+Imagínate que tienes una caja de chocolates 🍫 y quieres
+encontrar uno de sabor fresa. ¿Cuánto tiempo tardarías?
+
+  Caso 1: Si sabes que el de fresa SIEMPRE está en la posición 1
+          → Lo agarras directo. No importa si hay 10 o 1,000,000 chocolates.
+          → Siempre es 1 paso. ¡Rápidísimo! ⚡
+
+  Caso 2: Si los chocolates están desordenados y tienes que revisar
+          uno por uno hasta encontrar el de fresa
+          → Si hay 10 chocolates, revisas hasta 10.
+          → Si hay 1,000,000 chocolates, revisas hasta 1,000,000.
+          → El tiempo crece igual que la cantidad de chocolates. 📈
+
+  Caso 3: Si por cada chocolate que revisas, tienes que revisar
+          TODOS los demás para compararlos
+          → Si hay 10 chocolates → 10 × 10 = 100 comparaciones
+          → Si hay 100 chocolates → 100 × 100 = 10,000 comparaciones
+          → ¡Crece muy rápido y se pone muy lento muy pronto! 🐌
+
+Big-O Notation es la forma que tienen los programadores para
+describir qué tan rápido o lento crece el tiempo que tarda
+un algoritmo cuando le das más y más datos.
+
+La "n" siempre representa la cantidad de datos de entrada.
+Big-O siempre describe el PEOR caso posible (lo más lento que puede ser).
+
+💬 DICHO DE OTRA FORMA
+──────────────────────────────────────────────────────────────
+Big-O es la métrica estándar para comparar la eficiencia de
+algoritmos independientemente del hardware. Describe cómo
+escala el tiempo de ejecución (o uso de memoria) en función
+del tamaño del input "n", siempre en el worst case.
+
+En interviews, SIEMPRE tienes que dar el Big-O de tu solución.
+Es tan esperado como que el código funcione.
+
+🎨 DIAGRAMA — Curvas de complejidad
+──────────────────────────────────────────────────────────────
+Tiempo
+  |                                              O(2^n) 💀
+  |                                         ,,''
+  |                                    ,,'''        O(n²) 🐌
+  |                               ,,'''        ,,,''
+  |                          ,,'''       ,,,'''
+  |                     ,,'''      ,,,'''          O(n log n) 🐢
+  |                ,,'''      ,,'''
+  |           ,,'''      ,,'''                    O(n) 🚶
+  |      ,,'''       ,,''
+  |  ,,''        ,,''                           O(log n) 🏃
+  |''        ,,''
+  |      ,,''                                  O(1) ⚡ (línea plana)
+  +-------------------------------------------------> n (tamaño del input)
+        pequeño      mediano        grande
+
+  ⚡ O(1)       → Constante    → IDEAL
+  🏃 O(log n)   → Logarítmico → MUY BUENO
+  🚶 O(n)       → Lineal       → ACEPTABLE
+  🐢 O(n log n) → Linealítmico → BUENO para sorting
+  🐌 O(n²)      → Cuadrático   → MALO (evitar si puedes)
+  💀 O(2^n)     → Exponencial  → FATAL (solo para n muy pequeño)
+
+🎨 DIAGRAMA — Ejemplos concretos
+──────────────────────────────────────────────────────────────
+
+  O(1) — Array access:
+  arr = [5, 2, 8, 1, 9]
+         0  1  2  3  4
+  arr[2] → directo al índice 2 → siempre 1 paso ✅
+
+  O(n) — Linear search:
+  Buscar el 8 en [5, 2, 8, 1, 9]
+  ¿5 == 8? No → ¿2 == 8? No → ¿8 == 8? SÍ ✅
+  En el peor caso revisas todos los n elementos.
+
+  O(n²) — Comparar cada par:
+  Para n=4: [A, B, C, D]
+  A vs B, A vs C, A vs D  (3 comparaciones)
+  B vs C, B vs D          (2 comparaciones)
+  C vs D                  (1 comparación)
+  Total: n*(n-1)/2 ≈ n² comparaciones
+
+⚙️ ¿CÓMO FUNCIONA? — Las notaciones principales
+──────────────────────────────────────────────────────────────
+
+🔑 O(1) — Tiempo Constante
+  Sin importar cuántos datos tengas, siempre tarda lo mismo.
+  Ejemplo: acceder a arr[5] directamente por índice.
+
+🔑 O(log n) — Tiempo Logarítmico
+  Cada paso DIVIDE el problema a la mitad.
+  Si tienes 1,024 elementos → necesitas máximo 10 pasos (2^10 = 1024)
+  Si tienes 1,048,576 elementos → necesitas máximo 20 pasos (2^20)
+  Ejemplo: Binary search.
+
+🔑 O(n) — Tiempo Lineal
+  Si duplicas el input, el tiempo se duplica.
+  Ejemplo: recorrer todos los elementos de una lista una vez.
+
+🔑 O(n log n) — Tiempo Linealítmico
+  Un poco peor que lineal. La mayoría de buenos algoritmos de sorting.
+  Ejemplo: Merge Sort, Quick Sort (promedio).
+
+🔑 O(n²) — Tiempo Cuadrático
+  Dos loops anidados sobre el mismo input.
+  Si duplicas el input, el tiempo se CUADRUPLICA.
+  Ejemplo: Bubble Sort, comparar todos contra todos.
+
+🔑 O(2^n) — Tiempo Exponencial
+  Cada elemento nuevo DUPLICA el trabajo.
+  n=30 → más de 1,000,000,000 operaciones. Imposible en práctica.
+  Ejemplo: fuerza bruta para subsets, Fibonacci sin memoization.
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+// O(1) — siempre el mismo número de pasos
+función obtenerPrimero(array):
+    return array[0]   // directo, sin loops
+
+// O(n) — un loop que recorre todos los elementos
+función buscarLineal(array, objetivo):
+    PARA cada elemento EN array:
+        SI elemento == objetivo:
+            return VERDADERO
+    return FALSO
+
+// O(n²) — dos loops anidados sobre el mismo array
+función tienesDuplicados(array):
+    PARA i desde 0 hasta n:
+        PARA j desde i+1 hasta n:
+            SI array[i] == array[j]:
+                return VERDADERO
+    return FALSO
+
+// O(log n) — cada iteración parte el problema a la mitad
+función busquedaBinaria(array, objetivo):
+    izq = 0
+    der = tamaño(array) - 1
+    MIENTRAS izq <= der:
+        medio = (izq + der) / 2
+        SI array[medio] == objetivo: return medio
+        SI array[medio] < objetivo:  izq = medio + 1
+        SINO:                        der = medio - 1
+    return -1
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// ─────────────────────────────────────────────
+// O(1) — Constante
+// No importa si el vector tiene 10 o 10 millones
+// de elementos, SIEMPRE hacemos exactamente 1 operación
+// ─────────────────────────────────────────────
+int obtenerPrimero(vector<int>& arr) {
+    return arr[0];  // acceso directo por índice → O(1)
+}
+
+// ─────────────────────────────────────────────
+// O(n) — Lineal
+// Si arr tiene n elementos, en el PEOR caso
+// (el objetivo no existe) revisamos los n elementos
+// ─────────────────────────────────────────────
+bool buscarLineal(vector<int>& arr, int objetivo) {
+    for (int i = 0; i < arr.size(); i++) {  // recorremos TODO el array
+        if (arr[i] == objetivo) return true; // encontrado → salimos
+    }
+    return false;  // no lo encontramos en ningún lado
+}
+
+// ─────────────────────────────────────────────
+// O(n²) — Cuadrático
+// El loop exterior corre n veces.
+// Por CADA vuelta del exterior, el interior también corre ~n veces.
+// Total: n × n = n² comparaciones
+// ─────────────────────────────────────────────
+bool tieneDuplicados(vector<int>& arr) {
+    int n = arr.size();
+    for (int i = 0; i < n; i++) {          // primer loop: cada elemento
+        for (int j = i + 1; j < n; j++) {  // segundo loop: compara con el resto
+            if (arr[i] == arr[j]) return true;  // duplicado encontrado
+        }
+    }
+    return false;
+}
+
+// ─────────────────────────────────────────────
+// O(log n) — Logarítmico
+// El array DEBE estar ordenado para que funcione.
+// Cada iteración descarta LA MITAD de los elementos restantes.
+// Si n=1024 → máximo 10 iteraciones (porque 2^10 = 1024)
+// ─────────────────────────────────────────────
+int busquedaBinaria(vector<int>& arr, int objetivo) {
+    int izq = 0;               // puntero al inicio del rango de búsqueda
+    int der = arr.size() - 1;  // puntero al final del rango de búsqueda
+
+    while (izq <= der) {
+        int medio = izq + (der - izq) / 2;  // calculamos el punto medio
+        // Nota: usamos izq + (der-izq)/2 en lugar de (izq+der)/2
+        // para evitar overflow cuando izq y der son números muy grandes
+
+        if (arr[medio] == objetivo) return medio;  // ¡encontrado!
+        if (arr[medio] < objetivo)  izq = medio + 1; // buscar en la mitad derecha
+        else                        der = medio - 1; // buscar en la mitad izquierda
+    }
+    return -1;  // -1 significa "no encontrado" (convención estándar)
+}
+
+int main() {
+    vector<int> arr = {1, 3, 5, 7, 9, 11, 13, 15};
+
+    cout << "Primero: " << obtenerPrimero(arr) << endl;           // 1
+    cout << "¿Tiene 7? " << buscarLineal(arr, 7) << endl;         // 1 (true)
+    cout << "¿Duplicados? " << tieneDuplicados(arr) << endl;      // 0 (false)
+    cout << "Binary search 7: " << busquedaBinaria(arr, 7) << endl; // índice 3
+
+    return 0;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Notación    │ Nombre         │ Ejemplo real              │ ¿Usable?
+  ────────────┼────────────────┼───────────────────────────┼────────────
+  O(1)        │ Constante      │ Array access, hash lookup  │ ✅ Ideal
+  O(log n)    │ Logarítmico    │ Binary search, BST ops     │ ✅ Muy bueno
+  O(n)        │ Lineal         │ Loop simple, linear search │ ✅ Aceptable
+  O(n log n)  │ Linealítmico   │ Merge sort, Heap sort      │ ✅ Bueno
+  O(n²)       │ Cuadrático     │ Bubble sort, nested loops  │ ⚠️ Malo
+  O(n³)       │ Cúbico         │ 3 loops anidados           │ ❌ Muy lento
+  O(2^n)      │ Exponencial    │ Subsets, recursion fatal   │ ❌ Terrible
+
+🎯 EN ENTREVISTAS (Tips Google-level)
+──────────────────────────────────────────────────────────────
+✅ Big-O ignora constantes y términos menores:
+   O(3n + 5) → se simplifica a O(n)
+   O(n² + n) → se simplifica a O(n²) (el n² domina)
+
+⚠️ En entrevistas, cuando dices la complejidad, el entrevistador
+   a veces pregunta "¿puedes hacerlo mejor?". Siempre piensa si
+   hay una solución más eficiente antes de empezar a codear.
+
+🔑 Regla de oro: si ves que tu solución tiene O(n²) y el problema
+   involucra búsqueda, piensa si un hash map te da O(n) en su lugar.
+
+📋 RESUMEN RÁPIDO
+──────────────────────────────────────────────────────────────
+• Big-O = qué tan rápido crece el tiempo al crecer el input
+• Siempre describe el PEOR caso
+• "n" = tamaño del input
+• O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2^n)
+• Loops anidados sobre mismo input → multiplica las complejidades
+• Loops seguidos → te quedas con el mayor
+• Ignora constantes: O(3n) → O(n)
+• En entrevistas: siempre menciona tiempo Y espacio
+• Hash maps convierten muchos O(n²) en O(n) ✅
+════════════════════════════════════════════════════════════════
