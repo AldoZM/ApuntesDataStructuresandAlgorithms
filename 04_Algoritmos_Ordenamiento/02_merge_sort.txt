@@ -1,0 +1,154 @@
+════════════════════════════════════════════════════════════════
+🗂️  TEMA: Merge Sort (Ordenamiento por Mezcla)
+📁  CATEGORÍA: 04_Algoritmos_Ordenamiento
+════════════════════════════════════════════════════════════════
+
+🤔 ¿QUÉ ES?
+──────────────────────────────────────────────────────────────
+Dividir un problema grande con un amigo 🤝. Tienes una pila gigante 
+de cartas desordenadas. En lugar de ordenarlas tú solo, le das la 
+mitad a tu amigo.
+
+Cada uno ordena su mitad (y si son muchas, vuelven a dividir con 
+alguien más). Al final, cuando cada quien tiene su pequeña parte 
+ordenada, las fusionan (merge) comparando carta por carta para armar 
+la pila final perfecta.
+
+Es un algoritmo basado en la estrategia "Divide y Vencerás" 
+(Divide and Conquer).
+
+💬 DICHO DE OTRA FORMA
+──────────────────────────────────────────────────────────────
+Merge Sort es un algoritmo de ordenamiento recursivo, estable y de
+comparación. 
+
+Su funcionamiento se basa en dos fases:
+1. Divide: Parte el array recursivamente a la mitad hasta llegar a 
+   unidades de tamaño 1.
+2. Conquer (Merge): Combina los subarrays ordenados para formar uno
+   más grande, manteniendo el orden.
+
+A diferencia de Quick Sort, Merge Sort GARANTIZA un tiempo de 
+ejecución de O(n log n) incluso en el peor caso posible.
+
+🎨 DIAGRAMA
+──────────────────────────────────────────────────────────────
+Array inicial: [38, 27, 43, 3]
+
+Divide:
+[38, 27]       [43, 3]
+[38]  [27]     [43]  [3]
+
+Merge (ordenando al combinar):
+[27, 38]       [3, 43]
+      \         /
+      [3, 27, 38, 43]  <-- ¡Ordenado!
+
+⚙️ ¿CÓMO FUNCIONA? (Paso a paso)
+──────────────────────────────────────────────────────────────
+
+1. Si el array tiene tamaño 1 o 0, ya está ordenado (caso base).
+2. Encuentras el punto medio: `mid = size / 2`.
+3. Llamas a `mergeSort` para la mitad izquierda.
+4. Llamas a `mergeSort` para la mitad derecha.
+5. Fucionas (Merge) las dos mitades:
+   - Comparas los elementos de cada mitad uno por uno.
+   - Copias el menor al array original.
+   - Repites hasta terminar ambas mitades.
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+función mergeSort(arr):
+    SI arr.tamaño <= 1: return arr
+    
+    mitad = arr.tamaño / 2
+    izq = mergeSort(arr[0...mitad])
+    der = mergeSort(arr[mitad...fin])
+    
+    return merge(izq, der)
+
+función merge(izq, der):
+    resultado = []
+    MIENTRAS izq Y der NO vacíos:
+        SI izq[0] <= der[0]:
+            agregar izq[0] a resultado, quitar de izq
+        SINO:
+            agregar der[0] a resultado, quitar de der
+    agregar lo que sobre de izq o der a resultado
+    return resultado
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void merge(vector<int>& arr, int l, int m, int r) {
+    int n1 = m - l + 1;
+    int n2 = r - m;
+    vector<int> L(n1), R(n2);
+
+    for (int i = 0; i < n1; i++) L[i] = arr[l + i];
+    for (int j = 0; j < n2; j++) R[j] = arr[m + 1 + j];
+
+    int i = 0, j = 0, k = l;
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) arr[k++] = L[i++];
+        else arr[k++] = R[j++];
+    }
+    while (i < n1) arr[k++] = L[i++];
+    while (j < n2) arr[k++] = R[j++];
+}
+
+void mergeSort(vector<int>& arr, int l, int r) {
+    if (l >= r) return;
+    int m = l + (r - l) / 2;
+    mergeSort(arr, l, m);
+    mergeSort(arr, m + 1, r);
+    merge(arr, l, m, r);
+}
+
+int main() {
+    vector<int> data = {38, 27, 43, 3, 9, 82, 10};
+    mergeSort(data, 0, data.size() - 1);
+    for(int x : data) cout << x << " "; // 3 9 10 27 38 43 82
+    return 0;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Caso        │ Tiempo        │ Espacio
+  ────────────┼───────────────┼───────────────
+  Best        │ O(n log n)    │ O(n)
+  Average     │ O(n log n)    │ O(n)
+  Worst       │ O(n log n)    │ O(n)
+
+* El espacio O(n) es porque necesita arrays auxiliares para mezclar.
+
+🎯 EN ENTREVISTAS (Tips Google-level)
+──────────────────────────────────────────────────────────────
+✅ "Sort a Linked List": Merge Sort es el algoritmo preferido para 
+   ordenar Linked Lists, porque no necesita acceso aleatorio.
+
+💡 Estabilidad: Merge Sort es un Stable Sort. Esto es vital si 
+   ordenas objetos por varios criterios (ej: ordenar personas por 
+   nombre y luego por edad).
+
+⚠️ Memoria: Su punto débil es el espacio O(n). Si la memoria es muy
+   limitada, podrías preferir Quick Sort o Heap Sort.
+
+🔑 Merge Step: La lógica de la función `merge` se usa en otros problemas
+   como "Merge Two Sorted Lists" o "Merge Intervals".
+
+📋 RESUMEN RÁPIDO
+──────────────────────────────────────────────────────────────
+• Divide y vencerás.
+• Siempre tarda O(n log n), sin importar qué tan desordenado esté.
+• Es un ordenamiento estable.
+• Usa memoria extra O(n).
+• Ideal para datasets grandes o Linked Lists.
+• Base para problemas de fusionar listas o intervalos.
+════════════════════════════════════════════════════════════════
