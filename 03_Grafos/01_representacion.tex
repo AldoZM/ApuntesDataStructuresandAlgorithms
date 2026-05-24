@@ -1,10 +1,93 @@
-════════════════════════════════════════════════════════════════
-🗂️  TEMA: Representación de Grafos
-📁  CATEGORÍA: 03_Grafos
-════════════════════════════════════════════════════════════════
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
 
-🤔 ¿QUÉ ES?
-──────────────────────────────────────────────────────────────
+% Configuración para código C++
+\definecolor{codegreen}{rgb}{0,0.6,0}        
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}     
+\definecolor{codepurple}{rgb}{0.58,0,0.82}   
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    backgroundcolor=\color{backcolour},      
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},       
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    language=C++,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
+}
+
+% Macros para las secciones de los apuntes
+\newcommand{\quees}[1]{
+    \section*{🤔 ¿QUÉ ES?}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\dichodeotraforma}[1]{
+    \section*{💬 DICHO DE OTRA FORMA}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\diagrama}[1]{
+    \section*{🎨 DIAGRAMA}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\comofunciona}[1]{
+    \section*{⚙️ ¿CÓMO FUNCIONA?}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\complejidad}[1]{
+    \section*{📱 COMPLEJIDAD (Big-O)}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\entrevistas}[1]{
+    \section*{🎯 EN ENTREVISTAS}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\resumen}[1]{
+    \section*{📋 RESUMEN RÁPIDO}
+    \hrulefill \\
+    #1
+}
+
+\begin{document}
+
+\title{Representación de Grafos}
+\author{Aldo Zepeda Montoya}
+\date{\today}
+\maketitle
+
+\subsection*{CATEGORÍA: 03_Grafos}
+
+\quees{
 Un mapa de ciudades 🗺️ con carreteras entre ellas. 
 
 En computación, las ciudades se llaman Nodos (o Vértices) y las 
@@ -15,9 +98,9 @@ Puedes tener:
 - Grafos Dirigidos: Carreteras de un solo sentido (A → B).
 - Grafos No Dirigidos: Carreteras de doble sentido (A ↔ B).
 - Grafos Ponderados: Carreteras con costo o distancia (A --5--> B).
+}
 
-💬 DICHO DE OTRA FORMA
-──────────────────────────────────────────────────────────────
+\dichodeotraforma{
 Un Grafo G = (V, E) es una estructura no lineal. Para trabajar con 
 ellos en código, necesitamos guardarlos en memoria de alguna forma. 
 
@@ -27,9 +110,9 @@ Las dos formas más comunes son:
 
 La elección depende de si el grafo es "Denso" (muchas conexiones) o 
 "Disperso" (pocas conexiones).
+}
 
-🎨 DIAGRAMA
-──────────────────────────────────────────────────────────────
+\diagrama{\begin{verbatim}
 Grafo de ejemplo: A-B, A-C, B-C, C-D
 
 Adjacency Matrix (4x4):      Adjacency List:
@@ -41,10 +124,9 @@ Adjacency Matrix (4x4):      Adjacency List:
 
 - En la Matrix: 1 significa que hay conexión, 0 que no.
 - En la List: Cada nodo tiene su propia lista de vecinos.
+\end{verbatim}}
 
-⚙️ ¿CÓMO FUNCIONA? (Pros y Contras)
-──────────────────────────────────────────────────────────────
-
+\begin{lstlisting}[language=C++]
 1. Adjacency Matrix:
    - Pros: Muy rápido O(1) para saber si A y B están conectados.
    - Contras: Usa mucha memoria O(V²), incluso si hay pocos edges.
@@ -113,15 +195,15 @@ int main() {
   Iterar Vecinos   │ O(V)     │ O(Grado del nodo)
 
 * V = Vértices, E = Edges (Aristas).
+\end{lstlisting}
 
-🎯 EN ENTREVISTAS (Tips Google-level)
-──────────────────────────────────────────────────────────────
-✅ Default: En el 90% de las entrevistas, usa Adjacency List. Es más
+\entrevistas{
+✅ Default: En el 90\% de las entrevistas, usa Adjacency List. Es más
    eficiente en memoria y espacio.
 
 💡 Representación con Map: A veces los nodos no son números (0, 1, 2)
    sino nombres ("CDMX", "NY"). En ese caso, usa:
-   `unordered_map<string, vector<string>> adj;`
+   `unordered\_map<string, vector<string>> adj;`
 
 ⚠️ Edge List: Existe una tercera forma llamada "Edge List" que es 
    simplemente un array de pares `[(0,1), (0,2), ...]`. Útil para 
@@ -130,9 +212,9 @@ int main() {
 🔑 Grafo Implícito: A veces el grafo no te lo dan, sino que es una
    matriz (grid) donde puedes moverte arriba, abajo, izq, der. Ahí el
    "grafo" son las celdas y sus vecinos.
+}
 
-📋 RESUMEN RÁPIDO
-──────────────────────────────────────────────────────────────
+\resumen{
 • Nodos = Ciudades, Aristas = Caminos.
 • Matrix: Rápida pero traga mucha memoria O(V²).
 • List: Eficiente en memoria, la favorita de los devs O(V + E).
@@ -140,3 +222,6 @@ int main() {
 • Ponderado (tiene peso/costo) vs No Ponderado.
 • Grado de un nodo = cuántos vecinos tiene.
 ════════════════════════════════════════════════════════════════
+}
+
+\end{document}

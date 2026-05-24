@@ -1,10 +1,93 @@
-════════════════════════════════════════════════════════════════
-🗂️  TEMA: Algoritmo de Dijkstra (Camino más Corto)
-📁  CATEGORÍA: 03_Grafos
-════════════════════════════════════════════════════════════════
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
 
-🤔 ¿QUÉ ES?
-──────────────────────────────────────────────────────────────
+% Configuración para código C++
+\definecolor{codegreen}{rgb}{0,0.6,0}        
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}     
+\definecolor{codepurple}{rgb}{0.58,0,0.82}   
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    backgroundcolor=\color{backcolour},      
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},       
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    language=C++,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
+}
+
+% Macros para las secciones de los apuntes
+\newcommand{\quees}[1]{
+    \section*{🤔 ¿QUÉ ES?}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\dichodeotraforma}[1]{
+    \section*{💬 DICHO DE OTRA FORMA}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\diagrama}[1]{
+    \section*{🎨 DIAGRAMA}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\comofunciona}[1]{
+    \section*{⚙️ ¿CÓMO FUNCIONA?}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\complejidad}[1]{
+    \section*{📱 COMPLEJIDAD (Big-O)}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\entrevistas}[1]{
+    \section*{🎯 EN ENTREVISTAS}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\resumen}[1]{
+    \section*{📋 RESUMEN RÁPIDO}
+    \hrulefill \\
+    #1
+}
+
+\begin{document}
+
+\title{Algoritmo de Dijkstra (Camino más Corto)}
+\author{Aldo Zepeda Montoya}
+\date{\today}
+\maketitle
+
+\subsection*{CATEGORÍA: 03_Grafos}
+
+\quees{
 El GPS de tu teléfono 📱. Cuando pides la ruta más rápida de tu 
 casa al trabajo, el GPS no intenta probar absolutamente todos los
 caminos posibles al azar.
@@ -16,9 +99,9 @@ si encuentra un "atajo" mejor.
 
 Es un algoritmo "Greedy" (Codicioso) que encuentra el camino más corto
 desde un nodo origen a todos los demás nodos en un grafo con pesos.
+}
 
-💬 DICHO DE OTRA FORMA
-──────────────────────────────────────────────────────────────
+\dichodeotraforma{
 Dijkstra resuelve el problema del "Single-Source Shortest Path" en
 un grafo ponderado (weighted graph). 
 
@@ -28,9 +111,9 @@ mínima actual.
 
 ⚠️ Restricción Vital: NO funciona si el grafo tiene aristas con 
 PESOS NEGATIVOS. (Para eso se usa Bellman-Ford).
+}
 
-🎨 DIAGRAMA
-──────────────────────────────────────────────────────────────
+\diagrama{\begin{verbatim}
 Grafo Ponderado:
        [2]
   (A)-------(B)
@@ -50,10 +133,9 @@ Distancias desde A:
 5. Heap elige C(4).
 
 Final: {A:0, B:2, C:4, D:1}
+\end{verbatim}}
 
-⚙️ ¿CÓMO FUNCIONA? (Paso a paso)
-──────────────────────────────────────────────────────────────
-
+\begin{lstlisting}[language=C++]
 1. Inicializas todas las distancias como Infinito (∞), excepto el
    nodo origen que es 0.
 2. Metes (distancia 0, origen) a una Priority Queue (Min-Heap).
@@ -142,9 +224,9 @@ int main() {
   Espacio          │ O(V + E)              │ Grafo + distancias
 
 * V = Vértices, E = Aristas.
+\end{lstlisting}
 
-🎯 EN ENTREVISTAS (Tips Google-level)
-──────────────────────────────────────────────────────────────
+\entrevistas{
 ✅ Cuándo usar: "Shortest Path" en grafos con PESOS positivos. Si no
    hay pesos, usa BFS (es más rápido O(V+E)).
 
@@ -157,9 +239,9 @@ int main() {
 
 🔑 Variante: "Cheapest Flights Within K Stops" es un problema común 
    de Google que modifica Dijkstra limitando la profundidad.
+}
 
-📋 RESUMEN RÁPIDO
-──────────────────────────────────────────────────────────────
+\resumen{
 • Algoritmo Codicioso (Greedy).
 • Usa un Min-Heap para elegir siempre el camino más corto actual.
 • Encuentra distancias mínimas desde UN origen a TODOS los demás.
@@ -167,3 +249,6 @@ int main() {
 • Tiempo: O(E log V).
 • Es la base de los sistemas de navegación modernos.
 ════════════════════════════════════════════════════════════════
+}
+
+\end{document}
