@@ -1,10 +1,93 @@
-════════════════════════════════════════════════════════════════
-🗂️  TEMA: Merge Sort (Ordenamiento por Mezcla)
-📁  CATEGORÍA: 04_Algoritmos_Ordenamiento
-════════════════════════════════════════════════════════════════
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
 
-🤔 ¿QUÉ ES?
-──────────────────────────────────────────────────────────────
+% Configuración para código C++
+\definecolor{codegreen}{rgb}{0,0.6,0}        
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}     
+\definecolor{codepurple}{rgb}{0.58,0,0.82}   
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{
+    backgroundcolor=\color{backcolour},      
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},       
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    language=C++,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ñ}{{\~n}}1 {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
+}
+
+% Macros para las secciones de los apuntes
+\newcommand{\quees}[1]{
+    \section*{🤔 ¿QUÉ ES?}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\dichodeotraforma}[1]{
+    \section*{💬 DICHO DE OTRA FORMA}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\diagrama}[1]{
+    \section*{🎨 DIAGRAMA}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\comofunciona}[1]{
+    \section*{⚙️ ¿CÓMO FUNCIONA?}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\complejidad}[1]{
+    \section*{📱 COMPLEJIDAD (Big-O)}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\entrevistas}[1]{
+    \section*{🎯 EN ENTREVISTAS}
+    \hrulefill \\
+    #1
+}
+
+\newcommand{\resumen}[1]{
+    \section*{📋 RESUMEN RÁPIDO}
+    \hrulefill \\
+    #1
+}
+
+\begin{document}
+
+\title{Merge Sort (Ordenamiento por Mezcla)}
+\author{Aldo Zepeda Montoya}
+\date{\today}
+\maketitle
+
+\subsection*{CATEGORÍA: 04_Algoritmos_Ordenamiento}
+
+\quees{
 Dividir un problema grande con un amigo 🤝. Tienes una pila gigante 
 de cartas desordenadas. En lugar de ordenarlas tú solo, le das la 
 mitad a tu amigo.
@@ -16,9 +99,9 @@ la pila final perfecta.
 
 Es un algoritmo basado en la estrategia "Divide y Vencerás" 
 (Divide and Conquer).
+}
 
-💬 DICHO DE OTRA FORMA
-──────────────────────────────────────────────────────────────
+\dichodeotraforma{
 Merge Sort es un algoritmo de ordenamiento recursivo, estable y de
 comparación. 
 
@@ -30,9 +113,9 @@ Su funcionamiento se basa en dos fases:
 
 A diferencia de Quick Sort, Merge Sort GARANTIZA un tiempo de 
 ejecución de O(n log n) incluso en el peor caso posible.
+}
 
-🎨 DIAGRAMA
-──────────────────────────────────────────────────────────────
+\diagrama{\begin{verbatim}
 Array inicial: [38, 27, 43, 3]
 
 Divide:
@@ -43,10 +126,9 @@ Merge (ordenando al combinar):
 [27, 38]       [3, 43]
       \         /
       [3, 27, 38, 43]  <-- ¡Ordenado!
+\end{verbatim}}
 
-⚙️ ¿CÓMO FUNCIONA? (Paso a paso)
-──────────────────────────────────────────────────────────────
-
+\begin{lstlisting}[language=C++]
 1. Si el array tiene tamaño 1 o 0, ya está ordenado (caso base).
 2. Encuentras el punto medio: `mid = size / 2`.
 3. Llamas a `mergeSort` para la mitad izquierda.
@@ -127,9 +209,9 @@ int main() {
   Worst       │ O(n log n)    │ O(n)
 
 * El espacio O(n) es porque necesita arrays auxiliares para mezclar.
+\end{lstlisting}
 
-🎯 EN ENTREVISTAS (Tips Google-level)
-──────────────────────────────────────────────────────────────
+\entrevistas{
 ✅ "Sort a Linked List": Merge Sort es el algoritmo preferido para 
    ordenar Linked Lists, porque no necesita acceso aleatorio.
 
@@ -142,9 +224,9 @@ int main() {
 
 🔑 Merge Step: La lógica de la función `merge` se usa en otros problemas
    como "Merge Two Sorted Lists" o "Merge Intervals".
+}
 
-📋 RESUMEN RÁPIDO
-──────────────────────────────────────────────────────────────
+\resumen{
 • Divide y vencerás.
 • Siempre tarda O(n log n), sin importar qué tan desordenado esté.
 • Es un ordenamiento estable.
@@ -152,3 +234,6 @@ int main() {
 • Ideal para datasets grandes o Linked Lists.
 • Base para problemas de fusionar listas o intervalos.
 ════════════════════════════════════════════════════════════════
+}
+
+\end{document}
