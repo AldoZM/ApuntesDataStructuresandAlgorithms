@@ -1,0 +1,121 @@
+════════════════════════════════════════════════════════════════
+🗂️  TEMA: Linear Search (Búsqueda Lineal)
+📁  CATEGORÍA: 05_Algoritmos_Busqueda
+════════════════════════════════════════════════════════════════
+
+🤔 ¿QUÉ ES?
+──────────────────────────────────────────────────────────────
+Buscar tus llaves en casa 🔑 revisando cuarto por cuarto, cajón por
+cajón, sin ningún orden especial. 
+
+Empiezas en un lugar y revisas todo hasta que las encuentras o hasta
+que verificas que no están en ningún lado. Es la forma más básica y 
+natural de buscar algo.
+
+💬 DICHO DE OTRA FORMA
+──────────────────────────────────────────────────────────────
+Linear Search es un algoritmo de búsqueda que recorre un conjunto de
+datos secuencialmente (uno por uno) de principio a fin. 
+
+No requiere que los datos estén ordenados. Su simplicidad lo hace
+ideal para datasets pequeños o cuando solo vas a buscar algo una vez
+y no vale la pena ordenar todo el conjunto primero.
+
+🎨 DIAGRAMA
+──────────────────────────────────────────────────────────────
+Buscar el número 7 en el array:
+[ 3, 1, 9, 7, 5 ]
+
+Paso 1: ¿3 == 7? No.
+Paso 2: ¿1 == 7? No.
+Paso 3: ¿9 == 7? No.
+Paso 4: ¿7 == 7? ¡SÍ! 🎉
+
+Encontrado en 4 pasos.
+
+⚙️ ¿CÓMO FUNCIONA? (Paso a paso)
+──────────────────────────────────────────────────────────────
+
+1. Empiezas en el primer elemento (índice 0).
+2. Comparas el elemento actual con el valor que buscas.
+3. Si son iguales, devuelves el índice o `true`.
+4. Si no son iguales, pasas al siguiente elemento.
+5. Repites hasta encontrarlo o llegar al final del array.
+6. Si llegas al final y no lo encontraste, devuelves -1 o `false`.
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+función busquedaLineal(array, objetivo):
+    PARA cada i desde 0 hasta tamaño(array) - 1:
+        SI array[i] == objetivo:
+            return i
+    return -1
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int linearSearch(const vector<int>& arr, int target) {
+    for (int i = 0; i < arr.size(); i++) {
+        if (arr[i] == target) {
+            return i; // Encontrado, devolvemos el índice
+        }
+    }
+    return -1; // No encontrado
+}
+
+int main() {
+    vector<int> data = {10, 50, 30, 70, 80, 60, 20, 90, 40};
+    int target = 20;
+
+    int result = linearSearch(data, target);
+    
+    if (result != -1)
+        cout << "Elemento encontrado en el índice: " << result << endl;
+    else
+        cout << "Elemento no encontrado." << endl;
+
+    return 0;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Caso        │ Tiempo        │ Razón
+  ────────────┼───────────────┼────────────────────────────────
+  Best        │ O(1)          │ El elemento es el primero
+  Average     │ O(n)          │ Tienes que revisar la mitad (n/2)
+  Worst       │ O(n)          │ Está al final o no existe
+  Espacio     │ O(1)          │ No usa memoria extra
+
+🎯 EN ENTREVISTAS (Tips Google-level)
+──────────────────────────────────────────────────────────────
+✅ Cuándo usar: 
+   - Datasets pequeños (n < 50).
+   - Datos desordenados.
+   - Búsquedas únicas (one-off).
+   - Estructuras sin acceso aleatorio (como Linked Lists).
+
+💡 Strings: Linear Search es la base para encontrar un caracter en 
+   un string o una subcadena (algoritmo naive).
+
+⚠️ Eficiencia: Si vas a hacer MUCHAS búsquedas sobre el mismo conjunto
+   de datos, ¡no uses Linear Search! Mejor ordena los datos y usa 
+   Binary Search, o guárdalos en un Hash Map.
+
+🔑 Sentinel Search: Una pequeña optimización que elimina una de las
+   dos comparaciones del loop (la que revisa si llegaste al final).
+
+📋 RESUMEN RÁPIDO
+──────────────────────────────────────────────────────────────
+• Busca uno por uno.
+• Muy simple de implementar.
+• No requiere orden previo.
+• Tiempo lineal O(n).
+• Memoria constante O(1).
+• Ineficiente para datasets grandes.
+════════════════════════════════════════════════════════════════
