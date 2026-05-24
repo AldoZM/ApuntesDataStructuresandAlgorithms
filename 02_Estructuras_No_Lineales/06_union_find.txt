@@ -1,0 +1,169 @@
+════════════════════════════════════════════════════════════════
+🗂️  TEMA: Union-Find (Disjoint Set Union - DSU)
+📁  CATEGORÍA: 02_Estructuras_No_Lineales
+════════════════════════════════════════════════════════════════
+
+🤔 ¿QUÉ ES?
+──────────────────────────────────────────────────────────────
+Los clubes de la escuela 🏫. Al principio, cada estudiante es su
+propio club (un conjunto de 1 persona). 
+
+Cuando dos personas se hacen amigas, sus clubes se UNEN. Para saber 
+si dos personas están en el mismo club, sigues la cadena de amistades
+hasta llegar al "líder" del grupo. Si ambos tienen el mismo líder,
+entonces ¡están en el mismo club!
+
+Es una estructura que gestiona grupos de elementos que no se 
+traslapan y te permite unirlos o preguntar si están conectados 
+muy rápido.
+
+💬 DICHO DE OTRA FORMA
+──────────────────────────────────────────────────────────────
+Union-Find (o DSU) es una estructura de datos que mantiene un 
+conjunto de elementos divididos en varios conjuntos disjuntos. 
+Soporta dos operaciones principales:
+
+1. Find: Determina a qué conjunto pertenece un elemento (devuelve
+   el "representante" o "líder" del conjunto).
+2. Union: Une dos conjuntos en uno solo.
+
+Con optimizaciones como "Path Compression" y "Union by Rank", estas
+operaciones se vuelven prácticamente instantáneas O(α(n)).
+
+🎨 DIAGRAMA
+──────────────────────────────────────────────────────────────
+Estado Inicial: {0} {1} {2} {3} {4}
+(Cada uno apunta a sí mismo como líder)
+
+Union(0, 1): {0, 1} {2} {3} {4}
+  [0] ← [1] (0 es el líder de 1)
+
+Union(1, 2): {0, 1, 2} {3} {4}
+  [0] ← [1] ← [2]
+
+Path Compression (al buscar el líder de 2):
+  [0] ← [1], [0] ← [2] (Ahora 2 apunta directo al líder 0)
+
+⚙️ ¿CÓMO FUNCIONA? (Operaciones principales)
+──────────────────────────────────────────────────────────────
+
+1. Find(i): Sigue los punteros `parent` desde `i` hasta llegar al 
+   nodo que es su propio padre. Ese es el representante.
+   - Optimización (Path Compression): Mientras subes, haces que 
+     cada nodo apunte directo al representante final.
+2. Union(i, j): Encuentras los representantes de `i` y `j`. Si son
+   diferentes, haces que uno apunte al otro.
+   - Optimización (Union by Rank): Siempre haces que el árbol más 
+     bajito cuelgue del árbol más alto para mantenerlo balanceado.
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+// Find con Path Compression
+función buscar(i):
+    SI parent[i] == i: return i
+    parent[i] = buscar(parent[i]) // ¡Compresión aquí!
+    return parent[i]
+
+// Union por Rango
+función unir(i, j):
+    raiz_i = buscar(i)
+    raiz_j = buscar(j)
+    SI raiz_i != raiz_j:
+        SI rango[raiz_i] < rango[raiz_j]:
+            parent[raiz_i] = raiz_j
+        SINO:
+            parent[raiz_j] = raiz_i
+            SI rango[raiz_i] == rango[raiz_j]:
+                rango[raiz_i]++
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class UnionFind {
+    vector<int> parent;
+    vector<int> rank;
+public:
+    UnionFind(int n) {
+        parent.resize(n);
+        rank.resize(n, 0);
+        for(int i = 0; i < n; i++) parent[i] = i;
+    }
+
+    int find(int i) {
+        if (parent[i] == i) return i;
+        return parent[i] = find(parent[i]); // Path compression
+    }
+
+    void unite(int i, int j) {
+        int root_i = find(i);
+        int root_j = find(j);
+        if (root_i != root_j) {
+            if (rank[root_i] < rank[root_j]) parent[root_i] = root_j;
+            else if (rank[root_i] > rank[root_j]) parent[root_j] = root_i;
+            else {
+                parent[root_i] = root_j;
+                rank[root_j]++;
+            }
+        }
+    }
+
+    bool connected(int i, int j) {
+        return find(i) == find(j);
+    }
+};
+
+int main() {
+    UnionFind uf(5);
+    uf.unite(0, 1);
+    uf.unite(2, 3);
+    
+    cout << "¿0 y 1 conectados? " << uf.connected(0, 1) << endl; // 1 (true)
+    cout << "¿0 y 2 conectados? " << uf.connected(0, 2) << endl; // 0 (false)
+    
+    uf.unite(1, 2);
+    cout << "¿0 y 2 conectados ahora? " << uf.connected(0, 2) << endl; // 1 (true)
+
+    return 0;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Operación   │ Tiempo             │ En la práctica
+  ────────────┼────────────────────┼──────────────────────────
+  Find        │ O(α(n))            │ Casi O(1)
+  Union       │ O(α(n))            │ Casi O(1)
+  Connected   │ O(α(n))            │ Casi O(1)
+  Espacio     │ O(n)               │ Para guardar parents/ranks
+
+* α(n) es la función inversa de Ackermann, que crece tan lento que 
+  para cualquier valor real de `n`, es menor a 5.
+
+🎯 EN ENTREVISTAS (Tips Google-level)
+──────────────────────────────────────────────────────────────
+✅ Cuándo usar: Problemas de conectividad, componentes conectados 
+   en grafos, o detectar ciclos en grafos no dirigidos.
+
+💡 Alternativa a DFS/BFS: Para saber si dos nodos están conectados,
+   Union-Find es a veces más rápido y fácil de implementar que 
+   un recorrido completo.
+
+⚠️ Optimización: NUNCA olvides la "Path Compression". Sin ella, 
+   Union-Find puede degradarse a O(n).
+
+🔑 Problema Clásico: "Number of Islands" o "Redundant Connection".
+
+📋 RESUMEN RÁPIDO
+──────────────────────────────────────────────────────────────
+• Gestiona grupos de elementos y sus uniones.
+• Operaciones: `find` (quién es el jefe) y `union` (hacerse amigos).
+• Casi O(1) gracias a Path Compression y Union by Rank.
+• Ideal para detectar ciclos y conectividad en grafos.
+• Solo funciona para conjuntos disjuntos (un elemento no puede estar
+  en dos grupos a la vez).
+════════════════════════════════════════════════════════════════
