@@ -1,0 +1,170 @@
+════════════════════════════════════════════════════════════════
+🗂️  TEMA: Complejidad Espacial (Space Complexity)
+📁  CATEGORÍA: 00_Fundamentos
+════════════════════════════════════════════════════════════════
+
+🤔 ¿QUÉ ES?
+──────────────────────────────────────────────────────────────
+Imagina que tu programa es una receta de cocina 🍳. Big-O en tiempo
+mide cuánto TARDAS en cocinar. Complejidad espacial mide cuántas 
+OLLAS Y SARTENES necesitas mientras cocinas. 
+
+Si para preparar una ensalada de 10 ingredientes necesitas una tabla
+de picar pequeña, pero para 100 ingredientes necesitas una mesa gigante,
+eso significa que el espacio crece con el número de ingredientes.
+
+En programación, la complejidad espacial mide cuánta MEMORIA EXTRA
+(RAM) utiliza tu algoritmo para resolver un problema a medida que el
+input se hace más grande.
+
+💬 DICHO DE OTRA FORMA
+──────────────────────────────────────────────────────────────
+La Space Complexity analiza el uso de recursos de memoria. Es crucial
+distinguir entre:
+
+1. Input Space: La memoria para guardar los datos de entrada.
+2. Auxiliary Space: La memoria EXTRA o temporal que el algoritmo crea.
+
+En la mayoría de las entrevistas, cuando preguntan "Space Complexity", 
+se refieren al Auxiliary Space. Si tu algoritmo modifica el input original
+sin crear estructuras nuevas, se dice que es "In-place" y su complejidad
+espacial es O(1).
+
+🎨 DIAGRAMA — Visualizar call stack
+──────────────────────────────────────────────────────────────
+Cuando usas recursión, cada llamada ocupa un "piso" en el stack:
+
+factorial(4)              ← tope del stack (último en ejecutarse)
+  factorial(3)
+    factorial(2)
+      factorial(1)        ← base case, primero en resolverse
+        return 1
+
+Cada llamada = 1 frame en el stack de memoria.
+Si haces n llamadas recursivas → necesitas O(n) de espacio en el stack.
+
+⚙️ ¿CÓMO FUNCIONA? (Casos comunes)
+──────────────────────────────────────────────────────────────
+
+🔑 O(1) — Espacio Constante
+  Solo usas unas cuantas variables fijas sin importar el input.
+  Ejemplo: Hacer un swap de dos números usando una variable temporal.
+
+🔑 O(n) — Espacio Lineal
+  Creas una estructura (como un array o vector) proporcional al input.
+  Ejemplo: Copiar una lista de n elementos a una nueva lista.
+
+🔑 O(n²) — Espacio Cuadrático
+  Creas una estructura bidimensional (matriz) de n x n.
+  Ejemplo: Una tabla de adyacencia para un grafo denso.
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+// O(1) espacio — solo usa 1 variable extra
+función suma(n):
+    total = 0
+    PARA i desde 1 hasta n:
+        total = total + i
+    return total
+
+// O(n) espacio — crea un array de tamaño n
+función crearLista(n):
+    lista = nuevo Array(n)
+    PARA i desde 0 hasta n-1:
+        lista[i] = i
+    return lista
+
+// O(n) espacio — por el call stack de recursión
+función factorial(n):
+    SI n == 1: return 1
+    return n * factorial(n - 1)
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// ─────────────────────────────────────────────
+// O(1) Espacio Auxiliar
+// Solo usamos la variable 'suma' y 'i', sin importar n.
+// ─────────────────────────────────────────────
+int sumaIterativa(int n) {
+    int suma = 0;           // O(1)
+    for (int i = 0; i <= n; i++) { // O(1)
+        suma += i;
+    }
+    return suma;
+}
+
+// ─────────────────────────────────────────────
+// O(n) Espacio Auxiliar
+// Creamos un vector que crece proporcionalmente a n.
+// ─────────────────────────────────────────────
+vector<int> generarRango(int n) {
+    vector<int> res;        // O(n) al final
+    for (int i = 0; i < n; i++) {
+        res.push_back(i);
+    }
+    return res;
+}
+
+// ─────────────────────────────────────────────
+// O(n) Espacio (en el Call Stack)
+// Cada llamada a factorial se guarda en memoria hasta
+// llegar al caso base.
+// ─────────────────────────────────────────────
+long long factorial(int n) {
+    if (n <= 1) return 1;
+    return n * factorial(n - 1); // O(n) frames en el stack
+}
+
+int main() {
+    cout << "Suma (O(1) espacio): " << sumaIterativa(10) << endl;
+    
+    vector<int> v = generarRango(5); // O(n) espacio
+    cout << "Vector (O(n) espacio) creado." << endl;
+    
+    cout << "Factorial (O(n) stack space): " << factorial(5) << endl;
+    
+    return 0;
+}
+
+⏱️ COMPLEJIDAD (Big-O de Espacio)
+──────────────────────────────────────────────────────────────
+
+  Algoritmo              │ Espacio   │ Razón
+  ───────────────────────┼───────────┼───────────────────────────
+  Acceso a Array         │ O(1)      │ No requiere memoria extra
+  Búsqueda Lineal        │ O(1)      │ Solo usa un par de índices
+  Búsqueda Binaria iter. │ O(1)      │ Solo usa izq/der/mid
+  Búsqueda Binaria recur.│ O(log n)  │ Log(n) llamadas en el stack
+  Merge Sort             │ O(n)      │ Necesita un array auxiliar
+  Quick Sort             │ O(log n)  │ Promedio de llamadas stack
+  Crear matriz n x n     │ O(n²)     │ Espacio bidimensional
+
+🎯 EN ENTREVISTAS (Tips Google-level)
+──────────────────────────────────────────────────────────────
+✅ En Google preguntan SIEMPRE espacio Y tiempo. No esperes a que pregunten.
+
+⚠️ "In-place algorithm": Significa que el algoritmo tiene O(1) espacio
+   auxiliar porque modifica el input original directamente.
+
+💡 Trade-off clásico: A veces puedes hacer que un programa sea más
+   rápido (tiempo) si estás dispuesto a usar más memoria (espacio). 
+   Ejemplo: Memoization en Dynamic Programming.
+
+🔥 Cuidado con la recursión: Una recursión muy profunda puede causar un
+   "Stack Overflow" si n es muy grande, incluso si la lógica es correcta.
+
+📋 RESUMEN RÁPIDO
+──────────────────────────────────────────────────────────────
+• Space Complexity = cuánta RAM EXTRA usa el algoritmo.
+• No cuenta el espacio del input original (Auxiliary Space).
+• Estructuras de datos (arrays, maps) creadas → O(tamaño).
+• Recursión → cada nivel cuenta como O(1) en el Call Stack.
+• O(1) espacio = "In-place", es lo más eficiente en memoria.
+• Iterar es casi siempre más eficiente en espacio que recursión.
+════════════════════════════════════════════════════════════════
