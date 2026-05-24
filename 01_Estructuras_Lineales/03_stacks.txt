@@ -1,0 +1,140 @@
+════════════════════════════════════════════════════════════════
+🗂️  TEMA: Stacks (Pilas)
+📁  CATEGORÍA: 01_Estructuras_Lineales
+════════════════════════════════════════════════════════════════
+
+🤔 ¿QUÉ ES?
+──────────────────────────────────────────────────────────────
+Una pila de platos 🍽️ en el fregadero. Solo puedes poner platos
+encima (push) y solo puedes agarrar el de hasta arriba (pop). 
+
+Si quieres el plato de abajo, debes quitar todos los de encima primero. 
+Es una estructura "LIFO" (Last In, First Out): el último en entrar
+es el primero en salir.
+
+Imagina un tubo de papas Pringles 🥔: la última papa que metieron
+en la fábrica es la primera que te comes al abrir el tubo.
+
+💬 DICHO DE OTRA FORMA
+──────────────────────────────────────────────────────────────
+Un Stack es una estructura de datos lineal de tipo ADT (Abstract Data
+Type) que restringe el acceso a un solo extremo: el "Top". 
+
+Es fundamental para el funcionamiento de las computadoras, ya que
+el "Call Stack" de los lenguajes de programación usa esta lógica
+para gestionar las llamadas a funciones y la recursión.
+
+🎨 DIAGRAMA
+──────────────────────────────────────────────────────────────
+push(A) → push(B) → push(C)
+
+     [C]  ← TOP (C es el último en entrar)
+     [B]
+     [A]  ← BOTTOM
+
+pop() → devuelve C y lo quita, queda:
+
+     [B]  ← TOP (ahora B es el nuevo tope)
+     [A]
+
+⚙️ ¿CÓMO FUNCIONA? (Operaciones principales)
+──────────────────────────────────────────────────────────────
+
+1. push(x): Agregas el elemento `x` al tope de la pila. O(1).
+2. pop(): Quitas el elemento del tope. O(1).
+3. peek() / top(): Miras qué hay en el tope sin quitarlo. O(1).
+4. isEmpty(): Verificas si la pila está vacía. O(1).
+5. size(): Devuelves cuántos elementos hay. O(1).
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+// Validar paréntesis balanceados usando un Stack
+función esValido(cadena):
+    pila = crear Stack
+    PARA cada caracter EN cadena:
+        SI caracter == '(':
+            pila.push('(')
+        SINO SI caracter == ')':
+            SI pila.isEmpty(): return FALSO
+            pila.pop()
+    return pila.isEmpty()
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <stack>    // STL Stack
+#include <vector>
+using namespace std;
+
+// Implementación manual simple usando un vector
+class MyStack {
+private:
+    vector<int> data;
+public:
+    void push(int x) { data.push_back(x); }
+    void pop() { if(!data.empty()) data.pop_back(); }
+    int top() { return data.back(); }
+    bool isEmpty() { return data.empty(); }
+};
+
+int main() {
+    // 1. Usando STL Stack
+    stack<int> s;
+    
+    s.push(10);
+    s.push(20);
+    s.push(30);
+
+    cout << "Tope actual: " << s.top() << endl; // 30
+
+    s.pop(); // Quita el 30
+    cout << "Nuevo tope: " << s.top() << endl;  // 20
+
+    // 2. Recorrer (vaciando)
+    while(!s.empty()) {
+        cout << s.top() << " ";
+        s.pop();
+    }
+    cout << endl;
+
+    return 0;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Operación        │ Tiempo  │ Espacio
+  ─────────────────┼─────────┼──────────────
+  push(x)          │ O(1)    │ O(1)
+  pop()            │ O(1)    │ O(1)
+  peek() / top()   │ O(1)    │ O(1)
+  isEmpty()        │ O(1)    │ O(1)
+  Total (n datos)  │ -       │ O(n)
+
+🎯 EN ENTREVISTAS (Tips Google-level)
+──────────────────────────────────────────────────────────────
+✅ Problema de Oro: "Valid Parentheses". Si ves paréntesis, corchetes 
+   o llaves en un problema, ¡usa un stack!
+
+💡 Recursión vs Stack: Cualquier problema recursivo se puede resolver
+   usando un Stack de forma iterativa. A veces esto evita el Stack 
+   Overflow.
+
+⚠️ Stack Underflow: Intentar hacer `pop()` o `top()` en una pila vacía.
+   SIEMPRE verifica `!s.empty()` antes de acceder al tope.
+
+🔑 Patrón "Monotonic Stack": Un stack donde los elementos siempre están
+   en orden (creciente o decreciente). Clave para problemas como 
+   "Next Greater Element" o "Daily Temperatures".
+
+📋 RESUMEN RÁPIDO
+──────────────────────────────────────────────────────────────
+• LIFO: Last In, First Out.
+• Todas las operaciones básicas son O(1) (instantáneas).
+• Usos: Historial del navegador (Undo/Redo), procesar expresiones
+  matemáticas, DFS (Depth First Search).
+• Muy eficiente pero limitado: solo ves el tope.
+• La base de la recursión en cualquier lenguaje.
+════════════════════════════════════════════════════════════════
