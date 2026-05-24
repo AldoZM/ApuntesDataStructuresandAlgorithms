@@ -1,0 +1,149 @@
+════════════════════════════════════════════════════════════════
+🗂️  TEMA: DP - Tabulation (Bottom-Up)
+📁  CATEGORÍA: 06_Patrones_Entrevista
+════════════════════════════════════════════════════════════════
+
+🤔 ¿QUÉ ES?
+──────────────────────────────────────────────────────────────
+Construir una pared de ladrillos 🧱 desde el suelo hacia arriba. 
+
+En lugar de empezar por el techo (el problema grande) y tratar de 
+adivinar qué ladrillos necesitas abajo (recursión), empiezas poniendo
+los primeros ladrillos en la base (los casos base que ya conoces). 
+
+Una vez que tienes la primera fila, puedes poner la segunda encima 
+usando la base como apoyo. Vas llenando tu tabla de resultados paso
+a paso hasta que llegas a la altura que querías (el resultado final).
+
+💬 DICHO DE OTRA FORMA
+──────────────────────────────────────────────────────────────
+Tabulation es la técnica de DP basada en Iteración (Bottom-Up). 
+
+Se llama así porque literalmente llenas una tabla (un array de 1D 
+o 2D) con los resultados de los sub-problemas, empezando por los 
+más pequeños. Cada nueva entrada de la tabla se calcula usando los
+valores que ya están guardados en las posiciones anteriores.
+
+Es generalmente más eficiente que Memoization porque evita el 
+"overhead" (sobrecosto) de las llamadas recursivas y no corre el 
+riesgo de causar un Stack Overflow.
+
+🎨 DIAGRAMA (Tabla de Fibonacci)
+──────────────────────────────────────────────────────────────
+Queremos fib(5).
+Tabla DP de tamaño 6: [ _, _, _, _, _, _ ]
+
+1. Llenamos bases: dp[0]=0, dp[1]=1
+   [ 0, 1, _, _, _, _ ]
+
+2. Llenamos el resto usando dp[i] = dp[i-1] + dp[i-2]:
+   i=2: [ 0, 1, 1, _, _, _ ]
+   i=3: [ 0, 1, 1, 2, _, _ ]
+   i=4: [ 0, 1, 1, 2, 3, _ ]
+   i=5: [ 0, 1, 1, 2, 3, 5 ] 🎉 -> Resultado final
+
+⚙️ ¿CÓMO FUNCIONA? (El patrón de código)
+──────────────────────────────────────────────────────────────
+
+1. Inicializa una tabla (array o matriz) con valores default.
+2. Define los casos base en las primeras posiciones de la tabla.
+3. Escribe un loop (o varios) que recorra la tabla.
+4. En cada paso, aplica la lógica para llenar la celda actual 
+   usando celdas anteriores.
+5. Regresa el valor de la última celda relevante.
+
+📝 PSEUDOCÓDIGO (Coin Change - Tabulation)
+──────────────────────────────────────────────────────────────
+
+función minMonedasTab(monto, monedas):
+    tabla = array de tamaño (monto + 1) con INFINITO
+    tabla[0] = 0
+
+    PARA cada moneda EN monedas:
+        PARA i desde moneda hasta monto:
+            SI tabla[i - moneda] != INFINITO:
+                tabla[i] = min(tabla[i], tabla[i - moneda] + 1)
+
+    return tabla[monto]
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+// Problema: Climbing Stairs (¿De cuántas formas puedes subir N escalones
+// si puedes dar pasos de 1 o 2?) -> O(n) tiempo, O(n) espacio
+int climbStairs(int n) {
+    if (n <= 2) return n;
+    
+    vector<int> dp(n + 1);
+    dp[1] = 1;
+    dp[2] = 2;
+
+    for (int i = 3; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+
+    return dp[n];
+}
+
+// OPTIMIZACIÓN DE ESPACIO: O(n) -> O(1)
+// Como solo necesitamos los últimos 2 valores, no hace falta el array.
+int climbStairsOptimized(int n) {
+    if (n <= 2) return n;
+    int prev2 = 1, prev1 = 2;
+    for (int i = 3; i <= n; i++) {
+        int current = prev1 + prev2;
+        prev2 = prev1;
+        prev1 = current;
+    }
+    return prev1;
+}
+
+int main() {
+    int stairs = 5;
+    cout << "Formas de subir " << stairs << " escalones: " 
+         << climbStairsOptimized(stairs) << endl; // 8
+    return 0;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Aspecto        │ Con Tabulation
+  ───────────────┼────────────────────────────────────────────
+  Tiempo         │ O(Tamaño de la Tabla * Trabajo por Celda)
+  Espacio        │ O(Tamaño de la Tabla) -> A veces reducible a O(1)
+
+* Al ser iterativo, el tiempo es muy predecible y constante.
+
+🎯 EN ENTREVISTAS (Tips Google-level)
+──────────────────────────────────────────────────────────────
+✅ Space Optimization: Si el entrevistador ve que usaste un array de
+   tamaño N, te preguntará: "¿Puedes hacerlo con menos memoria?". 
+   Si tu fórmula solo depende de `i-1` y `i-2`, puedes usar solo 2 
+   variables.
+
+💡 Orden de los Loops: En Tabulation, el orden de los loops importa 
+   MUCHO (ej: Knapsack problem). Siempre piensa qué necesitas haber 
+   calculado antes para poder calcular lo actual.
+
+⚠️ Intuición: Tabulation suele ser menos intuitivo que Memoization. 
+   Te recomiendo primero pensar la solución recursiva y luego 
+   "voltearla" a iterativa.
+
+🔑 Problemas Estrella: "House Robber", "Longest Common Subsequence" (2D),
+   "Edit Distance".
+
+📋 RESUMEN RÁPIDO
+──────────────────────────────────────────────────────────────
+• Bottom-Up: De lo simple a lo complejo.
+• Iterativo: Sin recursión, sin stack overflow.
+• Llenas una tabla paso a paso.
+• Más eficiente en tiempo y memoria.
+• Permite optimizar espacio fácilmente (usando variables en vez de array).
+• Es la forma "profesional" de entregar una solución DP.
+════════════════════════════════════════════════════════════════
