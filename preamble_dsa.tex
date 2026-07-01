@@ -102,6 +102,8 @@
 \definecolor{vscType}{RGB}{78, 201, 176}       % teal: std, vector, string, map (clases/STL)
 \definecolor{vscString}{RGB}{206, 145, 120}    % salmón: strings
 \definecolor{vscComment}{RGB}{106, 153, 85}    % verde: comentarios
+\definecolor{brkGold}{RGB}{255, 215, 0}        % {} llaves (dorado VS Code)
+\definecolor{brkOrchid}{RGB}{218, 112, 214}    % [] corchetes (orquídea VS Code)
 \lstdefinestyle{cpp}{
   language=C++,
   basicstyle=\ttfamily\small\color{white},    % operadores y variables: blanco (como VS Code)
@@ -137,7 +139,11 @@
     {ó}{{\'{o}}}1 {ú}{{\'{u}}}1 {ñ}{{\~{n}}}1
     {Á}{{\'{A}}}1 {É}{{\'{E}}}1 {Í}{{\'{I}}}1
     {Ó}{{\'{O}}}1 {Ú}{{\'{U}}}1 {Ñ}{{\~{N}}}1
-    {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1,
+    {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
+    % --- Brackets: {} y [] (casi siempre código). () se deja sin color
+    %     porque abunda en la prosa (O(n), paréntesis) y se ensucia.
+    {[}{{\color{brkOrchid}[}}1 {]}{{\color{brkOrchid}]}}1
+    {\{}{{\color{brkGold}\{}}1 {\}}{{\color{brkGold}\}}}1,
 }
 \lstset{style=cpp}
 
