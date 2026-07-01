@@ -53,6 +53,28 @@ update(5,+3):     5 -> 6 -> 8 -> fin  (suma lowbit)
 \end{verbatim}
 \end{dsadiagrama}
 
+\begin{dsacomofunciona}
+\begin{verbatim}
+QUÉ RANGO cubre cada índice (largo = lowbit)  y los SALTOS
+
+  i:      1    2    3    4    5    6    7    8
+          │   ┌┴┐   │  ┌─┴──┐  │  ┌┴┐   │ ┌──┴────┐
+  cubre: [1] [1-2] [3][1 - 4][5][5-6] [7][1  -  8]
+
+QUERY prefijo(7) = suma de 1..7   (resta lowbit: baja)
+   7 ──lowbit1─► 6 ──lowbit2─► 4 ──lowbit4─► 0 (fin)
+   suma = tree[7] + tree[6] + tree[4]
+        = [7]   + [5-6]  + [1-4]   = cubre 1..7  OK
+
+UPDATE(3, +5)  (suma lowbit: sube)
+   3 ──lowbit1─► 4 ──lowbit4─► 8 ──► fin (>n)
+   tree[3] += 5 ; tree[4] += 5 ; tree[8] += 5
+   (todos los bloques que "contienen" al índice 3 se enteran)
+
+Cada salto quita/suma un bit → a lo más log(n) pasos.
+\end{verbatim}
+\end{dsacomofunciona}
+
 \begin{lstlisting}[language=C++]
 CÓMO FUNCIONA (1-indexado)
 - lowbit(i) = i & (-i) aísla el bit menos significativo.

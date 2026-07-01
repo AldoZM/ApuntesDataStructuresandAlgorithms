@@ -58,6 +58,28 @@ CHAINING (listas por bucket)      OPEN ADDRESSING (linear probing)
 \end{verbatim}
 \end{dsadiagrama}
 
+\begin{dsacomofunciona}
+\begin{verbatim}
+CHAINING vs OPEN ADDRESSING  (insertar A,B,C con hash 2,2,3)
+
+CHAINING (lista por bucket):        OPEN ADDR. linear probing:
+  [0] → NULL                          [0] │
+  [1] → NULL                          [1] │
+  [2] → (A) → (B) → NULL              [2] │ A     hash 2 libre
+  [3] → (C) → NULL                    [3] │ B     C quería 3 → ocupado por B?
+  [4] → NULL                          [4] │ C     no: B fue a 3 (2 lleno),
+                                              C a 4 (3 lleno) → clustering
+
+BORRAR en open addressing NO deja hueco vacío (rompería el probing):
+  [2] A   [3] B   [4] C
+  borrar B →  [3] pasa a "tombstone" (marca de borrado, no NULL)
+              las búsquedas siguen saltando el tombstone
+
+REHASH (load factor α = n/m > 0.75):  m: 8 → 16, reinsertar todo
+  cada clave se recoloca con  hash % nueva_capacidad
+\end{verbatim}
+\end{dsacomofunciona}
+
 \begin{lstlisting}[language=C++]
 IMPLEMENTACIÓN PROPIA (chaining)
 1. Array de buckets; cada bucket es una lista de pares {clave, valor}.

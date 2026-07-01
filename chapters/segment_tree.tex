@@ -50,6 +50,30 @@ Cada consulta/actualización toca O(log n) nodos.
 \end{verbatim}
 \end{dsadiagrama}
 
+\begin{dsacomofunciona}
+\begin{verbatim}
+QUERY de rango descompuesta en O(log n) nodos
+
+Array: [2, 1, 5, 3, 8, 4]   ← pedimos suma(1..4) = 1+5+3+8 = 17
+
+                 [0..5]=23
+                /          \
+          [0..2]=8        [3..5]=15
+          /     \          /     \
+     [0..1]=3  [2..2]=5  [3..4]=11 [5..5]=4
+     /   \                /   \
+  [0]=2 [1]=1         [3]=3  [4]=8
+
+query(1..4) recorre y se queda con nodos TOTALMENTE dentro (◄):
+   [1..1]=1 ◄     [2..2]=5 ◄     [3..4]=11 ◄
+   suma = 1 + 5 + 11 = 17     (solo 3 nodos, no 4 hojas)
+
+UPDATE punto (pos 4 = 8 → 10): sube recombinando la rama
+   [4]:8→10  →  [3..4]:11→13  →  [3..5]:15→17  →  raíz:23→25
+   solo se tocan los nodos del camino a la raíz = O(log n)
+\end{verbatim}
+\end{dsacomofunciona}
+
 \begin{lstlisting}[language=C++]
 CÓMO FUNCIONA (suma, array de tamaño 4n)
 - build(node, l, r): si l==r, hoja = arr[l]; si no, construye hijos y

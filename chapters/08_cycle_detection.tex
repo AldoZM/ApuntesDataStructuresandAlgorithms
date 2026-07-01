@@ -52,6 +52,28 @@ Estados: Blanco=0  Gris=1 (en recursion)  Negro=2 (listo)
 \end{verbatim}
 \end{dsadiagrama}
 
+\begin{dsacomofunciona}
+\begin{verbatim}
+TRAZA 3 COLORES (dirigido)   grafo: 0→1→2→0
+
+Paso │ Nodo │ Acción              │ Estados (0,1,2)
+─────┼──────┼─────────────────────┼──────────────────
+  1  │  0   │ entra → GRIS        │ (G, B, B)
+  2  │  1   │ entra → GRIS        │ (G, G, B)
+  3  │  2   │ entra → GRIS        │ (G, G, G)
+  4  │  2   │ vecino 0 es GRIS →  │  ¡CICLO detectado!
+                arista de retorno
+
+Blanco(B)=sin visitar  Gris(G)=en la pila actual  Negro(N)=terminado
+Ver un GRIS = arista hacia un ancestro = ciclo.
+Ver un NEGRO ≠ ciclo (ya cerró, es otra rama).
+
+NO DIRIGIDO (con padre):   0—1—2   y   2—0
+  DFS 0(pad=-1) → 1(pad=0) → 2(pad=1)
+  desde 2 veo vecino 0: visitado y 0≠padre(1) → CICLO
+\end{verbatim}
+\end{dsacomofunciona}
+
 \begin{lstlisting}[language=C++]
 NO DIRIGIDO (DFS con padre)
 - Recorre con DFS. Al visitar un vecino v de u:

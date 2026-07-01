@@ -54,6 +54,32 @@ Nodos "centinela" (head/tail falsos) evitan casos borde con NULL.
 \end{verbatim}
 \end{dsadiagrama}
 
+\begin{dsacomofunciona}
+\begin{verbatim}
+ESTADO tras cada operación (capacidad = 2)   FRENTE=reciente
+
+  put(1,A)   head <-> [1:A] <-> tail          mapa{1}
+  put(2,B)   head <-> [2:B] <-> [1:A] <-> tail  mapa{1,2}
+
+  get(1)     → mueve 1 al frente
+             head <-> [1:A] <-> [2:B] <-> tail  devuelve A
+
+  put(3,C)   → LLENO: desaloja el del FONDO (2:B, menos reciente)
+             head <-> [3:C] <-> [1:A] <-> tail  mapa{1,3}  (2 eliminado)
+
+  get(2)     → no está → devuelve -1
+
+POR QUÉ lista DOBLE:  para borrar el fondo en O(1) necesitas su
+'prev'.  El mapa da el nodo en O(1); la lista lo reordena en O(1).
+
+   mapa:  clave → puntero al nodo
+          ┌───┐   ┌───┐
+   1 ────►│1:A│   │3:C│◄──── 3
+          └───┘   └───┘
+   (los nodos viven en la lista; el mapa solo apunta a ellos)
+\end{verbatim}
+\end{dsacomofunciona}
+
 \begin{lstlisting}[language=C++]
 CÓMO FUNCIONA (todo O(1))
 - Hash Map clave -> puntero al nodo de la lista.

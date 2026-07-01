@@ -49,13 +49,35 @@ Grafo no dirigido con pesos:
 Aristas ordenadas: A-B(1), A-E(2), B-C(3), B-E(4), A-D(5)...
 
 Kruskal agrega (si no forma ciclo):
-  A-B(1)  ✓   A-E(2)  ✓   B-C(3)  ✓
-  B-E(4)  ✗ (A,B,E ya conectados -> ciclo)
-  A-D(5)  ✓
+  A-B(1)  OK   A-E(2)  OK   B-C(3)  OK
+  B-E(4)  X (A,B,E ya conectados -> ciclo)
+  A-D(5)  OK
 MST = {A-B, A-E, B-C, A-D}, peso total = 1+2+3+5 = 11
 (V=5 nodos -> V-1 = 4 aristas)
 \end{verbatim}
 \end{dsadiagrama}
+
+\begin{dsacomofunciona}
+\begin{verbatim}
+KRUSKAL: cómo el Union-Find evita ciclos (bosque que se fusiona)
+
+Aristas ordenadas: A-B(1) A-E(2) B-C(3) B-E(4) A-D(5)
+
+ Arista │ find(u) find(v) │ ¿mismo set? │ Acción      │ Componentes
+────────┼─────────────────┼─────────────┼─────────────┼──────────────────
+ A-B(1) │   A      B      │ NO          │ unir OK      │ {A,B} {C} {D} {E}
+ A-E(2) │   A      E      │ NO          │ unir OK      │ {A,B,E} {C} {D}
+ B-C(3) │   A      C      │ NO          │ unir OK      │ {A,B,E,C} {D}
+ B-E(4) │   A      A      │ SÍ          │ saltar X    │ (formaría ciclo)
+ A-D(5) │   A      D      │ NO          │ unir OK      │ {A,B,E,C,D} ← 1 set
+
+Peso total MST = 1+2+3+5 = 11
+
+PRIM: el árbol CRECE desde un nodo (frontera con min-heap)
+  {A} ─1─► añade B      {A,B} ─2─► añade E      {A,B,E} ─3─► añade C ...
+  siempre toma la arista más barata que sale del árbol hacia afuera.
+\end{verbatim}
+\end{dsacomofunciona}
 
 \begin{lstlisting}[language=C++]
 KRUSKAL (goloso por aristas + Union-Find)

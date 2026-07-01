@@ -53,6 +53,30 @@ Deserializar lee en el mismo orden y reconstruye idéntico.
 \end{verbatim}
 \end{dsadiagrama}
 
+\begin{dsacomofunciona}
+\begin{verbatim}
+LCA(6, 8) subiendo la señal desde las hojas
+
+           (3) ◄── ambos lados devuelven algo → LCA = 3
+          /   \
+    izq (5)    (1) der
+       / \     /  \
+    (6)  2   0   (8)
+     ▲            ▲
+     p            q
+
+dfs(3): izq=dfs(5)  der=dfs(1)
+  dfs(5): izq=dfs(6)=6 OK   der=dfs(2)=null   → devuelve 6
+  dfs(1): izq=dfs(0)=null  der=dfs(8)=8 OK    → devuelve 8
+  en 3: izq=6 (≠null) Y der=8 (≠null) → 3 es el LCA OK
+
+SERIALIZAR (preorder, # = NULL) produce un stream lineal:
+  3 , 5 , 6 , # , # , 2 , # , # , 1 , 0 , # , # , 8 , # , #
+  └─raíz┘ └──subárbol izq──┘        └────subárbol der────┘
+Deserializar consume el stream en el MISMO orden → árbol idéntico.
+\end{verbatim}
+\end{dsacomofunciona}
+
 \begin{lstlisting}[language=C++]
 LCA EN ÁRBOL BINARIO GENERAL (DFS)
 1. Caso base: si el nodo es NULL o es p o q, devuélvelo.

@@ -49,6 +49,31 @@ Multi-source: encola TODAS las fuentes con dist=0 al inicio.
 \end{verbatim}
 \end{dsadiagrama}
 
+\begin{dsacomofunciona}
+\begin{verbatim}
+MULTI-SOURCE BFS llenando distancias por "ondas" (# = muro)
+
+Grid inicial       Onda 0 (fuentes)   Onda 1            Onda 2
+(F = fuente)       encola las 2:      vecinos:          siguientes:
+
+ F . . .            0 . . .            0 1 . .           0 1 2 .
+ . # . .            . # . .            1 # . .           1 # 3 .
+ . . . F            . . . 0            . . 1 0           2 . 1 0
+
+Onda 3:            Onda 4:
+ 0 1 2 3            0 1 2 3
+ 1 # 3 .            1 # 3 4
+ 2 . 1 0            2 3 1 0     ← toda celda tiene su distancia mínima
+                                 al 'F' más cercano
+
+Como ambas fuentes empiezan en 0, las ondas chocan y cada celda
+guarda la menor distancia. Una sola pasada BFS, O(R·C).
+
+0-1 BFS (deque):  peso 0 → push_front (mismo nivel)
+                  peso 1 → push_back  (siguiente nivel)
+\end{verbatim}
+\end{dsacomofunciona}
+
 \begin{lstlisting}[language=C++]
 BFS EN GRID
 - Cada celda (r,c) es un nodo. Vecinos válidos: dentro de límites y

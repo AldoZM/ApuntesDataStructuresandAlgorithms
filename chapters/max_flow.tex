@@ -56,6 +56,33 @@ Grafo residual: cada envío resta capacidad y crea arista inversa
 \end{verbatim}
 \end{dsadiagrama}
 
+\begin{dsacomofunciona}
+\begin{verbatim}
+GRAFO RESIDUAL evolucionando (flujo/capacidad en cada arista)
+
+Red:   S →10→ A →10→ T        S →10→ B →10→ T
+
+Inicio (residual = capacidad):
+   S=10=>A   A=10=>T   S=10=>B   B=10=>T      flujo total = 0
+
+Camino de aumento 1:  S→A→T, cuello = min(10,10) = 10
+   S: 0/10 →A  (residual 0, inversa A→S = 10)
+   A: 0/10 →T
+   flujo total = 10
+
+Camino de aumento 2:  S→B→T, cuello = min(10,10) = 10
+   S: 0/10 →B
+   B: 0/10 →T
+   flujo total = 20
+
+BFS ya no encuentra camino con residual > 0  →  FIN
+Flujo máximo = 20
+
+MIN-CUT equivalente:  aristas saturadas que separan S de T
+   {S→A, S→B} capacidad 10+10 = 20  =  flujo máximo  OK (max-flow=min-cut)
+\end{verbatim}
+\end{dsacomofunciona}
+
 \begin{lstlisting}[language=C++]
 EDMONDS-KARP (BFS para el camino de aumento)
 1. Matriz de capacidad residual cap[u][v].

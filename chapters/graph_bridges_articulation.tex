@@ -59,6 +59,29 @@ El ciclo 1-2-4-3-1 NO tiene puentes (hay ruta alterna).
 \end{verbatim}
 \end{dsadiagrama}
 
+\begin{dsacomofunciona}
+\begin{verbatim}
+disc = orden de descubrimiento,  low = mínimo alcanzable
+
+Grafo:  0 — 1 — 2 — 0   (triángulo)  y  2 — 3   (cola)
+
+DFS desde 0:
+  nodo │ disc │ low │ cómo se calcula low
+  ─────┼──────┼─────┼──────────────────────────────────
+   0   │  0   │  0  │
+   1   │  1   │  0  │ back-edge 1→0 (disc 0) baja low a 0
+   2   │  2   │  0  │ back-edge 2→0 (disc 0) baja low a 0
+   3   │  3   │  3  │ hoja, sin retorno
+
+PUENTE:  arista (u,v) es puente si  low[v] > disc[u]
+  arista 2—3:  low[3]=3 > disc[2]=2  →  ¡PUENTE! (al quitarla, 3 aislado)
+  arista 0—1:  low[1]=0 ≤ disc[0]=0  →  no (el triángulo tiene ruta alterna)
+
+ARTICULACIÓN:  u es corte si algún hijo v cumple  low[v] ≥ disc[u]
+  nodo 2:  low[3]=3 ≥ disc[2]=2  →  2 es punto de articulación
+\end{verbatim}
+\end{dsacomofunciona}
+
 \begin{lstlisting}[language=C++]
 CÓMO FUNCIONA (Tarjan, un solo DFS)
 1. disc[u] = low[u] = timer++ al visitar u.

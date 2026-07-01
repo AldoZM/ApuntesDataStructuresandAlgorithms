@@ -4,7 +4,7 @@
 
 Apuntes personales de DSA escritos en LaTeX: fondo oscuro, colores neon, diagramas ASCII, pseudocódigo y C++17. Orientados a prep de entrevistas técnicas Google-level.
 
-📄 **[Descargar ApuntesDSA.pdf](ApuntesDSA.pdf)** — 207 páginas compiladas
+📄 **[Descargar ApuntesDSA.pdf](ApuntesDSA.pdf)** — 216 páginas compiladas
 
 > Los capítulos nuevos incluyen una sección **🧒 "Explicado para un niño de 12"**: la misma idea contada en lenguaje simple, sin jerga.
 
@@ -30,7 +30,7 @@ Apuntes personales de DSA escritos en LaTeX: fondo oscuro, colores neon, diagram
 ```
 ApuntesData Structures and Alg/
 ├── ApuntesDSA.tex          ← main file (portada, TOC, 8 partes)
-├── ApuntesDSA.pdf          ← libro compilado (207 pp)
+├── ApuntesDSA.pdf          ← libro compilado (216 pp)
 ├── preamble_dsa.tex        ← dark mode, neon colors, emoji, C++ style, caja niño-de-12
 ├── chapters/               ← 56 fragmentos de capítulo (.tex)
 ├── 00_Fundamentos/         ← fuentes originales por carpeta

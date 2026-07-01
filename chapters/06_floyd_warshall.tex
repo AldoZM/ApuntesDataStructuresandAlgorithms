@@ -56,6 +56,27 @@ Matriz final (todas las distancias mínimas):
 \end{verbatim}
 \end{dsadiagrama}
 
+\begin{dsacomofunciona}
+\begin{verbatim}
+EVOLUCIÓN DE LA MATRIZ por cada intermedio k
+
+Inicial (inf = sin arista directa):     k = A (pasar por A):
+       A    B    C                            A    B    C
+  A [  0    3   inf ]                     A [  0    3   inf ]
+  B [ inf   0    1  ]                     B [ inf   0    1  ]
+  C [  2   inf   0  ]                     C [  2    5    0  ]  C→B vía A: 2+3=5
+
+k = B (pasar por B):                     k = C (pasar por C):
+       A    B    C                            A    B    C
+  A [  0    3    4  ]  A→C vía B: 3+1=4   A [  0    3    4  ]
+  B [ inf   0    1  ]                     B [  3    0    1  ]  B→A vía C: 1+2=3
+  C [  2    5    0  ]                     C [  2    5    0  ]
+
+Regla en cada celda:  dist[i][j] = min( dist[i][j], dist[i][k]+dist[k][j] )
+El bucle de k SIEMPRE va por fuera (si no, resultado incorrecto).
+\end{verbatim}
+\end{dsacomofunciona}
+
 \begin{lstlisting}[language=C++]
 CÓMO FUNCIONA
 1. dist[i][j] = peso de la arista i->j (0 si i==j, inf si no hay arista).

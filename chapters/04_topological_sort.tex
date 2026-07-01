@@ -51,6 +51,29 @@ Un orden topologico valido:
 \end{verbatim}
 \end{dsadiagrama}
 
+\begin{dsacomofunciona}
+\begin{verbatim}
+TRAZA DE KAHN paso a paso (grafo simple):
+
+  5 → 0 ← 4        Aristas: 5→0, 5→2, 4→0, 4→1, 2→3, 3→1
+  ↓       ↓
+  2 → 3 → 1
+
+in-degree inicial:  0:2  1:2  2:1  3:1  4:0  5:0
+
+Paso │ Queue (indeg=0) │ Saca │ Baja indeg de     │ Orden
+─────┼─────────────────┼──────┼───────────────────┼──────────────
+  1  │ [5, 4]          │  5   │ 0→1, 2→0 (entra)  │ 5
+  2  │ [4, 2]          │  4   │ 0→0 (entra), 1→1  │ 5 4
+  3  │ [2, 0]          │  2   │ 3→0 (entra)       │ 5 4 2
+  4  │ [0, 3]          │  0   │ (0 no tiene salida)│ 5 4 2 0
+  5  │ [3]             │  3   │ 1→0 (entra)       │ 5 4 2 0 3
+  6  │ [1]             │  1   │ —                 │ 5 4 2 0 3 1
+
+Procesados 6 = V  →  es DAG, orden válido: 5 4 2 0 3 1
+\end{verbatim}
+\end{dsacomofunciona}
+
 \begin{lstlisting}[language=C++]
 ALGORITMO DE KAHN (BFS con grados de entrada)
 1. Calcula el in-degree (aristas entrantes) de cada nodo.

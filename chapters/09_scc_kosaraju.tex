@@ -53,6 +53,33 @@ Grafo condensado (cada SCC = 1 super-nodo) SIEMPRE es un DAG.
 \end{verbatim}
 \end{dsadiagrama}
 
+\begin{dsacomofunciona}
+\begin{verbatim}
+LAS DOS PASADAS de Kosaraju
+
+Grafo:  A<->B → C<->D
+
+PASADA 1 (DFS en original, apilar al TERMINAR):
+  dfs(A)→dfs(B)→dfs(C)→dfs(D)
+  termina: D, luego C, luego B, luego A
+  PILA (tope arriba):  [ A ]
+                       [ B ]
+                       [ C ]
+                       [ D ]
+
+TRANSPONER (invertir todas las flechas):  A<->B ← C<->D
+
+PASADA 2 (sacar de la pila, DFS en transpuesto):
+  saca A → dfs alcanza {A,B}  ........ SCC #1 = {A, B}
+  saca B → ya visitado, salta
+  saca C → dfs alcanza {C,D}  ........ SCC #2 = {C, D}
+  saca D → ya visitado, salta
+
+Resultado: 2 componentes fuertemente conexas.
+La transposición "corta" los puentes entre SCC y aísla cada grupo.
+\end{verbatim}
+\end{dsacomofunciona}
+
 \begin{lstlisting}[language=C++]
 KOSARAJU (dos pasadas de DFS)
 1. DFS en el grafo original; al terminar cada nodo, apílalo.
