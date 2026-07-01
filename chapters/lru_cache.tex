@@ -1,0 +1,164 @@
+\chapter[\emj{🧠}~LRU Cache (Hash Map + Lista Doble)]{\emj{🧠}~LRU Cache (Hash Map + Lista Doblemente Enlazada)}
+
+\begin{dsaquees}
+
+Tu escritorio 🗄️ solo tiene espacio para 5 carpetas. Cada vez que usas
+una, la pones ENCIMA (la más reciente). Cuando llega una carpeta nueva y
+ya no cabe, tiras la de HASTA ABAJO: la que llevas más tiempo sin tocar
+("Least Recently Used", la menos usada recientemente).
+
+Una LRU Cache hace justo eso con datos, y el reto es lograr que TODO
+(guardar, buscar, mover a la cima y tirar la vieja) sea instantáneo
+$O(1)$. La combinación mágica: un Hash Map para encontrar rápido + una
+lista doblemente enlazada para reordenar rápido.
+
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
+Una LRU (Least Recently Used) Cache guarda hasta \verb|capacity| pares
+clave-valor y, al llenarse, desaloja el elemento usado hace más tiempo.
+Debe hacer \verb|get| y \verb|put| en $O(1)$.
+
+Ninguna estructura sola lo logra, así que se combinan dos:
+\begin{itemize}
+\item \textbf{Hash Map} \verb|clave -> nodo|: encuentra cualquier
+      elemento en $O(1)$.
+\item \textbf{Lista doblemente enlazada}: mantiene el orden de uso. El
+      frente es el más reciente; el fondo, el candidato a desalojar.
+      Mover un nodo o quitarlo es $O(1)$ porque tienes punteros a ambos
+      vecinos.
+\end{itemize}
+
+Cada acceso (\verb|get| o \verb|put|) mueve el nodo al frente. Al exceder
+la capacidad, se elimina el nodo del fondo (y su clave del mapa).
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+Capacidad = 3.  Frente = más reciente,  Fondo = menos reciente.
+
+put(1) put(2) put(3):
+  FRENTE [3] <-> [2] <-> [1] FONDO
+  mapa: {1:n1, 2:n2, 3:n3}
+
+get(1)  -> mueve 1 al frente:
+  FRENTE [1] <-> [3] <-> [2] FONDO
+
+put(4)  -> lleno! desaloja el fondo (2):
+  FRENTE [4] <-> [1] <-> [3] FONDO
+  mapa: {1,3,4}   (el 2 se eliminó del mapa y de la lista)
+
+Nodos "centinela" (head/tail falsos) evitan casos borde con NULL.
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+CÓMO FUNCIONA (todo O(1))
+- Hash Map clave -> puntero al nodo de la lista.
+- Lista doble con centinelas head/tail falsos.
+- get(k): si existe, mueve su nodo al frente y devuelve el valor.
+- put(k,v): si existe, actualiza y mueve al frente; si no, crea al
+  frente. Si superas la capacidad, borra el nodo antes del tail.
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+get(clave):
+    SI clave no en mapa: return -1
+    nodo = mapa[clave]; moverAlFrente(nodo)
+    return nodo.valor
+
+put(clave, valor):
+    SI clave en mapa:
+        nodo = mapa[clave]; nodo.valor = valor; moverAlFrente(nodo)
+    SINO:
+        SI tamaño == capacidad:
+            viejo = tail.prev; quitar(viejo); borrar mapa[viejo.clave]
+        nodo = nuevo Nodo(clave, valor)
+        insertarAlFrente(nodo); mapa[clave] = nodo
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <unordered_map>
+using namespace std;
+
+class LRUCache {
+    struct Node { int key, val; Node *prev, *next; };
+    int cap;
+    unordered_map<int, Node*> mp;
+    Node *head, *tail;                 // centinelas
+
+    void remove(Node* n) { n->prev->next = n->next; n->next->prev = n->prev; }
+    void addFront(Node* n) {
+        n->next = head->next; n->prev = head;
+        head->next->prev = n; head->next = n;
+    }
+public:
+    LRUCache(int capacity) : cap(capacity) {
+        head = new Node(); tail = new Node();
+        head->next = tail; tail->prev = head;
+    }
+    int get(int key) {
+        if (!mp.count(key)) return -1;
+        Node* n = mp[key];
+        remove(n); addFront(n);        // marcar como reciente
+        return n->val;
+    }
+    void put(int key, int value) {
+        if (mp.count(key)) {
+            Node* n = mp[key]; n->val = value;
+            remove(n); addFront(n);
+            return;
+        }
+        if ((int)mp.size() == cap) {   // desalojar el menos reciente
+            Node* lru = tail->prev;
+            remove(lru); mp.erase(lru->key); delete lru;
+        }
+        Node* n = new Node{key, value, nullptr, nullptr};
+        addFront(n); mp[key] = n;
+    }
+};
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Operación   │ Tiempo  │ Espacio
+  ────────────┼─────────┼──────────
+  get         │ O(1)    │ O(capacity)
+  put         │ O(1)    │ O(capacity)
+
+* El O(1) es EL punto del problema; una lista simple daría O(n).
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ "LRU Cache" (LeetCode 146): pregunta top de Google/Meta/Amazon. La
+   respuesta esperada es EXACTAMENTE Hash Map + lista doble. Menos que
+   eso no da O(1).
+
+💡 Nodos centinela (dummy head/tail): eliminan todos los casos borde de
+   NULL al insertar/borrar. No los omitas: simplifican mucho el código.
+
+⚠️ ¿Por qué lista DOBLE y no simple? Para borrar un nodo en O(1)
+   necesitas su nodo anterior. La lista simple obligaría a recorrer O(n).
+
+🔑 Variante LFU (Least Frequently Used): desaloja por frecuencia, no por
+   recencia. Más difícil; suele necesitar un mapa extra de frecuencias.
+   Menciónala si te la piden.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• LRU: al llenarse, desaloja el elemento usado hace más tiempo.
+• Hash Map (buscar O(1)) + lista doble (reordenar O(1)).
+• Frente = más reciente; fondo = candidato a desalojar.
+• get/put mueven el nodo al frente; al exceder capacidad, borra el fondo.
+• Centinelas head/tail eliminan casos borde con NULL.
+• Lista DOBLE es obligatoria para borrar en O(1).
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}

@@ -1,0 +1,165 @@
+\chapter[\emj{🗝️}~Patrones con Hash Map (Frecuencias, Prefix-Sum, Agrupación)]{\emj{🗝️}~Patrones con Hash Map}
+
+\begin{dsaquees}
+
+El Hash Map es la navaja suiza 🔪 de las entrevistas: cuando algo tarda
+$O(n^2)$ "buscando de nuevo", casi siempre un Hash Map lo baja a $O(n)$
+recordando lo que ya viste.
+
+Tres patrones que aparecen una y otra vez:
+\begin{itemize}
+\item Contar frecuencias: cuántas veces aparece cada cosa.
+\item Complemento (Two Sum): guardar lo que YA viste para encontrar su
+      pareja al instante.
+\item Prefix-Sum + Hash: contar sub-arreglos cuya suma es un objetivo,
+      recordando las sumas acumuladas.
+\end{itemize}
+
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
+El Hash Map convierte "¿ya vi esto antes?" en una consulta $O(1)$. Los
+patrones más rentables:
+
+\begin{itemize}
+\item \textbf{Frequency Count}: un mapa \verb|valor -> conteo|. Base de
+      anagramas, mayoría, top-K, duplicados.
+\item \textbf{Two Sum / complemento}: por cada $x$ busca si $target-x$ ya
+      está en el mapa. Una sola pasada, $O(n)$.
+\item \textbf{Group By (agrupación)}: mapa \verb|clave_canónica -> lista|.
+      Para anagramas la clave es la palabra ordenada o su vector de
+      conteo de letras.
+\item \textbf{Prefix-Sum + Hash}: para "subarreglos que suman K", guarda
+      cuántas veces apareció cada suma acumulada; si \verb|suma - K| ya
+      se vio, hay subarreglos que suman K.
+\end{itemize}
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+TWO SUM (target = 9)          SUBARRAY SUM = K (K = 3)
+
+nums = [2, 7, 11, 15]         nums = [1, 2, 1, 3], K = 3
+visto = {}                    prefix acumulada: 1, 3, 4, 7
+x=2 -> falta 7? no. guarda 2  mapa {suma_prefija -> veces}, inicia {0:1}
+x=7 -> falta 2? SÍ (indice 0) suma=1 -> busca 1-3=-2? no. mapa{0:1,1:1}
+       => par (0,1)           suma=3 -> busca 3-3=0? SÍ (1 vez) -> +1
+                              suma=4 -> busca 4-3=1? SÍ (1 vez) -> +1
+                              suma=7 -> busca 7-3=4? SÍ (1 vez) -> +1
+                              total subarreglos con suma 3: 3
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+TWO SUM
+- Un mapa valor->índice. Por cada x, si target-x ya está, encontraste
+  el par. Si no, guarda x. Una sola pasada.
+
+SUBARRAY SUM = K
+- Suma acumulada 'suma'. Un mapa 'cuantas veces salió cada suma'.
+- Si (suma - K) está en el mapa, esos son subarreglos que suman K.
+- Inicializa el mapa con {0: 1} (el prefijo vacío).
+
+📝 PSEUDOCÓDIGO (subarray sum = K)
+──────────────────────────────────────────────────────────────
+
+función subarraysConSuma(nums, K):
+    conteo = {0: 1}; suma = 0; total = 0
+    PARA cada x en nums:
+        suma += x
+        SI (suma - K) en conteo: total += conteo[suma - K]
+        conteo[suma] += 1
+    return total
+
+💻 CÓDIGO C++ (Two Sum)
+──────────────────────────────────────────────────────────────
+
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+vector<int> twoSum(vector<int>& nums, int target) {
+    unordered_map<int,int> visto;              // valor -> índice
+    for (int i = 0; i < (int)nums.size(); i++) {
+        int falta = target - nums[i];
+        if (visto.count(falta)) return {visto[falta], i};
+        visto[nums[i]] = i;
+    }
+    return {};
+}
+
+💻 CÓDIGO C++ (subarray sum = K)
+──────────────────────────────────────────────────────────────
+
+int subarraySum(vector<int>& nums, int k) {
+    unordered_map<int,int> conteo{{0, 1}};     // prefijo vacío
+    int suma = 0, total = 0;
+    for (int x : nums) {
+        suma += x;
+        if (conteo.count(suma - k)) total += conteo[suma - k];
+        conteo[suma]++;
+    }
+    return total;
+}
+
+💻 CÓDIGO C++ (agrupar anagramas)
+──────────────────────────────────────────────────────────────
+
+#include <string>
+#include <algorithm>
+vector<vector<string>> groupAnagrams(vector<string>& strs) {
+    unordered_map<string, vector<string>> grupos;
+    for (auto& s : strs) {
+        string clave = s;
+        sort(clave.begin(), clave.end());      // clave canónica
+        grupos[clave].push_back(s);
+    }
+    vector<vector<string>> res;
+    for (auto& [k, v] : grupos) res.push_back(v);
+    return res;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Patrón            │ Tiempo       │ Espacio
+  ──────────────────┼──────────────┼──────────
+  Frequency / TwoSum│ O(n)         │ O(n)
+  Subarray sum = K  │ O(n)         │ O(n)
+  Group anagrams    │ O(n·k log k) │ O(n·k)
+
+* k = longitud de la palabra en group anagrams.
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ Regla mental: si te descubres haciendo un bucle DENTRO de otro para
+   "volver a buscar", pregúntate "¿un Hash Map recuerda esto en O(1)?".
+   Suele bajar O(n²) a O(n).
+
+💡 Prefix-Sum + Hash es el patrón estrella oculto: "Subarray Sum Equals
+   K" (LeetCode 560), "Continuous Subarray Sum", "Contiguous Array".
+   Inicializar el mapa con \verb|{0: 1}| es el detalle que a todos se les
+   olvida.
+
+⚠️ Group anagrams por conteo de letras: en vez de ordenar (k log k),
+   usa un vector de 26 conteos como clave -> O(k). Mejora que impresiona.
+
+🔑 Hash Set vs Hash Map: si solo importa "¿existe?" usa un Set; si
+   necesitas asociar un dato (índice, conteo) usa un Map.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• Hash Map convierte "¿ya lo vi?" en O(1): rompe bucles O(n²).
+• Frequency count: base de anagramas, mayoría, duplicados, top-K.
+• Two Sum: guarda visto, busca el complemento target−x.
+• Prefix-Sum + Hash: subarreglos con suma K; inicia el mapa con {0:1}.
+• Group by: mapa de clave canónica -> lista.
+• Set si solo importa existencia; Map si asocias datos.
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}

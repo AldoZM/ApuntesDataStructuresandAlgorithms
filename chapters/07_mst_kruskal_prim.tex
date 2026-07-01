@@ -1,0 +1,173 @@
+\chapter[\emj{🌉}~MST: Kruskal y Prim (Árbol de Expansión Mínima)]{\emj{🌉}~MST: Kruskal y Prim (Árbol de Expansión Mínima)}
+
+\begin{dsaquees}
+
+Conectar todas las casas 🏠 de un pueblo con cable de internet gastando
+lo MENOS posible. No importa la ruta exacta; solo que TODAS queden
+conectadas y el cable total sea el más barato.
+
+Dos estrategias para lograrlo:
+\begin{itemize}
+\item Kruskal: ordena todos los cables del más barato al más caro y ve
+      agregándolos, saltándote cualquiera que forme un círculo inútil.
+\item Prim: empieza en una casa y va "creciendo" la red, agregando
+      siempre el cable más barato que toque una casa nueva.
+\end{itemize}
+
+Ambas llegan al mismo costo mínimo por caminos distintos.
+
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
+Un Árbol de Expansión Mínima (Minimum Spanning Tree) de un grafo no
+dirigido y ponderado es un subconjunto de aristas que conecta TODOS los
+vértices, sin ciclos, con el peso total mínimo. Tiene exactamente
+$V-1$ aristas.
+
+\textbf{Kruskal} es "goloso por aristas": ordena las aristas por peso y
+las agrega si no crean ciclo. Para saber si crean ciclo usa Union-Find
+(DSU). Ideal para grafos dispersos.
+
+\textbf{Prim} es "goloso por nodos": crece un solo árbol desde un nodo,
+eligiendo con una min-heap la arista más barata hacia un nodo fuera del
+árbol. Ideal para grafos densos.
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+Grafo no dirigido con pesos:
+
+     1        3
+  A ─── B ──────── C
+  │  ╲2     ╱4   ╱
+  │5  ╲   ╱   ╱6
+  D ─── E ─
+     7
+
+Aristas ordenadas: A-B(1), A-E(2), B-C(3), B-E(4), A-D(5)...
+
+Kruskal agrega (si no forma ciclo):
+  A-B(1)  ✓   A-E(2)  ✓   B-C(3)  ✓
+  B-E(4)  ✗ (A,B,E ya conectados -> ciclo)
+  A-D(5)  ✓
+MST = {A-B, A-E, B-C, A-D}, peso total = 1+2+3+5 = 11
+(V=5 nodos -> V-1 = 4 aristas)
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+KRUSKAL (goloso por aristas + Union-Find)
+1. Ordena todas las aristas por peso ascendente.
+2. Recorre las aristas: si u y v están en componentes distintas
+   (find(u) != find(v)), agrégala al MST y hazles union().
+3. Para cuando el MST tenga V-1 aristas.
+
+📝 PSEUDOCÓDIGO (Kruskal)
+──────────────────────────────────────────────────────────────
+
+función kruskal(V, aristas):
+    ordenar aristas por peso
+    dsu = UnionFind(V)
+    mst = 0; usadas = 0
+    PARA cada (w, u, v) en aristas:
+        SI dsu.find(u) != dsu.find(v):
+            dsu.union(u, v)
+            mst += w; usadas++
+            SI usadas == V-1: romper
+    return mst
+
+💻 CÓDIGO C++ (Kruskal)
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct DSU {
+    vector<int> p, r;
+    DSU(int n): p(n), r(n, 0) { for (int i=0;i<n;i++) p[i]=i; }
+    int find(int x){ return p[x]==x ? x : p[x]=find(p[x]); }
+    bool unite(int a,int b){
+        a=find(a); b=find(b);
+        if(a==b) return false;
+        if(r[a]<r[b]) swap(a,b);
+        p[b]=a; if(r[a]==r[b]) r[a]++;
+        return true;
+    }
+};
+
+// aristas: {peso, u, v}
+long long kruskal(int V, vector<array<int,3>>& edges) {
+    sort(edges.begin(), edges.end()); // ordena por peso (primer campo)
+    DSU dsu(V);
+    long long total = 0; int usadas = 0;
+    for (auto& e : edges) {
+        if (dsu.unite(e[1], e[2])) {   // no forma ciclo
+            total += e[0];
+            if (++usadas == V - 1) break;
+        }
+    }
+    return total;
+}
+
+💻 CÓDIGO C++ (Prim con min-heap)
+──────────────────────────────────────────────────────────────
+
+#include <queue>
+long long prim(int V, vector<vector<pair<int,int>>>& adj) {
+    // adj[u] = lista de {vecino, peso}
+    vector<bool> inMST(V, false);
+    priority_queue<pair<int,int>, vector<pair<int,int>>,
+                   greater<>> pq;    // min-heap {peso, nodo}
+    pq.push({0, 0});
+    long long total = 0;
+    while (!pq.empty()) {
+        auto [w, u] = pq.top(); pq.pop();
+        if (inMST[u]) continue;
+        inMST[u] = true; total += w;
+        for (auto [v, pw] : adj[u])
+            if (!inMST[v]) pq.push({pw, v});
+    }
+    return total;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Algoritmo   │ Tiempo          │ Mejor para
+  ────────────┼─────────────────┼────────────────
+  Kruskal     │ O(E log E)      │ Grafos dispersos
+  Prim (heap) │ O(E log V)      │ Grafos densos
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ Kruskal reusa Union-Find: si ya dominas DSU, Kruskal es casi gratis.
+   Es la razón por la que se enseñan juntos.
+
+💡 "Min Cost to Connect All Points" (LeetCode 1584): MST clásico sobre
+   distancias de Manhattan. Prim suele ganar por ser el grafo denso.
+
+⚠️ MST solo en grafos NO dirigidos y conexos. Si el grafo está
+   desconectado no existe MST (existe un "bosque" de expansión mínima).
+
+🔑 Corte (cut property): la arista más barata que cruza cualquier
+   partición del grafo SIEMPRE está en algún MST. Es la justificación
+   teórica de por qué el enfoque goloso funciona aquí.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• MST: conecta todos los nodos, sin ciclos, con peso mínimo (V-1 aristas).
+• Kruskal: ordena aristas + Union-Find; O(E log E); grafos dispersos.
+• Prim: crece un árbol con min-heap; O(E log V); grafos densos.
+• Ambos son golosos y dan el mismo costo mínimo.
+• Solo en grafos no dirigidos y conexos.
+• Kruskal es la mejor excusa para practicar Union-Find.
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}

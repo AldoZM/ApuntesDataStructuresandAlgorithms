@@ -1,0 +1,165 @@
+\chapter[\emj{🧱}~BFS Avanzado (Grid, Multi-source y 0-1 BFS)]{\emj{🧱}~BFS Avanzado (Grid, Multi-source y 0-1 BFS)}
+
+\begin{dsaquees}
+
+El BFS normal explora un mapa nivel por nivel. Estas variantes son el
+mismo BFS con pequeños giros para problemas muy comunes en entrevistas:
+
+\begin{itemize}
+\item Grid: el "grafo" es una cuadrícula (un laberinto o mapa). Cada
+      celda se conecta con sus 4 vecinos (arriba, abajo, izquierda,
+      derecha).
+\item Multi-source: en vez de empezar en un punto, empiezas en VARIOS a
+      la vez. Como varios incendios 🔥 propagándose simultáneamente.
+\item 0-1 BFS: aristas que cuestan solo 0 o 1. Con una doble cola
+      (deque) obtienes el camino más corto sin necesitar Dijkstra.
+\end{itemize}
+
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
+Muchos problemas de "camino más corto" no vienen como grafos explícitos,
+sino como matrices. Tratar cada celda como un nodo y sus 4 (u 8) vecinos
+como aristas convierte el problema en un BFS estándar.
+
+\textbf{Multi-source BFS}: metes todos los orígenes en la Queue al inicio
+(distancia 0). El BFS expande todos los frentes en paralelo, dando la
+distancia mínima a CUALQUIER origen. Evita correr BFS por cada fuente.
+
+\textbf{0-1 BFS}: cuando los pesos son solo 0 o 1, una \verb|deque|
+sustituye a la cola de prioridad de Dijkstra: las aristas de peso 0 van
+al FRENTE y las de peso 1 al FINAL. Resultado: $O(V+E)$ en vez de
+$O(E \log V)$.
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+GRID (4 direcciones)          MULTI-SOURCE (2 incendios)
+
+  . . . #                       Inicio: F en (0,0) y (2,3)
+  . # . .        vecinos de     F . . .        dist=0 en ambos
+  . . . .        (r,c):         . . . F        y crece hacia
+  # . . .        (r+1,c)(r-1,c) . . . .        afuera a la vez.
+                 (r,c+1)(r,c-1)
+
+dr[] = {1,-1,0,0}   dc[] = {0,0,1,-1}
+Multi-source: encola TODAS las fuentes con dist=0 al inicio.
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+BFS EN GRID
+- Cada celda (r,c) es un nodo. Vecinos válidos: dentro de límites y
+  no bloqueados. Usa arreglos de direcciones dr[]/dc[].
+
+MULTI-SOURCE BFS
+- Encola TODAS las fuentes con distancia 0 antes del bucle. El resto
+  del BFS es idéntico.
+
+📝 PSEUDOCÓDIGO (multi-source en grid)
+──────────────────────────────────────────────────────────────
+
+función multiSourceBFS(grid, fuentes):
+    dist = matriz de -1 (no visitado)
+    q = Queue
+    PARA cada fuente (r,c): dist[r][c]=0; q.push((r,c))
+    MIENTRAS q no vacia:
+        (r,c) = q.pop()
+        PARA cada direccion (dr,dc):
+            nr=r+dr; nc=c+dc
+            SI dentro de limites Y grid libre Y dist[nr][nc]==-1:
+                dist[nr][nc] = dist[r][c]+1
+                q.push((nr,nc))
+    return dist
+
+💻 CÓDIGO C++ (BFS en grid)
+──────────────────────────────────────────────────────────────
+
+#include <vector>
+#include <queue>
+using namespace std;
+
+int dr[] = {1, -1, 0, 0};
+int dc[] = {0, 0, 1, -1};
+
+vector<vector<int>> bfsGrid(vector<vector<int>>& grid,
+                            vector<pair<int,int>>& sources) {
+    int R = grid.size(), C = grid[0].size();
+    vector<vector<int>> dist(R, vector<int>(C, -1));
+    queue<pair<int,int>> q;
+    for (auto [r, c] : sources) { dist[r][c] = 0; q.push({r, c}); }
+
+    while (!q.empty()) {
+        auto [r, c] = q.front(); q.pop();
+        for (int d = 0; d < 4; d++) {
+            int nr = r + dr[d], nc = c + dc[d];
+            if (nr < 0 || nr >= R || nc < 0 || nc >= C) continue;
+            if (grid[nr][nc] == 1 || dist[nr][nc] != -1) continue; // muro/visto
+            dist[nr][nc] = dist[r][c] + 1;
+            q.push({nr, nc});
+        }
+    }
+    return dist;
+}
+
+💻 CÓDIGO C++ (0-1 BFS con deque)
+──────────────────────────────────────────────────────────────
+
+#include <deque>
+// adj[u] = lista de {vecino, peso} con peso 0 o 1
+vector<int> zeroOneBFS(int V, vector<vector<pair<int,int>>>& adj, int src) {
+    vector<int> dist(V, INT_MAX);
+    deque<int> dq;
+    dist[src] = 0; dq.push_front(src);
+    while (!dq.empty()) {
+        int u = dq.front(); dq.pop_front();
+        for (auto [v, w] : adj[u]) {
+            if (dist[u] + w < dist[v]) {
+                dist[v] = dist[u] + w;
+                if (w == 0) dq.push_front(v);  // peso 0 -> al frente
+                else        dq.push_back(v);   // peso 1 -> al final
+            }
+        }
+    }
+    return dist;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Variante        │ Tiempo      │ Nota
+  ────────────────┼─────────────┼────────────────────────
+  BFS en grid     │ O(R * C)    │ R filas, C columnas
+  Multi-source    │ O(R * C)    │ igual, varios orígenes
+  0-1 BFS         │ O(V + E)    │ reemplaza a Dijkstra
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ "Rotting Oranges" (LeetCode 994): multi-source BFS puro. Todas las
+   naranjas podridas son fuentes; el resultado es el tiempo hasta podrir
+   todo.
+
+💡 "01 Matrix" (LeetCode 542): distancia de cada celda al 0 más cercano
+   = multi-source BFS desde todos los ceros a la vez.
+
+⚠️ 8 direcciones vs 4: lee bien el enunciado. Si permiten diagonales,
+   agrega las 4 direcciones diagonales a dr[]/dc[].
+
+🔑 0-1 BFS gana a Dijkstra cuando los pesos son binarios: mismo
+   resultado, más rápido y sin heap. Buen detalle para destacar.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• Grid = grafo implícito: cada celda es un nodo, 4 u 8 vecinos.
+• Usa dr[]/dc[] para recorrer direcciones limpiamente.
+• Multi-source: encola TODAS las fuentes con dist 0 al inicio.
+• 0-1 BFS: deque, peso 0 al frente, peso 1 al final; O(V+E).
+• Clásicos: Rotting Oranges, 01 Matrix, laberintos.
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}

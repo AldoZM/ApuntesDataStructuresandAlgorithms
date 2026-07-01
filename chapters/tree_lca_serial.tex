@@ -1,0 +1,159 @@
+\chapter[\emj{🧬}~LCA y Serialización de Árboles]{\emj{🧬}~Ancestro Común (LCA) y Serialización de Árboles}
+
+\begin{dsaquees}
+
+Dos primos buscando a su pariente compartido más cercano en un árbol
+genealógico 🌳. El Ancestro Común más Bajo (Lowest Common Ancestor) es
+la primera persona de la que ambos descienden: ni muy arriba (el
+bisabuelo de todos), ni imposible (uno mismo).
+
+Y la Serialización es tomarle una "foto plana" al árbol para guardarlo
+en un archivo o mandarlo por la red, de forma que después puedas
+RECONSTRUIRLO idéntico. Como desarmar un mueble con instrucciones para
+volverlo a armar exactamente igual.
+
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
+El \textbf{LCA} de dos nodos $p$ y $q$ es el nodo más profundo que tiene
+a ambos como descendientes (un nodo puede ser descendiente de sí mismo).
+
+\begin{itemize}
+\item En un \textbf{BST}: aprovecha el orden. Baja desde la raíz; si
+      ambos valores son menores ve a la izquierda, si ambos son mayores
+      ve a la derecha; en cuanto se "separan", ese nodo es el LCA.
+\item En un \textbf{árbol binario general}: DFS recursivo. Si encuentras
+      $p$ o $q$ los devuelves; el primer nodo que recibe respuesta
+      distinta de NULL por AMBOS lados es el LCA.
+\end{itemize}
+
+La \textbf{serialización} convierte el árbol en una cadena (típicamente
+un preorder con marcadores para los NULL) y la deserialización la
+reconstruye. Es la base de guardar árboles en disco o red.
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+Árbol:
+           [3]
+         /     \
+       [5]     [1]
+      /   \    /  \
+    [6]  [2] [0]  [8]
+
+LCA(6, 2) = 5     (ambos cuelgan de 5)
+LCA(6, 8) = 3     (se separan en la raíz)
+LCA(5, 2) = 5     (un nodo es ancestro de sí mismo)
+
+Serialización (preorder, # = NULL):
+  3,5,6,#,#,2,#,#,1,0,#,#,8,#,#
+Deserializar lee en el mismo orden y reconstruye idéntico.
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+LCA EN ÁRBOL BINARIO GENERAL (DFS)
+1. Caso base: si el nodo es NULL o es p o q, devuélvelo.
+2. Busca en izquierda y en derecha.
+3. Si ambos lados devuelven algo -> este nodo es el LCA.
+4. Si solo un lado devuelve algo -> propaga ese resultado hacia arriba.
+
+📝 PSEUDOCÓDIGO (LCA general)
+──────────────────────────────────────────────────────────────
+
+función lca(nodo, p, q):
+    SI nodo == NULL O nodo == p O nodo == q: return nodo
+    izq = lca(nodo.izq, p, q)
+    der = lca(nodo.der, p, q)
+    SI izq != NULL Y der != NULL: return nodo   // p y q en lados distintos
+    return (izq != NULL) ? izq : der
+
+💻 CÓDIGO C++ (LCA general y en BST)
+──────────────────────────────────────────────────────────────
+
+struct Node { int val; Node *left, *right; };
+
+// Árbol binario general -> O(n)
+Node* lca(Node* root, Node* p, Node* q) {
+    if (!root || root == p || root == q) return root;
+    Node* l = lca(root->left,  p, q);
+    Node* r = lca(root->right, p, q);
+    if (l && r) return root;           // se separan aquí -> LCA
+    return l ? l : r;
+}
+
+// BST -> O(h), aprovecha el orden
+Node* lcaBST(Node* root, int p, int q) {
+    while (root) {
+        if (p < root->val && q < root->val)      root = root->left;
+        else if (p > root->val && q > root->val) root = root->right;
+        else return root;              // se separan -> LCA
+    }
+    return nullptr;
+}
+
+💻 CÓDIGO C++ (serializar / deserializar, preorder)
+──────────────────────────────────────────────────────────────
+
+#include <string>
+#include <sstream>
+using namespace std;
+
+void serializeH(Node* n, string& out) {
+    if (!n) { out += "#,"; return; }
+    out += to_string(n->val) + ",";
+    serializeH(n->left, out);
+    serializeH(n->right, out);
+}
+
+Node* deserializeH(istringstream& in) {
+    string tok; getline(in, tok, ',');
+    if (tok == "#") return nullptr;
+    Node* n = new Node{stoi(tok), nullptr, nullptr};
+    n->left  = deserializeH(in);
+    n->right = deserializeH(in);
+    return n;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Operación         │ Tiempo  │ Espacio
+  ──────────────────┼─────────┼──────────
+  LCA (general)     │ O(n)    │ O(h)
+  LCA (BST)         │ O(h)    │ O(1)
+  Serializar        │ O(n)    │ O(n)
+  Deserializar      │ O(n)    │ O(n)
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ "Lowest Common Ancestor" (LeetCode 235 BST / 236 general): dos
+   versiones. En BST usa el orden (más rápido, O(h)); en árbol general
+   usa el DFS de "ambos lados devuelven algo".
+
+💡 "Serialize and Deserialize Binary Tree" (LeetCode 297): clave usar un
+   marcador para NULL (\verb|#|) para que la reconstrucción sea única.
+
+⚠️ Sin marcador de NULL no se puede reconstruir: un preorder de solo
+   valores es ambiguo. Los \verb|#| son obligatorios.
+
+🔑 Distancia entre dos nodos = profundidad(p) + profundidad(q) −
+   2·profundidad(LCA). El LCA es la pieza para medir distancias en
+   árboles.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• LCA: ancestro común más profundo de dos nodos.
+• BST: usa el orden, baja hasta que p y q se separan; O(h).
+• General: DFS; el nodo donde ambos lados devuelven algo es el LCA.
+• Serializar: preorder con \verb|#| para los NULL; O(n).
+• Deserializar lee en el mismo orden y reconstruye idéntico.
+• LCA es la base para medir distancias entre nodos.
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}

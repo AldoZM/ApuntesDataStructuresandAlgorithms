@@ -1,0 +1,160 @@
+\chapter[\emj{📑}~Topological Sort (Ordenamiento Topológico)]{\emj{📑}~Topological Sort (Ordenamiento Topológico)}
+
+\begin{dsaquees}
+
+Ponerte la ropa en el orden correcto 👕. No puedes ponerte los zapatos
+antes que los calcetines, ni el saco antes que la camisa.
+
+Cada prenda "depende" de otra. El Ordenamiento Topológico te da una
+lista válida de en qué orden vestirte para que nunca rompas una regla:
+"primero A, luego B".
+
+Solo funciona si NO hay contradicciones (ciclos). Si la regla dijera
+"ponte los zapatos antes que los calcetines Y los calcetines antes que
+los zapatos", sería imposible: eso es un ciclo.
+
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
+El Topological Sort es un ordenamiento lineal de los vértices de un
+grafo dirigido acíclico (DAG) tal que, para toda arista $u \to v$, el
+nodo $u$ aparece antes que $v$ en el orden.
+
+Solo existe en grafos dirigidos y SIN ciclos (DAG). Si hay un ciclo,
+no hay orden válido. Se usa para modelar dependencias: compilación de
+módulos, prerrequisitos de materias, planificación de tareas y
+resolución de fórmulas en hojas de cálculo.
+
+Hay dos formas de calcularlo: el algoritmo de Kahn (BFS con in-degree)
+y el enfoque DFS (post-orden invertido).
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+Grafo de dependencias (DAG):
+
+  [Calcetines] --> [Zapatos]
+  [Camisa] --> [Saco] --> [Corbata]
+  [Ropa interior] --> [Pantalon] --> [Zapatos]
+
+In-degree (aristas entrantes):
+  Calcetines:0  Camisa:0  RopaInterior:0
+  Pantalon:1  Zapatos:2  Saco:1  Corbata:1
+
+Un orden topologico valido:
+  RopaInterior -> Pantalon -> Calcetines -> Zapatos
+  -> Camisa -> Saco -> Corbata
+
+(No es unico: cualquier orden que respete las flechas sirve).
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+ALGORITMO DE KAHN (BFS con grados de entrada)
+1. Calcula el in-degree (aristas entrantes) de cada nodo.
+2. Mete a una Queue todos los nodos con in-degree = 0.
+3. Mientras la Queue no esté vacía:
+   - Saca un nodo u, agrégalo al resultado.
+   - Por cada vecino v de u: resta 1 a su in-degree.
+     Si su in-degree llega a 0, mételo a la Queue.
+4. Si el resultado tiene menos nodos que V -> HAY CICLO (no es DAG).
+
+📝 PSEUDOCÓDIGO (Kahn)
+──────────────────────────────────────────────────────────────
+
+función topoSort(V, adj):
+    indeg = arreglo de ceros de tamaño V
+    PARA cada u, PARA cada v en adj[u]: indeg[v]++
+    q = Queue con todos los nodos donde indeg == 0
+    orden = []
+    MIENTRAS q NO vacía:
+        u = q.dequeue(); orden.push(u)
+        PARA cada vecino v de u:
+            indeg[v]--
+            SI indeg[v] == 0: q.enqueue(v)
+    SI orden.size < V: return "CICLO DETECTADO"
+    return orden
+
+💻 CÓDIGO C++ (Kahn)
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+vector<int> topoSort(int V, vector<vector<int>>& adj) {
+    vector<int> indeg(V, 0);
+    for (int u = 0; u < V; u++)
+        for (int v : adj[u]) indeg[v]++;
+
+    queue<int> q;
+    for (int i = 0; i < V; i++)
+        if (indeg[i] == 0) q.push(i);
+
+    vector<int> orden;
+    while (!q.empty()) {
+        int u = q.front(); q.pop();
+        orden.push_back(u);
+        for (int v : adj[u])
+            if (--indeg[v] == 0) q.push(v);
+    }
+    // Si no salieron todos, había un ciclo
+    if ((int)orden.size() != V) return {}; // vacío = no es DAG
+    return orden;
+}
+
+💻 CÓDIGO C++ (DFS, post-orden invertido)
+──────────────────────────────────────────────────────────────
+
+void dfs(int u, vector<vector<int>>& adj,
+         vector<bool>& vis, vector<int>& pila) {
+    vis[u] = true;
+    for (int v : adj[u])
+        if (!vis[v]) dfs(v, adj, vis, pila);
+    pila.push_back(u);       // se agrega al TERMINAR
+}
+// El orden topológico es 'pila' invertida.
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Método      │ Tiempo      │ Espacio
+  ────────────┼─────────────┼──────────────
+  Kahn (BFS)  │ O(V + E)    │ O(V)
+  DFS         │ O(V + E)    │ O(V)
+
+* V = Vértices, E = Aristas.
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ Detección de ciclos gratis: Kahn te dice si hay ciclo sin esfuerzo
+   extra: si procesas menos de V nodos, el grafo NO es un DAG.
+
+💡 "Course Schedule" (LeetCode 207/210): el problema estrella. "¿Puedes
+   tomar todas las materias dado un mapa de prerrequisitos?" = ¿existe
+   orden topológico? Respuesta directa con Kahn.
+
+⚠️ Solo en DAGs dirigidos: si el grafo es no dirigido o tiene ciclos,
+   el ordenamiento topológico NO existe. Menciónalo siempre.
+
+🔑 Kahn vs DFS: Kahn es iterativo (sin riesgo de stack overflow) y
+   detecta ciclos naturalmente. DFS es más corto pero recuerda invertir
+   el post-orden al final.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• Ordena un DAG respetando dependencias: u antes que v si u → v.
+• Solo existe en grafos dirigidos SIN ciclos.
+• Kahn: BFS con in-degree = 0; detecta ciclos si sobran nodos.
+• DFS: apila en post-orden e invierte el resultado.
+• Ambos O(V + E).
+• Usos: prerrequisitos, build systems, planificación de tareas.
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}

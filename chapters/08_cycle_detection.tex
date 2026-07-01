@@ -1,0 +1,144 @@
+\chapter[\emj{🔁}~Detección de Ciclos en Grafos]{\emj{🔁}~Detección de Ciclos en Grafos}
+
+\begin{dsaquees}
+
+Caminar por una ciudad 🚶 y de repente darte cuenta de que ya pasaste
+por esa esquina: diste una vuelta completa. Eso es un ciclo.
+
+Detectarlo depende del tipo de calle:
+\begin{itemize}
+\item Calles de doble sentido (grafo no dirigido): hay ciclo si llegas
+      a un lugar ya visitado que NO es de donde acabas de venir.
+\item Calles de un solo sentido (grafo dirigido): hay ciclo si vuelves
+      a pisar un lugar que todavía está "en tu camino actual", no uno
+      que ya terminaste de explorar.
+\end{itemize}
+
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
+Detectar ciclos es fundamental: un ciclo cambia por completo qué
+algoritmos aplican (por ejemplo, el ordenamiento topológico solo existe
+si NO hay ciclos).
+
+En grafos \textbf{no dirigidos} usamos DFS guardando el "padre": si
+encontramos un vecino ya visitado distinto del padre, hay ciclo.
+Alternativa: Union-Find (si dos extremos de una arista ya están unidos,
+esa arista cierra un ciclo).
+
+En grafos \textbf{dirigidos} usamos DFS con 3 estados (colores):
+Blanco (sin visitar), Gris (en la pila de recursión actual) y Negro
+(terminado). Si durante el DFS tocamos un nodo Gris, hay ciclo. El
+algoritmo de Kahn también sirve: si el topo-sort no procesa todos los
+nodos, hay ciclo.
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+NO DIRIGIDO (padre):        DIRIGIDO (3 colores):
+
+  A ─── B                     A ──> B ──> C
+  │     │                     ^           │
+  D ─── C                     └───────────┘
+
+DFS: A->B->C->D->A            DFS desde A:
+Al ver A de nuevo (no es      A(gris) B(gris) C(gris)
+padre de D) => CICLO          C apunta a A que esta GRIS
+                              => CICLO
+
+Estados: Blanco=0  Gris=1 (en recursion)  Negro=2 (listo)
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+NO DIRIGIDO (DFS con padre)
+- Recorre con DFS. Al visitar un vecino v de u:
+  * Si v no visitado -> DFS(v, padre=u).
+  * Si v visitado y v != padre -> hay ciclo.
+
+DIRIGIDO (DFS con 3 colores)
+- color[u] = GRIS al entrar, NEGRO al salir.
+- Si un vecino v es GRIS -> hay ciclo (arista hacia atrás).
+
+📝 PSEUDOCÓDIGO (dirigido, 3 colores)
+──────────────────────────────────────────────────────────────
+
+función tieneCicloDirigido(u):
+    color[u] = GRIS
+    PARA cada vecino v de u:
+        SI color[v] == GRIS: return true          // ciclo
+        SI color[v] == BLANCO Y tieneCicloDirigido(v): return true
+    color[u] = NEGRO
+    return false
+
+💻 CÓDIGO C++ (no dirigido, con padre)
+──────────────────────────────────────────────────────────────
+
+#include <vector>
+using namespace std;
+
+bool dfsUndirected(int u, int parent, vector<vector<int>>& adj,
+                   vector<bool>& vis) {
+    vis[u] = true;
+    for (int v : adj[u]) {
+        if (!vis[v]) {
+            if (dfsUndirected(v, u, adj, vis)) return true;
+        } else if (v != parent) {
+            return true;              // visitado y no es el padre
+        }
+    }
+    return false;
+}
+
+💻 CÓDIGO C++ (dirigido, 3 colores)
+──────────────────────────────────────────────────────────────
+
+bool dfsDirected(int u, vector<vector<int>>& adj, vector<int>& color) {
+    color[u] = 1;                     // GRIS (en recursión)
+    for (int v : adj[u]) {
+        if (color[v] == 1) return true;              // ciclo
+        if (color[v] == 0 && dfsDirected(v, adj, color)) return true;
+    }
+    color[u] = 2;                     // NEGRO (terminado)
+    return false;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Método            │ Tiempo      │ Espacio
+  ──────────────────┼─────────────┼──────────────
+  DFS (ambos)       │ O(V + E)    │ O(V)
+  Union-Find (undir)│ O(E α(V))   │ O(V)
+
+* α = función inversa de Ackermann, prácticamente constante.
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ Elige el método según el grafo: no dirigido -> padre o Union-Find;
+   dirigido -> 3 colores o Kahn. Confundirlos es un error típico.
+
+💡 "Course Schedule" (LeetCode 207): "¿es posible terminar el plan?" =
+   "¿el grafo de prerrequisitos NO tiene ciclos?". Ciclo dirigido.
+
+⚠️ El truco del "padre" solo aplica a NO dirigidos. En dirigidos un
+   nodo NEGRO (ya terminado) no implica ciclo; solo un GRIS lo implica.
+
+🔑 Detección de deadlocks: en sistemas operativos, un ciclo en el grafo
+   de "espera de recursos" = interbloqueo. Buen dato para mencionar.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• No dirigido: DFS con padre, o Union-Find (arista que une lo ya unido).
+• Dirigido: DFS con 3 colores; un vecino GRIS = ciclo.
+• Alternativa dirigida: Kahn no procesa todos los nodos = ciclo.
+• Todo en O(V + E).
+• Vital para topo-sort, detección de deadlocks y validar DAGs.
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}

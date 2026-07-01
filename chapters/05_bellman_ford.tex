@@ -1,0 +1,159 @@
+\chapter[\emj{💸}~Bellman-Ford (Camino más Corto con Pesos Negativos)]{\emj{💸}~Bellman-Ford (Camino más Corto con Pesos Negativos)}
+
+\begin{dsaquees}
+
+Buscar la ruta más barata entre ciudades 🏙️, pero donde algunas
+carreteras te PAGAN por pasar (peso negativo), por ejemplo un descuento
+o un reembolso.
+
+Dijkstra se rompe con esos reembolsos porque asume que avanzar siempre
+"cuesta". Bellman-Ford no asume nada: repite el cálculo muchas veces,
+relajando todas las carreteras una y otra vez, hasta que ninguna ruta
+puede mejorar más.
+
+Además detecta las trampas: si existe un bucle que te paga infinito
+(ciclo negativo), Bellman-Ford lo denuncia.
+
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
+Bellman-Ford calcula la distancia más corta desde un nodo origen a
+todos los demás en un grafo dirigido y ponderado, admitiendo pesos
+negativos (algo que Dijkstra no permite).
+
+Su idea central es la "relajación" (relaxation): recorrer todas las
+aristas $V-1$ veces, actualizando \verb|dist[v]| cada vez que
+\verb|dist[u] + peso(u,v) < dist[v]|. Tras $V-1$ pasadas, las distancias
+son óptimas si no hay ciclos negativos.
+
+Una pasada extra ($V$-ésima): si alguna arista todavía se puede relajar,
+existe un ciclo de peso negativo alcanzable desde el origen.
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+Grafo dirigido con peso negativo:
+
+   (4)      (-2)
+ A ───> B ────> C
+ │              ^
+ │(5)           │(1)
+ └──────> D ────┘
+
+dist inicial: A=0, B=inf, C=inf, D=inf
+
+Relajar aristas V-1 = 3 veces:
+  A->B(4): B = 4
+  B->C(-2): C = 2
+  A->D(5): D = 5
+  D->C(1): C = min(2, 6) = 2
+
+Resultado: A=0, B=4, C=2, D=5
+
+Pasada extra: ninguna arista mejora -> NO hay ciclo negativo.
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+CÓMO FUNCIONA
+1. dist[origen] = 0, el resto = infinito.
+2. Repite V-1 veces: por CADA arista (u, v, peso), relaja:
+   si dist[u] + peso < dist[v], entonces dist[v] = dist[u] + peso.
+3. Pasada V-ésima: si alguna arista aún relaja -> ciclo negativo.
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+función bellmanFord(V, aristas, origen):
+    dist = arreglo lleno de INFINITO
+    dist[origen] = 0
+    REPETIR V-1 veces:
+        PARA cada (u, v, w) en aristas:
+            SI dist[u] != INF Y dist[u] + w < dist[v]:
+                dist[v] = dist[u] + w
+    // Deteccion de ciclo negativo
+    PARA cada (u, v, w) en aristas:
+        SI dist[u] != INF Y dist[u] + w < dist[v]:
+            return "CICLO NEGATIVO"
+    return dist
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+struct Edge { int u, v, w; };
+
+bool bellmanFord(int V, vector<Edge>& edges, int src, vector<long long>& dist) {
+    dist.assign(V, LLONG_MAX);
+    dist[src] = 0;
+
+    // V-1 pasadas de relajación
+    for (int i = 0; i < V - 1; i++) {
+        for (auto& e : edges) {
+            if (dist[e.u] != LLONG_MAX && dist[e.u] + e.w < dist[e.v])
+                dist[e.v] = dist[e.u] + e.w;
+        }
+    }
+    // Pasada extra: si algo relaja, hay ciclo negativo
+    for (auto& e : edges) {
+        if (dist[e.u] != LLONG_MAX && dist[e.u] + e.w < dist[e.v])
+            return false; // ciclo negativo detectado
+    }
+    return true;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Caso        │ Tiempo      │ Espacio
+  ────────────┼─────────────┼──────────────
+  Tiempo      │ O(V * E)    │ O(V)
+
+* Más lento que Dijkstra (O(E log V)) pero admite pesos negativos.
+\end{lstlisting}
+
+\begin{lstlisting}[language=C++]
+✅ Optimización: si en una pasada completa NO se relajó ninguna arista,
+   ya terminaste antes de tiempo (early exit).
+
+💡 SPFA: una variante con Queue (Shortest Path Faster Algorithm) que
+   suele ser más rápida en la práctica, aunque su peor caso sigue
+   siendo O(V*E).
+
+🔑 Aristas negativas SÍ, ciclos negativos NO: un peso negativo aislado
+   está bien; lo que rompe todo es un CICLO cuya suma sea negativa.
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ ¿Cuándo elegirlo sobre Dijkstra? Cuando haya pesos negativos o te
+   pidan DETECTAR ciclos negativos. Es la respuesta esperada.
+
+💡 "Cheapest Flights Within K Stops" (LeetCode 787): variante de
+   Bellman-Ford limitando el número de pasadas a K+1.
+
+⚠️ Inicializa con cuidado: nunca relajes desde un nodo con distancia
+   infinita (evita overflow). Por eso el chequeo \verb|dist[u] != INF|.
+
+🔑 Frase clave: "V-1 relajaciones porque el camino más corto tiene a lo
+   sumo V-1 aristas". Dila y sumas puntos.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• Camino más corto de una fuente a todos, CON pesos negativos.
+• Relaja TODAS las aristas V-1 veces.
+• Pasada extra detecta ciclos de peso negativo.
+• O(V * E): más lento que Dijkstra pero más general.
+• Usa Dijkstra si todos los pesos son positivos (más rápido).
+• Clásico: rutas con reembolsos, arbitraje de divisas.
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}

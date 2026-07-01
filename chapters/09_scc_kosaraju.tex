@@ -1,0 +1,160 @@
+\chapter[\emj{🧩}~Componentes Fuertemente Conexas (SCC · Kosaraju)]{\emj{🧩}~Componentes Fuertemente Conexas (SCC · Kosaraju)}
+
+\begin{dsaquees}
+
+Grupos de amigos en una red social 👥 donde "seguir" es de un solo
+sentido. Una Componente Fuertemente Conexa es un grupo donde TODOS
+pueden llegar a TODOS siguiendo flechas: desde cualquier persona del
+grupo puedes alcanzar a cualquier otra y regresar.
+
+Kosaraju encuentra estos grupos con un truco astuto: recorre el grafo,
+luego INVIERTE todas las flechas y lo recorre de nuevo. Los nodos que
+siguen "atrapados juntos" incluso con las flechas al revés forman una
+componente fuertemente conexa.
+
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
+En un grafo dirigido, una Componente Fuertemente Conexa (Strongly
+Connected Component) es un subconjunto máximo de nodos donde existe un
+camino dirigido entre cualquier par de ellos en ambos sentidos.
+
+El algoritmo de Kosaraju las halla en dos pasadas de DFS:
+\begin{enumerate}
+\item DFS sobre el grafo original, apilando cada nodo cuando TERMINA
+      (orden de finalización, como en topo-sort).
+\item Transponer el grafo (invertir todas las aristas) y hacer DFS
+      sacando nodos de la pila; cada árbol de este segundo DFS es una SCC.
+\end{enumerate}
+
+Alternativa de una sola pasada: el algoritmo de Tarjan (usa índices de
+descubrimiento y \verb|low-link|), más eficiente pero más difícil de
+recordar bajo presión.
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+Grafo dirigido:
+
+  A ──> B ──> C ──> D
+  ^     │     ^     │
+  └─────┘     └─────┘
+
+  A <-> B forman ciclo   -> SCC {A, B}
+  C <-> D forman ciclo   -> SCC {C, D}
+
+Paso 1 (DFS original): apila por orden de finalizacion
+Paso 2 (grafo transpuesto): cada DFS-tree = una SCC
+
+Resultado: {A, B}  y  {C, D}
+Grafo condensado (cada SCC = 1 super-nodo) SIEMPRE es un DAG.
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+KOSARAJU (dos pasadas de DFS)
+1. DFS en el grafo original; al terminar cada nodo, apílalo.
+2. Construye el grafo transpuesto (invierte todas las aristas).
+3. Saca nodos de la pila; por cada no visitado, un DFS en el
+   transpuesto marca una SCC completa.
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+función kosaraju(V, adj):
+    // Pasada 1: orden por finalizacion
+    PARA cada u no visitado: dfs1(u) -> apila u al terminar
+    adjT = transponer(adj)
+    // Pasada 2: sacar de la pila sobre el transpuesto
+    MIENTRAS pila no vacia:
+        u = pila.pop()
+        SI u no visitado_2:
+            dfs2(u, adjT)      // marca una SCC entera
+            sccCount++
+    return sccCount
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <vector>
+#include <stack>
+using namespace std;
+
+void dfs1(int u, vector<vector<int>>& adj, vector<bool>& vis,
+          stack<int>& st) {
+    vis[u] = true;
+    for (int v : adj[u]) if (!vis[v]) dfs1(v, adj, vis, st);
+    st.push(u);                       // apila al TERMINAR
+}
+
+void dfs2(int u, vector<vector<int>>& adjT, vector<bool>& vis,
+          vector<int>& comp) {
+    vis[u] = true; comp.push_back(u);
+    for (int v : adjT[u]) if (!vis[v]) dfs2(v, adjT, vis, comp);
+}
+
+int kosaraju(int V, vector<vector<int>>& adj) {
+    vector<bool> vis(V, false);
+    stack<int> st;
+    for (int i = 0; i < V; i++) if (!vis[i]) dfs1(i, adj, vis, st);
+
+    // Transponer
+    vector<vector<int>> adjT(V);
+    for (int u = 0; u < V; u++)
+        for (int v : adj[u]) adjT[v].push_back(u);
+
+    fill(vis.begin(), vis.end(), false);
+    int scc = 0;
+    while (!st.empty()) {
+        int u = st.top(); st.pop();
+        if (!vis[u]) {
+            vector<int> comp;
+            dfs2(u, adjT, vis, comp);  // una SCC
+            scc++;
+        }
+    }
+    return scc;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Algoritmo   │ Tiempo      │ Espacio
+  ────────────┼─────────────┼──────────────
+  Kosaraju    │ O(V + E)    │ O(V + E)
+  Tarjan      │ O(V + E)    │ O(V)
+
+* Tarjan hace una sola pasada; Kosaraju hace dos pero es más intuitivo.
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ Grafo condensado = DAG: si colapsas cada SCC en un solo nodo, el
+   grafo resultante nunca tiene ciclos. Sirve para aplicar topo-sort
+   encima. Frase que impresiona.
+
+💡 "Critical Connections" / puentes (LeetCode 1192): variantes de
+   conectividad que se resuelven con low-link estilo Tarjan.
+
+⚠️ SCC es solo para grafos DIRIGIDOS. En no dirigidos el concepto
+   equivalente es "componentes conexas" simples (un DFS/BFS o Union-Find).
+
+🔑 Recuerda el orden de Kosaraju: primero apilas por finalización en el
+   grafo original, luego DFS en el TRANSPUESTO. Invertir ese orden lo
+   rompe.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• SCC: grupo máximo de nodos mutuamente alcanzables (grafo dirigido).
+• Kosaraju: DFS original (apilar al terminar) + DFS en el transpuesto.
+• Cada árbol del segundo DFS es una SCC.
+• Tarjan: una sola pasada con low-link (más rápido, más difícil).
+• Ambos O(V + E).
+• Condensar las SCC produce siempre un DAG.
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}

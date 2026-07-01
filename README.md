@@ -4,7 +4,7 @@
 
 Apuntes personales de DSA escritos en LaTeX: fondo oscuro, colores neon, diagramas ASCII, pseudocódigo y C++17. Orientados a prep de entrevistas técnicas Google-level.
 
-📄 **[Descargar ApuntesDSA.pdf](ApuntesDSA.pdf)** — 102 páginas compiladas
+📄 **[Descargar ApuntesDSA.pdf](ApuntesDSA.pdf)** — 152 páginas compiladas
 
 ---
 
@@ -13,9 +13,9 @@ Apuntes personales de DSA escritos en LaTeX: fondo oscuro, colores neon, diagram
 | # | Tema | Subtemas |
 |---|------|----------|
 | 1 | **Fundamentos** | Big-O Notation, Complejidad Espacial |
-| 2 | **Estructuras Lineales** | Arrays, Linked Lists, Stacks, Queues |
-| 3 | **Estructuras No Lineales** | BST, AVL Trees, Heaps, Hash Tables, Tries, Union-Find |
-| 4 | **Grafos** | Representación, BFS/DFS, Dijkstra |
+| 2 | **Estructuras Lineales** | Arrays, Linked Lists, **Fast & Slow Pointers**, Stacks, Queues |
+| 3 | **Estructuras No Lineales** | BST, AVL Trees, **Tree Traversals**, **LCA + Serialización**, Heaps, Hash Tables, **Hashing/Colisiones**, **Patrones Hash Map**, **LRU Cache**, Tries, Union-Find |
+| 4 | **Grafos** ⭐ | Representación, BFS/DFS, **BFS Avanzado (grid/multi-source/0-1)**, Dijkstra, **Bellman-Ford**, **Floyd-Warshall**, **Topological Sort**, **MST (Kruskal/Prim)**, **Detección de Ciclos**, **SCC (Kosaraju)** |
 | 5 | **Ordenamiento** | Bubble/Insertion/Selection, Merge Sort, Quick Sort |
 | 6 | **Búsqueda** | Linear Search, Binary Search |
 | 7 | **Patrones de Entrevista** ⭐ | Two Pointers, Sliding Window, DP (intro/memo/tabulation), Backtracking, Bit Manipulation, Recursión |
@@ -27,9 +27,9 @@ Apuntes personales de DSA escritos en LaTeX: fondo oscuro, colores neon, diagram
 ```
 ApuntesData Structures and Alg/
 ├── ApuntesDSA.tex          ← main file (portada, TOC, 7 partes)
-├── ApuntesDSA.pdf          ← libro compilado (102 pp)
+├── ApuntesDSA.pdf          ← libro compilado (152 pp)
 ├── preamble_dsa.tex        ← dark mode, neon colors, emoji, C++ style
-├── chapters/               ← 28 fragmentos de capítulo (.tex)
+├── chapters/               ← 41 fragmentos de capítulo (.tex)
 ├── 00_Fundamentos/         ← fuentes originales por carpeta
 ├── 01_Estructuras_Lineales/
 ├── 02_Estructuras_No_Lineales/
@@ -51,4 +51,4 @@ xelatex ApuntesDSA.tex   # segunda pasada para TOC y referencias
 
 ---
 
-**Estado:** 28/28 archivos · última actualización 23 mayo 2026
+**Estado:** 41/41 archivos · última actualización 30 junio 2026

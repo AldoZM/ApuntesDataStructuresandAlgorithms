@@ -1,0 +1,157 @@
+\chapter[\emj{🐢}~Fast \& Slow Pointers (Tortuga y Liebre)]{\emj{🐢}~Fast \& Slow Pointers (Tortuga y Liebre)}
+
+\begin{dsaquees}
+
+Dos corredores en una pista circular 🏃: uno lento (tortuga, avanza 1
+paso) y uno rápido (liebre, avanza 2 pasos). Si la pista tiene un bucle,
+tarde o temprano el rápido le da la vuelta y ALCANZA al lento por
+detrás. Si la pista termina (hay una meta), el rápido llega al final y
+nunca se encuentran.
+
+Ese simple truco resuelve un montón de problemas de listas enlazadas:
+detectar ciclos, encontrar el nodo del medio y hallar dónde empieza el
+bucle, todo sin usar memoria extra.
+
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
+La técnica Fast \& Slow (algoritmo de la tortuga y la liebre de Floyd)
+usa dos punteros que recorren la lista a velocidades distintas: uno
+avanza de 1 en 1 y otro de 2 en 2.
+
+Sus tres usos clásicos:
+\begin{itemize}
+\item \textbf{Detectar ciclo}: si en algún momento \verb|fast == slow|,
+      hay ciclo. Si \verb|fast| llega a NULL, no lo hay.
+\item \textbf{Encontrar el medio}: cuando \verb|fast| llega al final,
+      \verb|slow| está justo a la mitad.
+\item \textbf{Inicio del ciclo}: tras el encuentro, mueve un puntero al
+      \verb|head| y avanza ambos de 1 en 1; se cruzan en el inicio del
+      bucle.
+\end{itemize}
+
+Todo en $O(n)$ tiempo y $O(1)$ espacio: ahí está su valor.
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+Lista con ciclo:
+
+  1 -> 2 -> 3 -> 4 -> 5
+            ^         │
+            └─────────┘
+
+slow (1 paso):  1  2  3  4  5  3  4 ...
+fast (2 pasos): 1  3  5  4  3  5  4 ...
+                      encuentro en el nodo 4  => HAY CICLO
+
+Encontrar el medio (lista sin ciclo):
+  1 -> 2 -> 3 -> 4 -> 5 -> NULL
+fast llega a NULL  =>  slow queda en 3 (el medio)
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+DETECTAR CICLO
+- slow = head, fast = head.
+- Avanza slow 1 y fast 2 mientras fast y fast->next existan.
+- Si slow == fast en algún punto -> hay ciclo.
+
+INICIO DEL CICLO (después del encuentro)
+- Deja un puntero en el punto de encuentro, mueve otro al head.
+- Avanza ambos de 1 en 1; donde se crucen es el inicio del ciclo.
+
+📝 PSEUDOCÓDIGO (detectar + inicio de ciclo)
+──────────────────────────────────────────────────────────────
+
+función detectarCiclo(head):
+    slow = head; fast = head
+    MIENTRAS fast Y fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        SI slow == fast:                 // hay ciclo
+            p = head
+            MIENTRAS p != slow:
+                p = p.next; slow = slow.next
+            return p                      // inicio del ciclo
+    return NULL                           // no hay ciclo
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+struct Node { int val; Node* next; };
+
+// ¿Tiene ciclo?
+bool hasCycle(Node* head) {
+    Node *slow = head, *fast = head;
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+        if (slow == fast) return true;   // se alcanzaron
+    }
+    return false;                        // fast llegó a NULL
+}
+
+// Nodo del medio
+Node* middleNode(Node* head) {
+    Node *slow = head, *fast = head;
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    return slow;                         // mitad exacta (o 2da mitad si par)
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Problema          │ Tiempo  │ Espacio
+  ──────────────────┼─────────┼──────────
+  Detectar ciclo    │ O(n)    │ O(1)
+  Encontrar medio   │ O(n)    │ O(1)
+  Inicio del ciclo  │ O(n)    │ O(1)
+
+* La gran ventaja es el O(1) de memoria (sin HashSet de nodos vistos).
+\end{lstlisting}
+
+\begin{lstlisting}[language=C++]
+💡 Otros usos del patrón:
+   - Palíndromo de lista: encuentra el medio, invierte la 2da mitad y
+     compara.
+   - Happy Number: aplica fast/slow sobre la secuencia de sumas de
+     cuadrados de dígitos para detectar el ciclo.
+   - Eliminar el N-ésimo desde el final: separa dos punteros por N
+     nodos y avánzalos juntos.
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ "Linked List Cycle" (LeetCode 141/142): 141 pide detectar, 142 pide
+   el nodo donde empieza. Ambos son Floyd puro.
+
+💡 ¿Por qué funciona lo del inicio? La distancia del head al inicio del
+   ciclo es igual a la distancia del punto de encuentro al inicio del
+   ciclo (avanzando en el bucle). Sabértelo justifica el algoritmo.
+
+⚠️ Cuida los NULL: siempre valida \verb|fast != NULL| Y
+   \verb|fast->next != NULL| antes de hacer \verb|fast->next->next|, o
+   provocas un segfault.
+
+🔑 Alternativa con HashSet: guardar nodos visitados también detecta
+   ciclos, pero usa O(n) memoria. Floyd es superior por su O(1).
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• Dos punteros: lento (1 paso) y rápido (2 pasos).
+• Se encuentran = hay ciclo; fast llega a NULL = no hay.
+• fast al final -> slow queda en el medio.
+• Inicio del ciclo: un puntero al head, avanzar ambos de 1 en 1.
+• O(n) tiempo, O(1) espacio (mejor que HashSet).
+• Clásicos: cycle detection, medio, palíndromo, happy number.
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}

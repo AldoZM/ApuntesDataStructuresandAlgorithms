@@ -1,0 +1,146 @@
+\chapter[\emj{🌐}~Floyd-Warshall (Todos los Pares)]{\emj{🌐}~Floyd-Warshall (Caminos más Cortos entre Todos los Pares)}
+
+\begin{dsaquees}
+
+Una tabla de distancias de un mapa de carreteras 🗺️, donde cada casilla
+te dice cuánto cuesta ir de la ciudad X a la ciudad Y.
+
+Floyd-Warshall llena esa tabla probando algo simple para cada par:
+"¿me conviene ir directo de X a Y, o es más barato pasar por una ciudad
+intermedia K?". Prueba TODAS las ciudades intermedias posibles, una por
+una, y se queda con la ruta más barata.
+
+Al terminar, tienes la distancia mínima entre cualquier par de ciudades.
+
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
+Floyd-Warshall calcula la distancia más corta entre TODOS los pares de
+nodos de un grafo dirigido y ponderado. Admite pesos negativos (pero no
+ciclos negativos).
+
+Es programación dinámica pura: para cada nodo intermedio $k$, mejora la
+distancia de todo par $(i, j)$ preguntando si pasar por $k$ es más corto:
+\[ d[i][j] = \min\big(d[i][j],\ d[i][k] + d[k][j]\big) \]
+donde $d$ es la matriz de distancias.
+
+Su elegancia es un triple bucle de 3 líneas. Su precio es $O(V^3)$ en
+tiempo y $O(V^2)$ en memoria, así que solo sirve para grafos pequeños o
+densos (cientos de nodos, no millones).
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+Matriz de distancias (inf = sin conexión directa):
+
+        A    B    C
+   A  [ 0    3    inf ]
+   B  [ inf  0    1   ]
+   C  [ 2    inf  0   ]
+
+Probando intermedio k = B:
+  A->C ahora puede pasar por B: A->B(3) + B->C(1) = 4
+  dist[A][C] = min(inf, 4) = 4
+
+Probando intermedio k = C:
+  B->A puede pasar por C: B->C(1) + C->A(2) = 3
+  dist[B][A] = min(inf, 3) = 3
+
+Matriz final (todas las distancias mínimas):
+        A    B    C
+   A  [ 0    3    4 ]
+   B  [ 3    0    1 ]
+   C  [ 2    5    0 ]
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+CÓMO FUNCIONA
+1. dist[i][j] = peso de la arista i->j (0 si i==j, inf si no hay arista).
+2. Por cada nodo intermedio k (bucle externo):
+     por cada par (i, j):
+       dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+3. ¡El orden importa! k DEBE ser el bucle más externo.
+4. Si algún dist[i][i] queda negativo -> hay ciclo negativo.
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+función floydWarshall(dist):   // dist es matriz V x V
+    PARA k desde 0 hasta V-1:
+        PARA i desde 0 hasta V-1:
+            PARA j desde 0 hasta V-1:
+                SI dist[i][k] + dist[k][j] < dist[i][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+    return dist
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+const long long INF = 1e18;
+
+void floydWarshall(vector<vector<long long>>& dist) {
+    int V = dist.size();
+    for (int k = 0; k < V; k++)
+        for (int i = 0; i < V; i++)
+            for (int j = 0; j < V; j++)
+                if (dist[i][k] < INF && dist[k][j] < INF &&
+                    dist[i][k] + dist[k][j] < dist[i][j])
+                    dist[i][j] = dist[i][k] + dist[k][j];
+}
+
+int main() {
+    int V = 3;
+    vector<vector<long long>> dist(V, vector<long long>(V, INF));
+    for (int i = 0; i < V; i++) dist[i][i] = 0;
+    dist[0][1] = 3; dist[1][2] = 1; dist[2][0] = 2; // aristas
+    floydWarshall(dist);
+    // dist[i][j] ahora tiene la distancia mínima entre cada par
+    return 0;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Recurso     │ Costo
+  ────────────┼─────────────
+  Tiempo      │ O(V^3)
+  Espacio     │ O(V^2)
+
+* Ideal para V pequeño (≤ 400-500). Para V grande usa Dijkstra por nodo.
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ ¿Cuándo usarlo? Cuando pidan distancias entre TODOS los pares y el
+   grafo sea pequeño/denso. Si solo necesitas de UNA fuente, usa
+   Dijkstra o Bellman-Ford.
+
+💡 Cierre transitivo: cambia (min, +) por (OR, AND) y Floyd-Warshall te
+   dice qué nodos son alcanzables desde cuáles. Mismo esqueleto.
+
+⚠️ El orden de los bucles NO se negocia: k SIEMPRE va afuera. Si lo
+   pones adentro, el resultado es incorrecto.
+
+🔑 Ciclo negativo: revisa la diagonal. Si algún dist[i][i] < 0, existe
+   un ciclo de peso negativo pasando por i.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• Distancias más cortas entre TODOS los pares de nodos.
+• Programación dinámica: intermedio k mejora cada par (i, j).
+• Triple bucle con k por fuera; $O(V^3)$ tiempo, $O(V^2)$ espacio.
+• Admite pesos negativos, detecta ciclos negativos en la diagonal.
+• Solo para grafos pequeños o densos.
+• Alternativa: Dijkstra por cada nodo si el grafo es disperso.
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}

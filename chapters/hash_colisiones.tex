@@ -1,0 +1,159 @@
+\chapter[\emj{💥}~Hashing a Fondo: Colisiones e Implementación]{\emj{💥}~Hashing a Fondo: Colisiones e Implementación}
+
+\begin{dsaquees}
+
+Un estacionamiento 🅿️ donde una fórmula te asigna el cajón según tu
+placa. El problema: a veces dos coches distintos reciben el MISMO cajón.
+Eso es una colisión, y toda tabla hash necesita un plan para resolverla:
+
+\begin{itemize}
+\item Chaining: en cada cajón cabe una fila de coches (una lista). Si
+      chocan, se forman detrás.
+\item Open Addressing: si tu cajón está ocupado, buscas el siguiente
+      libre siguiendo una regla.
+\end{itemize}
+
+Y si el estacionamiento se llena demasiado (Load Factor alto), se
+construye uno más grande y se reacomodan todos los coches (rehashing).
+
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
+Una hash table promedia $O(1)$ SOLO si las colisiones se manejan bien.
+Dos grandes estrategias:
+
+\textbf{Chaining (encadenamiento)}: cada bucket guarda una lista
+enlazada de pares que colisionaron. Simple y tolerante a Load Factors
+altos. Es lo que usa \verb|std::unordered_map|.
+
+\textbf{Open Addressing (direccionamiento abierto)}: todo vive en el
+array; ante colisión se busca otro hueco mediante probing:
+\begin{itemize}
+\item Linear probing: prueba $i+1, i+2, \ldots$ (sufre "clustering").
+\item Quadratic probing: prueba $i+1, i+4, i+9, \ldots$
+\item Double hashing: el salto lo decide una segunda función hash.
+\end{itemize}
+
+El \textbf{Load Factor} $\alpha = n/m$ (elementos / buckets) mide qué
+tan llena está la tabla. Cuando supera un umbral (~0.75), se hace
+\textbf{rehashing}: se duplica el array y se reinsertan todas las claves.
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+CHAINING (listas por bucket)      OPEN ADDRESSING (linear probing)
+
+ [0] -> NULL                       hash("A")=2, hash("B")=2, hash("C")=3
+ [1] -> NULL
+ [2] -> (A) -> (B) -> (C)          [0] -
+ [3] -> NULL                       [1] -
+ [4] -> (D)                        [2] A     <- va a su hueco
+                                   [3] B     <- ocupado el 2, prueba 3? no,
+ Colisiones -> se apilan en la         C     <- desplazados en cadena
+ lista del bucket.                 [4] -
+
+ Load Factor a = n/m ; si a > 0.75 -> rehash (duplicar m y reinsertar).
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+IMPLEMENTACIÓN PROPIA (chaining)
+1. Array de buckets; cada bucket es una lista de pares {clave, valor}.
+2. índice = hash(clave) % capacidad.
+3. Insert: si la clave existe en la lista, actualiza; si no, agrégala.
+4. Get: recorre la lista del bucket buscando la clave.
+5. Si load factor > umbral -> rehash (nueva capacidad, reinsertar todo).
+
+📝 PSEUDOCÓDIGO (get con chaining)
+──────────────────────────────────────────────────────────────
+
+función get(clave):
+    idx = hash(clave) % capacidad
+    PARA cada par en buckets[idx]:
+        SI par.clave == clave: return par.valor
+    return NO_ENCONTRADO
+
+💻 CÓDIGO C++ (hash map propio con chaining)
+──────────────────────────────────────────────────────────────
+
+#include <vector>
+#include <list>
+#include <utility>
+using namespace std;
+
+class MyHashMap {
+    vector<list<pair<int,int>>> buckets;
+    int capacity, size_;
+    int idx(int key) { return (key % capacity + capacity) % capacity; }
+
+    void rehash() {
+        auto old = buckets;
+        capacity *= 2;
+        buckets.assign(capacity, {});
+        size_ = 0;
+        for (auto& b : old) for (auto& kv : b) put(kv.first, kv.second);
+    }
+public:
+    MyHashMap(int cap = 8) : buckets(cap), capacity(cap), size_(0) {}
+
+    void put(int key, int val) {
+        auto& b = buckets[idx(key)];
+        for (auto& kv : b) if (kv.first == key) { kv.second = val; return; }
+        b.push_back({key, val});
+        if (++size_ > capacity * 0.75) rehash();   // load factor
+    }
+    int get(int key) {
+        for (auto& kv : buckets[idx(key)])
+            if (kv.first == key) return kv.second;
+        return -1;                                 // no encontrado
+    }
+    void remove(int key) {
+        auto& b = buckets[idx(key)];
+        for (auto it = b.begin(); it != b.end(); ++it)
+            if (it->first == key) { b.erase(it); size_--; return; }
+    }
+};
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Método            │ Promedio │ Peor caso
+  ──────────────────┼──────────┼──────────
+  Insert/Get/Delete │ O(1)     │ O(n)
+  Rehash            │ O(n)     │ O(n) (amortizado O(1) por op)
+
+* Peor caso O(n): función hash mala -> todo cae en un bucket.
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ Chaining vs Open Addressing: chaining tolera load factors altos y
+   borra fácil; open addressing usa mejor la cache y menos memoria por
+   puntero, pero se degrada al llenarse. Sabe explicar ambos.
+
+💡 Una buena hash function distribuye uniforme y es rápida. Para strings,
+   el hash polinómico (\verb|h = h*31 + c|) es el clásico.
+
+⚠️ Borrar en open addressing es delicado: no puedes dejar el hueco
+   vacío (rompería las búsquedas por probing); se marca como "tombstone"
+   (borrado lógico).
+
+🔑 unordered\_map se degrada a O(n): con claves maliciosas que colisionan
+   a propósito (hash flooding). Por eso algunos lenguajes aleatorizan la
+   semilla del hash.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• Colisión: dos claves caen en el mismo bucket. Toda tabla necesita plan.
+• Chaining: lista por bucket (lo usa unordered\_map).
+• Open Addressing: buscar otro hueco (linear/quadratic/double hashing).
+• Load Factor $\alpha = n/m$; si pasa ~0.75 -> rehash (duplicar y reinsertar).
+• Promedio O(1); peor caso O(n) con hash mala.
+• Borrar en open addressing usa tombstones.
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}

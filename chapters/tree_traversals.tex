@@ -1,0 +1,174 @@
+\chapter[\emj{🌿}~Recorridos de Árboles (Tree Traversals)]{\emj{🌿}~Recorridos de Árboles (Tree Traversals)}
+
+\begin{dsaquees}
+
+Visitar todas las habitaciones de una casa de varios pisos 🏠. Hay dos
+grandes estilos:
+
+\begin{itemize}
+\item En profundidad (DFS): entras por una puerta y sigues bajando hasta
+      el sótano antes de regresar. Según CUÁNDO anotes cada habitación
+      (al entrar, en medio, o al salir) obtienes Preorder, Inorder o
+      Postorder.
+\item Por niveles (BFS): recorres piso por piso: primero toda la planta
+      baja, luego todo el primer piso, y así. Eso es Level-order.
+\end{itemize}
+
+El "cuándo apuntas el nodo" cambia por completo el orden del resultado.
+
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
+Recorrer un árbol es visitar cada nodo exactamente una vez. Los cuatro
+recorridos fundamentales:
+
+\begin{itemize}
+\item \textbf{Preorder} (Raíz → Izq → Der): útil para COPIAR/serializar
+      un árbol.
+\item \textbf{Inorder} (Izq → Raíz → Der): en un BST devuelve los
+      valores ORDENADOS.
+\item \textbf{Postorder} (Izq → Der → Raíz): útil para BORRAR el árbol o
+      evaluar expresiones (procesa hijos antes que el padre).
+\item \textbf{Level-order} (por niveles): BFS con Queue; base de muchos
+      problemas de árboles en entrevistas.
+\end{itemize}
+
+Los tres DFS salen naturales con recursión, pero conviene dominar la
+versión iterativa con Stack (evita stack overflow y la piden mucho).
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+Árbol:
+          [1]
+        /     \
+      [2]     [3]
+     /   \       \
+   [4]   [5]     [6]
+
+Preorder  (R,I,D): 1  2  4  5  3  6
+Inorder   (I,R,D): 4  2  5  1  3  6
+Postorder (I,D,R): 4  5  2  6  3  1
+Level-order      : 1  2  3  4  5  6   (por niveles, con Queue)
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+DFS RECURSIVO
+- Preorder : procesa nodo, luego izq, luego der.
+- Inorder  : izq, procesa nodo, der.
+- Postorder: izq, der, procesa nodo.
+
+LEVEL-ORDER (BFS)
+- Queue con la raíz. Saca un nodo, procésalo, encola sus hijos.
+- Para separar por niveles: procesa exactamente queue.size() nodos
+  por iteración del bucle externo.
+
+📝 PSEUDOCÓDIGO (level-order por niveles)
+──────────────────────────────────────────────────────────────
+
+función levelOrder(root):
+    SI root == NULL: return
+    q = Queue con root
+    MIENTRAS q no vacia:
+        n = q.size()               // nodos de este nivel
+        REPETIR n veces:
+            nodo = q.dequeue()
+            procesar(nodo)
+            SI nodo.izq: q.enqueue(nodo.izq)
+            SI nodo.der: q.enqueue(nodo.der)
+        // aqui termina un nivel
+
+💻 CÓDIGO C++ (DFS recursivo)
+──────────────────────────────────────────────────────────────
+
+struct Node { int val; Node *left, *right; };
+
+void preorder(Node* n)  { if(!n) return; cout<<n->val<<" ";
+                          preorder(n->left);  preorder(n->right); }
+void inorder(Node* n)   { if(!n) return; inorder(n->left);
+                          cout<<n->val<<" "; inorder(n->right); }
+void postorder(Node* n) { if(!n) return; postorder(n->left);
+                          postorder(n->right); cout<<n->val<<" "; }
+
+💻 CÓDIGO C++ (inorder iterativo con Stack)
+──────────────────────────────────────────────────────────────
+
+#include <stack>
+#include <vector>
+using namespace std;
+
+vector<int> inorderIter(Node* root) {
+    vector<int> res; stack<Node*> st; Node* cur = root;
+    while (cur || !st.empty()) {
+        while (cur) { st.push(cur); cur = cur->left; } // baja a la izq
+        cur = st.top(); st.pop();
+        res.push_back(cur->val);                       // procesa
+        cur = cur->right;                              // ve a la der
+    }
+    return res;
+}
+
+💻 CÓDIGO C++ (level-order con Queue)
+──────────────────────────────────────────────────────────────
+
+#include <queue>
+vector<vector<int>> levelOrder(Node* root) {
+    vector<vector<int>> res;
+    if (!root) return res;
+    queue<Node*> q; q.push(root);
+    while (!q.empty()) {
+        int n = q.size();
+        vector<int> nivel;
+        for (int i = 0; i < n; i++) {
+            Node* cur = q.front(); q.pop();
+            nivel.push_back(cur->val);
+            if (cur->left)  q.push(cur->left);
+            if (cur->right) q.push(cur->right);
+        }
+        res.push_back(nivel);
+    }
+    return res;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Recorrido     │ Tiempo  │ Espacio
+  ──────────────┼─────────┼──────────────────────────
+  Los 4         │ O(n)    │ O(h) DFS / O(w) BFS
+
+* n = nodos, h = altura, w = anchura máxima del árbol.
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ Inorder de un BST = ordenado: base para validar un BST o encontrar el
+   k-ésimo menor. Si el inorder no sale creciente, NO es un BST válido.
+
+💡 Level-order es la puerta a decenas de problemas: "Right Side View",
+   "Zigzag Traversal", "conectar nodos del mismo nivel", "profundidad
+   mínima". Casi siempre es BFS por niveles con \verb|queue.size()|.
+
+⚠️ Recursión vs iterativo: la recursiva es más limpia, pero con árboles
+   muy profundos (miles de niveles) puede desbordar el stack. Ten la
+   versión iterativa lista.
+
+🔑 Reconstrucción: con Preorder + Inorder (o Postorder + Inorder) puedes
+   reconstruir un árbol binario único. Pregunta frecuente de Google.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• Preorder (R,I,D): copiar/serializar.
+• Inorder (I,R,D): en BST da orden creciente.
+• Postorder (I,D,R): borrar árbol, evaluar expresiones.
+• Level-order (BFS con Queue): recorridos por niveles.
+• Domina la versión iterativa con Stack (evita stack overflow).
+• Todos O(n) tiempo; espacio O(h) en DFS, O(ancho) en BFS.
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}
