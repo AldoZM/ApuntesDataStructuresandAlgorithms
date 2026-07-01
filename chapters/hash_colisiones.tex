@@ -42,7 +42,6 @@ tan llena está la tabla. Cuando supera un umbral (~0.75), se hace
 \end{dsaotraforma}
 
 \begin{dsadiagrama}
-\begin{verbatim}
 CHAINING (listas por bucket)      OPEN ADDRESSING (linear probing)
 
  [0] -> NULL                       hash("A")=2, hash("B")=2, hash("C")=3
@@ -55,7 +54,6 @@ CHAINING (listas por bucket)      OPEN ADDRESSING (linear probing)
  lista del bucket.                 [4] -
 
  Load Factor a = n/m ; si a > 0.75 -> rehash (duplicar m y reinsertar).
-\end{verbatim}
 \end{dsadiagrama}
 
 \begin{dsacomofunciona}

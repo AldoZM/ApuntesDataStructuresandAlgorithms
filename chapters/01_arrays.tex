@@ -26,7 +26,6 @@ aunque por debajo siguen siendo un bloque de memoria contigua.
 \end{lstlisting}
 
 \begin{dsadiagrama}
-\begin{verbatim}
 Índice:  [0] [1] [2] [3] [4]
 Valor:   [ 5][ 2][ 8][ 1][ 9]
           ↑
@@ -36,7 +35,6 @@ Insertar 99 en el índice 2:
 ANTES:   [ 5][ 2][ 8][ 1][ 9]
           ↓   ↓   ← desplazar →
 DESPUÉS: [ 5][ 2][99][ 8][ 1][ 9]   ← O(n) porque movimos 8, 1 y 9
-\end{verbatim}
 \end{dsadiagrama}
 
 \begin{lstlisting}

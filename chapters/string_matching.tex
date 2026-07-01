@@ -53,7 +53,6 @@ MÚLTIPLES patrones a la vez.
 \end{dsaotraforma}
 
 \begin{dsadiagrama}
-\begin{verbatim}
 KMP: patrón = "ABABCABAB"
 
 Construir lps (prefijo propio = sufijo más largo):
@@ -68,7 +67,6 @@ RABIN-KARP: rolling hash
   texto: "ABCDE",  patrón "CDE" (largo 3)
   hash("ABC") -> desliza -> hash("BCD") -> hash("CDE") == hash patrón!
   (al deslizar: quita 'A', agrega 'D', todo en O(1))
-\end{verbatim}
 \end{dsadiagrama}
 
 \begin{lstlisting}

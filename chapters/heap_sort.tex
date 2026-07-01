@@ -47,7 +47,6 @@ $(i-1)/2$. No necesita punteros ni memoria extra: por eso es in-place.
 \end{dsaotraforma}
 
 \begin{dsadiagrama}
-\begin{verbatim}
 Array: [4, 10, 3, 5, 1]
 
 1) Build Max-Heap:
@@ -63,7 +62,6 @@ Array: [4, 10, 3, 5, 1]
    swap(4,3):  [3, 1 | 4, 5, 10]  -> heapify -> [3, 1 | ...]
    swap(3,1):  [1 | 3, 4, 5, 10]
    Ordenado: [1, 3, 4, 5, 10]
-\end{verbatim}
 \end{dsadiagrama}
 
 \begin{lstlisting}

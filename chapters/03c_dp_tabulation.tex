@@ -24,7 +24,6 @@ Es generalmente más eficiente que Memoization porque evita el
 riesgo de causar un Stack Overflow.
 \end{dsaotraforma}
 \begin{dsadiagrama}
-\begin{verbatim}
 Queremos fib(5).
 Tabla DP de tamaño 6: [ \_, \_, \_, \_, \_, \_ ]
 
@@ -36,7 +35,6 @@ Tabla DP de tamaño 6: [ \_, \_, \_, \_, \_, \_ ]
    i=3: [ 0, 1, 1, 2, \_, \_ ]
    i=4: [ 0, 1, 1, 2, 3, \_ ]
    i=5: [ 0, 1, 1, 2, 3, 5 ] 🎉 -> Resultado final
-\end{verbatim}
 \end{dsadiagrama}
 \begin{dsacomofunciona}
 1. Inicializa una tabla (array o matriz) con valores default.

@@ -51,7 +51,6 @@ Variantes que son el MISMO esqueleto:
 \end{dsaotraforma}
 
 \begin{dsadiagrama}
-\begin{verbatim}
 0/1 KNAPSACK  (W = 5)     objetos: (peso, valor)
   o1=(2,3)  o2=(3,4)  o3=(4,5)  o4=(5,6)
 
@@ -66,7 +65,6 @@ Tabla dp[objeto][capacidad], mejor valor:
 
 Respuesta = dp[n][W] = 7  (llevar o1 y o2)
 Cada celda: max(de arriba, valor + celda arriba-desplazada por su peso)
-\end{verbatim}
 \end{dsadiagrama}
 
 \begin{lstlisting}

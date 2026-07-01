@@ -25,7 +25,6 @@ Si olvidas el Caso Base, la función se llamará infinitamente hasta
 agotar la memoria del sistema (Stack Overflow).
 \end{dsaotraforma}
 \begin{dsadiagrama}
-\begin{verbatim}
 Llamada inicial: fact(3)
 
 [ fact(1) ] -> retorna 1 (¡Caso Base!)
@@ -33,7 +32,6 @@ Llamada inicial: fact(3)
 [ fact(3) ] -> espera a fact(2)... recibe 2, retorna 3 * 2 = 6
 
 Resultado Final: 6
-\end{verbatim}
 \end{dsadiagrama}
 \begin{dsacomofunciona}
 - Recursión: Más elegante, fácil de leer para problemas de árboles o 

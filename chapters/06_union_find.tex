@@ -32,7 +32,6 @@ operaciones se vuelven prácticamente instantáneas O(α(n)).
 \end{dsaotraforma}
 
 \begin{dsadiagrama}
-\begin{verbatim}
 Estado Inicial: {0} {1} {2} {3} {4}
 (Cada uno apunta a sí mismo como líder)
 
@@ -44,7 +43,6 @@ Union(1, 2): {0, 1, 2} {3} {4}
 
 Path Compression (al buscar el líder de 2):
   [0] ← [1], [0] ← [2] (Ahora 2 apunta directo al líder 0)
-\end{verbatim}
 \end{dsadiagrama}
 
 \begin{lstlisting}

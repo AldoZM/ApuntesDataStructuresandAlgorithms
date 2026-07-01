@@ -37,7 +37,6 @@ Una suma de rango $[l, r]$ se obtiene como $\mathrm{prefijo}(r) -
 \end{dsaotraforma}
 
 \begin{dsadiagrama}
-\begin{verbatim}
 Índices (1-based) y qué bloque cubre cada uno (por lowbit):
 
   i:     1    2    3    4    5    6    7    8
@@ -50,7 +49,6 @@ lowbit(i) = i & (-i)   (bit menos significativo)
 query prefijo(7): 7 -> 6 -> 4 -> 0   (resta lowbit)
                   suma tree[7]+tree[6]+tree[4]
 update(5,+3):     5 -> 6 -> 8 -> fin  (suma lowbit)
-\end{verbatim}
 \end{dsadiagrama}
 
 \begin{dsacomofunciona}
