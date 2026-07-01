@@ -1,0 +1,168 @@
+\chapter[\emj{🚰}~Flujo Máximo (Ford-Fulkerson / Edmonds-Karp)]{\emj{🚰}~Flujo Máximo (Ford-Fulkerson / Edmonds-Karp)}
+
+\begin{dsaquees}
+
+Una red de tuberías 🚰 desde una fuente (source) hasta un desagüe
+(sink). Cada tubo aguanta un caudal máximo (capacidad). Pregunta: ¿cuánta
+agua total puedes empujar de la fuente al desagüe al mismo tiempo?
+
+La idea: mientras exista un camino con espacio libre de la fuente al
+desagüe, manda tanta agua como el tubo más estrecho de ese camino
+permita. Repite hasta que ya no quede ningún camino con espacio. La
+suma de todo lo que enviaste es el flujo máximo.
+
+El truco genial: dejas "aristas de retorno" que permiten DESHACER
+decisiones previas si conviene reencaminar el agua.
+
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
+El problema de \textbf{flujo máximo} busca enviar la mayor cantidad de
+flujo posible desde un nodo fuente $s$ a un sumidero $t$ en un grafo
+dirigido con capacidades en las aristas, sin exceder ninguna capacidad.
+
+\textbf{Ford-Fulkerson} repite: encuentra un "camino de aumento"
+(augmenting path) de $s$ a $t$ con capacidad residual $>0$, empuja por él
+el mínimo de sus capacidades (el cuello de botella) y actualiza el grafo
+residual (resta en la arista, suma en su arista inversa). Termina cuando
+no hay más caminos.
+
+\textbf{Edmonds-Karp} es Ford-Fulkerson eligiendo SIEMPRE el camino de
+aumento más corto vía BFS, lo que garantiza $O(V E^2)$.
+
+Teorema \textbf{max-flow min-cut}: el flujo máximo iguala la capacidad del
+corte mínimo que separa $s$ de $t$.
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+Red (capacidades):
+        10        10
+   S ───────> A ───────> T
+   │          ^          ^
+   │10        │ 5        │10
+   v          │          │
+   B ─────────┘          │
+        (B->A cap 5, B->T cap 10 ...)
+
+Camino de aumento S->A->T: cuello de botella min(10,10)=10 -> envía 10
+Camino de aumento S->B->T: cuello min(10,10)=10 -> envía 10
+No hay más caminos con espacio -> Flujo máximo = 20
+
+Grafo residual: cada envío resta capacidad y crea arista inversa
+(para poder "devolver" flujo si un camino mejor lo requiere).
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+EDMONDS-KARP (BFS para el camino de aumento)
+1. Matriz de capacidad residual cap[u][v].
+2. BFS de s a t por aristas con cap > 0, guardando el padre.
+3. Si llegas a t: el cuello de botella es el mínimo cap del camino.
+   Resta ese flujo en las aristas y súmalo en las inversas.
+4. Repite hasta que el BFS ya no alcance t. Suma total = flujo máximo.
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+función maxFlow(cap, s, t):
+    flujo = 0
+    REPETIR:
+        padre = BFS(cap, s, t)          // camino con capacidad > 0
+        SI t no alcanzable: romper
+        cuello = min de cap a lo largo del camino s..t
+        PARA cada arista (u,v) del camino:
+            cap[u][v] -= cuello
+            cap[v][u] += cuello         // arista de retorno
+        flujo += cuello
+    return flujo
+
+💻 CÓDIGO C++ (Edmonds-Karp)
+──────────────────────────────────────────────────────────────
+
+#include <vector>
+#include <queue>
+#include <climits>
+#include <cstring>
+using namespace std;
+
+int V;
+long long bfs(vector<vector<long long>>& cap, int s, int t,
+              vector<int>& parent) {
+    fill(parent.begin(), parent.end(), -1);
+    parent[s] = s;
+    queue<pair<int,long long>> q;        // {nodo, flujo hasta aquí}
+    q.push({s, LLONG_MAX});
+    while (!q.empty()) {
+        auto [u, f] = q.front(); q.pop();
+        for (int v = 0; v < V; v++) {
+            if (parent[v] == -1 && cap[u][v] > 0) {
+                parent[v] = u;
+                long long nf = min(f, cap[u][v]);
+                if (v == t) return nf;    // llegó al sumidero
+                q.push({v, nf});
+            }
+        }
+    }
+    return 0;                             // no hay camino
+}
+
+long long maxFlow(vector<vector<long long>>& cap, int s, int t) {
+    long long flow = 0, nf;
+    vector<int> parent(V);
+    while ((nf = bfs(cap, s, t, parent)) > 0) {
+        flow += nf;
+        int v = t;
+        while (v != s) {                  // recorre el camino al revés
+            int u = parent[v];
+            cap[u][v] -= nf;              // consume capacidad
+            cap[v][u] += nf;              // arista de retorno
+            v = u;
+        }
+    }
+    return flow;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Algoritmo         │ Tiempo       │ Nota
+  ──────────────────┼──────────────┼──────────────────────
+  Edmonds-Karp      │ O(V · E^2)   │ BFS, capacidades enteras
+  Dinic             │ O(V^2 · E)   │ mucho más rápido en la práctica
+
+* Ford-Fulkerson genérico puede no terminar con capacidades irracionales.
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ Max-flow min-cut: el flujo máximo = capacidad del corte mínimo. Muchos
+   problemas "¿mínimo para desconectar/separar?" se reducen a max-flow.
+   Sabértelo abre la puerta a modelar problemas difíciles.
+
+💡 Matching bipartito máximo se resuelve con max-flow: fuente -> lado A
+   -> lado B -> sumidero, capacidades 1. El flujo máximo es el número de
+   emparejamientos.
+
+⚠️ Aristas de retorno son OBLIGATORIAS: sin la capacidad inversa, el
+   algoritmo no puede "arrepentirse" y da respuestas menores a la óptima.
+
+🔑 Elige BFS (Edmonds-Karp): usar DFS sin control puede degradar el
+   tiempo enormemente. BFS asegura caminos más cortos y el límite
+   $O(VE^2)$.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• Flujo máximo: máximo caudal de la fuente s al sumidero t sin pasarse.
+• Ford-Fulkerson: repite empujar flujo por caminos de aumento.
+• Edmonds-Karp: elige el camino más corto con BFS; O(V·E²).
+• Grafo residual con aristas de retorno para reencaminar flujo.
+• Teorema max-flow min-cut: flujo máx = corte mínimo.
+• Modela matching bipartito y problemas de separación mínima.
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}

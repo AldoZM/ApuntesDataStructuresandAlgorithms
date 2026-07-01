@@ -4,7 +4,7 @@
 
 Apuntes personales de DSA escritos en LaTeX: fondo oscuro, colores neon, diagramas ASCII, pseudocódigo y C++17. Orientados a prep de entrevistas técnicas Google-level.
 
-📄 **[Descargar ApuntesDSA.pdf](ApuntesDSA.pdf)** — 165 páginas compiladas
+📄 **[Descargar ApuntesDSA.pdf](ApuntesDSA.pdf)** — 175 páginas compiladas
 
 ---
 
@@ -14,8 +14,8 @@ Apuntes personales de DSA escritos en LaTeX: fondo oscuro, colores neon, diagram
 |---|------|----------|
 | 1 | **Fundamentos** | Big-O Notation, Complejidad Espacial |
 | 2 | **Estructuras Lineales** | Arrays, Linked Lists, **Fast & Slow Pointers**, **Patrones de Linked List**, Stacks, Queues |
-| 3 | **Estructuras No Lineales** | BST, AVL Trees, **Tree Traversals**, **LCA + Serialización**, **Propiedades de Árboles**, Heaps, Hash Tables, **Hashing/Colisiones**, **Patrones Hash Map**, **LRU Cache**, Tries, Union-Find |
-| 4 | **Grafos** ⭐ | Representación, BFS/DFS, **BFS Avanzado (grid/multi-source/0-1)**, Dijkstra, **Bellman-Ford**, **Floyd-Warshall**, **Topological Sort**, **MST (Kruskal/Prim)**, **Detección de Ciclos**, **SCC (Kosaraju)**, **Grafo Bipartito**, **Puentes y Articulaciones** |
+| 3 | **Estructuras No Lineales** | BST, AVL Trees, **Tree Traversals**, **LCA + Serialización**, **Propiedades de Árboles**, Heaps, **Segment Tree**, **Fenwick/BIT**, Hash Tables, **Hashing/Colisiones**, **Patrones Hash Map**, **LRU Cache**, Tries, Union-Find |
+| 4 | **Grafos** ⭐ | Representación, BFS/DFS, **BFS Avanzado (grid/multi-source/0-1)**, Dijkstra, **Bellman-Ford**, **Floyd-Warshall**, **Topological Sort**, **MST (Kruskal/Prim)**, **Detección de Ciclos**, **SCC (Kosaraju)**, **Grafo Bipartito**, **Puentes y Articulaciones**, **Flujo Máximo (Edmonds-Karp)** |
 | 5 | **Ordenamiento** | Bubble/Insertion/Selection, Merge Sort, Quick Sort |
 | 6 | **Búsqueda** | Linear Search, Binary Search |
 | 7 | **Patrones de Entrevista** ⭐ | Two Pointers, Sliding Window, DP (intro/memo/tabulation), Backtracking, Bit Manipulation, Recursión |
@@ -29,7 +29,7 @@ ApuntesData Structures and Alg/
 ├── ApuntesDSA.tex          ← main file (portada, TOC, 7 partes)
 ├── ApuntesDSA.pdf          ← libro compilado (152 pp)
 ├── preamble_dsa.tex        ← dark mode, neon colors, emoji, C++ style
-├── chapters/               ← 45 fragmentos de capítulo (.tex)
+├── chapters/               ← 48 fragmentos de capítulo (.tex)
 ├── 00_Fundamentos/         ← fuentes originales por carpeta
 ├── 01_Estructuras_Lineales/
 ├── 02_Estructuras_No_Lineales/
@@ -51,4 +51,4 @@ xelatex ApuntesDSA.tex   # segunda pasada para TOC y referencias
 
 ---
 
-**Estado:** 45/45 archivos · última actualización 30 junio 2026
+**Estado:** 48/48 archivos · última actualización 30 junio 2026

@@ -1,0 +1,143 @@
+\chapter[\emj{🌲}~Fenwick Tree / BIT (Binary Indexed Tree)]{\emj{🌲}~Fenwick Tree / BIT (Binary Indexed Tree)}
+
+\begin{dsaquees}
+
+Una versión súper compacta del Segment Tree para sumas de prefijo 💰.
+Imagina que quieres el saldo acumulado hasta el día 7, pero los montos
+cambian a diario.
+
+El Fenwick Tree guarda sumas parciales inteligentes: cada posición del
+array "cubre" un bloque de tamaño potencia de 2, definido por su bit
+menos significativo. Para sumar hasta i, saltas hacia atrás quitando ese
+bit; para actualizar, saltas hacia adelante sumándolo. Ambos recorridos
+son $O(\log n)$ y el código cabe en cuatro líneas.
+
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
+Un Fenwick Tree (o Binary Indexed Tree, BIT) es una estructura que
+calcula sumas de prefijo y actualizaciones de punto en $O(\log n)$,
+usando solo un array de tamaño $n+1$ (mucho menos que el $4n$ del Segment
+Tree).
+
+Su magia es el operador \verb|i & (-i)|, que aísla el bit menos
+significativo de $i$ y define el tamaño del bloque que cada índice
+resume:
+\begin{itemize}
+\item \textbf{Query prefijo(i)}: parte de $i$ y resta el bit menos
+      significativo hasta llegar a 0, acumulando.
+\item \textbf{Update(i, delta)}: parte de $i$ y SUMA el bit menos
+      significativo hasta pasar $n$, propagando el cambio.
+\end{itemize}
+
+Una suma de rango $[l, r]$ se obtiene como $\mathrm{prefijo}(r) -
+\mathrm{prefijo}(l-1)$.
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+Índices (1-based) y qué bloque cubre cada uno (por lowbit):
+
+  i:     1    2    3    4    5    6    7    8
+  cubre: [1] [1-2][3] [1-4][5] [5-6][7] [1-8]
+
+lowbit(i) = i & (-i)   (bit menos significativo)
+  lowbit(6)=2 -> el 6 cubre 2 elementos: [5,6]
+  lowbit(8)=8 -> el 8 cubre 8 elementos: [1..8]
+
+query prefijo(7): 7 -> 6 -> 4 -> 0   (resta lowbit)
+                  suma tree[7]+tree[6]+tree[4]
+update(5,+3):     5 -> 6 -> 8 -> fin  (suma lowbit)
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+CÓMO FUNCIONA (1-indexado)
+- lowbit(i) = i & (-i) aísla el bit menos significativo.
+- update(i, d): mientras i <= n: tree[i] += d; i += lowbit(i).
+- query(i): suma = 0; mientras i > 0: suma += tree[i]; i -= lowbit(i).
+- rango(l, r) = query(r) - query(l-1).
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+función update(i, delta):
+    MIENTRAS i <= n:
+        tree[i] += delta
+        i += i & (-i)         // avanza al siguiente bloque
+
+función query(i):             // suma de 1..i
+    suma = 0
+    MIENTRAS i > 0:
+        suma += tree[i]
+        i -= i & (-i)         // retrocede quitando el bit
+    return suma
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <vector>
+using namespace std;
+
+struct Fenwick {
+    int n; vector<long long> tree;
+    Fenwick(int n) : n(n), tree(n + 1, 0) {}   // 1-indexado
+
+    void update(int i, long long delta) {
+        for (; i <= n; i += i & (-i)) tree[i] += delta;
+    }
+    long long query(int i) {                   // suma de 1..i
+        long long s = 0;
+        for (; i > 0; i -= i & (-i)) s += tree[i];
+        return s;
+    }
+    long long rango(int l, int r) {            // suma de l..r
+        return query(r) - query(l - 1);
+    }
+};
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Operación       │ Tiempo     │ Espacio
+  ────────────────┼────────────┼──────────
+  Update de punto │ O(log n)   │ O(n)
+  Query prefijo   │ O(log n)   │ O(n)
+  Construir       │ O(n log n) │ O(n)
+
+* Solo array de tamaño n+1: mucho más ligero que el Segment Tree.
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ Fenwick vs Segment Tree: si solo necesitas sumas de prefijo con
+   updates de punto, Fenwick gana (código corto, menos memoria, más
+   rápido en la práctica). Para mínimo/máximo o updates de rango, ve al
+   Segment Tree.
+
+💡 "Count of Smaller Numbers After Self" (LeetCode 315): se resuelve con
+   un BIT sobre valores comprimidos. Clásico truco de conteo de
+   inversiones.
+
+⚠️ Es 1-indexado: el índice 0 no se usa. Si tu array es 0-based, suma 1
+   al indexar o te quedas en un bucle infinito con \verb|i & (-i)|.
+
+🔑 Conteo de inversiones: recorre de derecha a izquierda y consulta
+   cuántos elementos menores ya insertaste. Es EL uso estrella del BIT en
+   entrevistas.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• BIT: sumas de prefijo + update de punto en O(log n).
+• Usa \verb|i & (-i)| (bit menos significativo) para saltar bloques.
+• query: resta el bit; update: suma el bit.
+• Rango [l,r] = prefijo(r) − prefijo(l−1).
+• Es 1-indexado; array de tamaño n+1 (más ligero que Segment Tree).
+• Estrella para contar inversiones y "smaller after self".
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}
