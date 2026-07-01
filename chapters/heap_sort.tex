@@ -1,0 +1,158 @@
+\chapter[\emj{⛰️}~Heap Sort (Ordenamiento por Montículo)]{\emj{⛰️}~Heap Sort (Ordenamiento por Montículo)}
+
+\begin{dsaquees}
+
+Ordenar sacando SIEMPRE el más grande primero 🏔️. Metes todos los números
+en un montículo (heap), una estructura donde el mayor siempre está en la
+cima. Sacas la cima (el máximo), la pones al final, reacomodas el heap, y
+repites. Poco a poco el arreglo queda ordenado de menor a mayor.
+
+Su gracia: garantiza $O(n \log n)$ SIEMPRE (nunca se degrada como Quick
+Sort) y ordena in-place, sin memoria extra.
+
+\end{dsaquees}
+
+\begin{dsanino}
+
+Imagina una torre de cajas 📦 donde la regla es que cada caja de arriba
+siempre pesa más que las de abajo que cuelgan de ella. La caja más pesada
+siempre queda hasta arriba.
+
+Para ordenar: agarras la caja de arriba (la más pesada) y la pones al
+final de una fila. Como quitaste la cima, subes otra caja a su lugar y
+reacomodas la torre para que la regla se cumpla otra vez. Vuelves a
+agarrar la nueva cima (la segunda más pesada) y la pones antes de la
+anterior. Repites hasta vaciar la torre. Al final, tu fila quedó ordenada
+de la más ligera a la más pesada, ¡sin necesitar otra mesa aparte!
+
+\end{dsanino}
+
+\begin{dsaotraforma}
+
+Heap Sort ordena usando un \textbf{binary heap} (montículo binario)
+representado en el propio arreglo. Dos fases:
+
+\begin{enumerate}
+\item \textbf{Build Max-Heap}: reorganiza el arreglo para que cumpla la
+      propiedad de max-heap (cada padre $\ge$ sus hijos). Se hace en
+      $O(n)$ aplicando \verb|heapify| de abajo hacia arriba.
+\item \textbf{Sort}: intercambia la raíz (máximo) con el último elemento,
+      reduce el tamaño del heap en 1 y aplica \verb|heapify| a la raíz.
+      Repite hasta vaciar.
+\end{enumerate}
+
+En un arreglo, el nodo $i$ tiene hijos en $2i+1$ y $2i+2$, y padre en
+$(i-1)/2$. No necesita punteros ni memoria extra: por eso es in-place.
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+Array: [4, 10, 3, 5, 1]
+
+1) Build Max-Heap:
+            10                 array: [10, 5, 3, 4, 1]
+          /    \
+         5      3
+        / \
+       4   1
+
+2) Extraer max (10) -> al final; heapify el resto:
+   swap(10,1): [1, 5, 3, 4 | 10]  -> heapify -> [5, 4, 3, 1 | 10]
+   swap(5,1):  [1, 4, 3 | 5, 10]  -> heapify -> [4, 1, 3 | 5, 10]
+   swap(4,3):  [3, 1 | 4, 5, 10]  -> heapify -> [3, 1 | ...]
+   swap(3,1):  [1 | 3, 4, 5, 10]
+   Ordenado: [1, 3, 4, 5, 10]
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+CÓMO FUNCIONA
+- heapify(i): hunde el elemento i comparándolo con sus hijos (2i+1,
+  2i+2); si un hijo es mayor, intercambia y sigue bajando.
+- Build: aplica heapify desde el último padre (n/2 - 1) hacia el 0.
+- Sort: swap(0, fin); reduce tamaño; heapify(0). Repite.
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+función heapify(a, n, i):
+    mayor = i; izq = 2*i+1; der = 2*i+2
+    SI izq < n Y a[izq] > a[mayor]: mayor = izq
+    SI der < n Y a[der] > a[mayor]: mayor = der
+    SI mayor != i:
+        intercambiar(a[i], a[mayor])
+        heapify(a, n, mayor)
+
+función heapSort(a, n):
+    PARA i desde n/2-1 hasta 0: heapify(a, n, i)     // build
+    PARA i desde n-1 hasta 1:
+        intercambiar(a[0], a[i])                     // saca el max
+        heapify(a, i, 0)                             // reacomoda
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <vector>
+using namespace std;
+
+void heapify(vector<int>& a, int n, int i) {
+    int mayor = i, izq = 2*i + 1, der = 2*i + 2;
+    if (izq < n && a[izq] > a[mayor]) mayor = izq;
+    if (der < n && a[der] > a[mayor]) mayor = der;
+    if (mayor != i) { swap(a[i], a[mayor]); heapify(a, n, mayor); }
+}
+
+void heapSort(vector<int>& a) {
+    int n = a.size();
+    for (int i = n/2 - 1; i >= 0; i--) heapify(a, n, i);  // build max-heap
+    for (int i = n - 1; i >= 1; i--) {
+        swap(a[0], a[i]);         // el máximo va al final
+        heapify(a, i, 0);         // reacomoda el heap reducido
+    }
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Caso        │ Tiempo        │ Nota
+  ────────────┼───────────────┼──────────────────────────
+  Best        │ O(n log n)    │ siempre igual
+  Average     │ O(n log n)    │ sin sorpresas
+  Worst       │ O(n log n)    │ NUNCA se degrada
+  Espacio     │ O(1)          │ in-place
+  Build heap  │ O(n)          │ (no O(n log n))
+
+* No es estable (no conserva el orden de elementos iguales).
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ Heap Sort vs Quick Sort: Heap Sort garantiza O(n log n) SIEMPRE, sin
+   el peor caso O(n²) de Quick Sort. Pero en la práctica Quick Sort suele
+   ser más rápido por mejor cache locality. Introsort usa ambos.
+
+💡 Build-heap es O(n), no O(n log n): construir el heap desde abajo
+   cuesta lineal. Es un resultado que sorprende y que preguntan. La suma
+   $\sum n/2^h \cdot h$ converge a O(n).
+
+⚠️ No es estable: si necesitas conservar el orden relativo de elementos
+   iguales, Heap Sort no sirve; usa Merge Sort.
+
+🔑 Top-K con heap: rara vez ordenas todo con Heap Sort en una entrevista;
+   más común es usar un heap (priority\_queue) para los K mayores/menores
+   en O(n log k). Ese es el uso real del heap.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• Heap Sort: build max-heap, luego extrae el máximo repetidamente.
+• En arreglo: hijos de i en 2i+1 y 2i+2; padre en (i-1)/2.
+• O(n log n) garantizado en TODOS los casos; in-place O(1).
+• Build-heap cuesta O(n) (no O(n log n)).
+• No es estable.
+• En entrevistas, el heap brilla más para Top-K que para ordenar todo.
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}

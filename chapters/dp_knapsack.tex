@@ -1,0 +1,168 @@
+\chapter[\emj{🎒}~DP: Knapsack, Subset Sum y Coin Change]{\emj{🎒}~DP: Knapsack, Subset Sum y Coin Change}
+
+\begin{dsaquees}
+
+Una mochila 🎒 que aguanta cierto peso máximo y un montón de objetos, cada
+uno con su peso y su valor. ¿Qué combinación METES para maximizar el
+valor sin pasarte del peso?
+
+No puedes ser goloso (agarrar lo más valioso) porque a veces dos objetos
+medianos ganan a uno grande. Hay que PROBAR combinaciones, pero de forma
+inteligente: recordando la mejor respuesta para cada "peso disponible" y
+reusándola. Eso es Programación Dinámica: no recalcular lo ya resuelto.
+
+\end{dsaquees}
+
+\begin{dsanino}
+
+Tienes una mochila que solo aguanta 5 kilos y varios juguetes 🧸. Cada
+juguete pesa algo y te gusta más o menos (su "valor"). Quieres llevarte
+los juguetes que MÁS te gusten sin que la mochila pese más de 5 kilos.
+
+El truco es hacer una tabla. Vas juguete por juguete preguntando: "si
+tuviera espacio para 1 kilo, para 2, para 3... ¿qué es lo mejor que puedo
+llevar?". Para cada juguete decides: ¿lo dejo fuera, o lo meto y sumo su
+valor? Te quedas con la opción que dé MÁS valor. Como escribes las
+respuestas en la tabla, nunca tienes que repetir la misma cuenta dos
+veces. Al final, la esquina de la tabla te dice el mejor botín posible.
+
+\end{dsanino}
+
+\begin{dsaotraforma}
+
+El \textbf{0/1 Knapsack} es el problema base de una familia enorme de DP.
+Con $n$ objetos (peso $w_i$, valor $v_i$) y capacidad $W$, maximiza el
+valor total eligiendo un subconjunto cuyo peso no supere $W$. "0/1"
+porque cada objeto se toma entero o no se toma.
+
+La recurrencia, con \verb|dp[i][c]| = mejor valor usando los primeros $i$
+objetos con capacidad $c$:
+\[ dp[i][c] = \max\big(dp[i-1][c],\ \ v_i + dp[i-1][c - w_i]\big) \]
+(no tomar el objeto $i$, o tomarlo si cabe).
+
+Variantes que son el MISMO esqueleto:
+\begin{itemize}
+\item \textbf{Subset Sum / Partition}: ¿hay un subconjunto que sume $S$?
+      (knapsack booleano).
+\item \textbf{Coin Change}: mínimo de monedas para un monto (unbounded
+      knapsack: cada moneda se repite).
+\end{itemize}
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+0/1 KNAPSACK  (W = 5)     objetos: (peso, valor)
+  o1=(2,3)  o2=(3,4)  o3=(4,5)  o4=(5,6)
+
+Tabla dp[objeto][capacidad], mejor valor:
+
+ cap:  0  1  2  3  4  5
+  {}   0  0  0  0  0  0
+  o1   0  0  3  3  3  3
+  o2   0  0  3  4  4  7   <- o1+o2 = 3+4 = 7 con peso 5
+  o3   0  0  3  4  5  7
+  o4   0  0  3  4  5  7
+
+Respuesta = dp[n][W] = 7  (llevar o1 y o2)
+Cada celda: max(de arriba, valor + celda arriba-desplazada por su peso)
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+CÓMO FUNCIONA (0/1 knapsack)
+- dp[c] = mejor valor con capacidad c (versión 1D optimizada).
+- Por cada objeto, recorre la capacidad de W hacia ABAJO (para no reusar
+  el mismo objeto dos veces).
+- dp[c] = max(dp[c], valor + dp[c - peso]).
+
+📝 PSEUDOCÓDIGO (0/1 knapsack 1D)
+──────────────────────────────────────────────────────────────
+
+función knapsack(pesos, valores, W):
+    dp = arreglo de ceros de tamaño W+1
+    PARA i desde 0 hasta n-1:
+        PARA c desde W hasta pesos[i]:      // ¡hacia abajo!
+            dp[c] = max(dp[c], valores[i] + dp[c - pesos[i]])
+    return dp[W]
+
+💻 CÓDIGO C++ (0/1 knapsack, 1D)
+──────────────────────────────────────────────────────────────
+
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int knapsack(vector<int>& peso, vector<int>& valor, int W) {
+    vector<int> dp(W + 1, 0);
+    for (int i = 0; i < (int)peso.size(); i++)
+        for (int c = W; c >= peso[i]; c--)          // hacia abajo: 0/1
+            dp[c] = max(dp[c], valor[i] + dp[c - peso[i]]);
+    return dp[W];
+}
+
+💻 CÓDIGO C++ (Subset Sum: ¿existe subconjunto que sume S?)
+──────────────────────────────────────────────────────────────
+
+bool subsetSum(vector<int>& nums, int S) {
+    vector<bool> dp(S + 1, false);
+    dp[0] = true;                          // suma 0 siempre posible
+    for (int x : nums)
+        for (int c = S; c >= x; c--)       // hacia abajo
+            dp[c] = dp[c] || dp[c - x];
+    return dp[S];
+}
+
+💻 CÓDIGO C++ (Coin Change: mínimo de monedas, unbounded)
+──────────────────────────────────────────────────────────────
+
+int coinChange(vector<int>& coins, int amount) {
+    vector<int> dp(amount + 1, amount + 1);      // "infinito"
+    dp[0] = 0;
+    for (int c : coins)
+        for (int a = c; a <= amount; a++)        // hacia ARRIBA: repetible
+            dp[a] = min(dp[a], dp[a - c] + 1);
+    return dp[amount] > amount ? -1 : dp[amount];
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Problema      │ Tiempo     │ Espacio
+  ──────────────┼────────────┼──────────
+  0/1 Knapsack  │ O(n·W)     │ O(W)
+  Subset Sum    │ O(n·S)     │ O(S)
+  Coin Change   │ O(n·A)     │ O(A)
+
+* Es "pseudo-polinómico": depende del VALOR W, no solo de n.
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ Dirección del bucle interno = la clave: hacia ABAJO (W..peso) para
+   0/1 (cada objeto una vez); hacia ARRIBA (peso..W) para unbounded
+   (objeto repetible, como monedas). Confundirlas cambia el resultado.
+
+💡 "Partition Equal Subset Sum" (LC 416): ¿se puede partir en dos mitades
+   de igual suma? Es Subset Sum con $S = \mathrm{total}/2$. Si el total es
+   impar, imposible de una.
+
+⚠️ Pseudo-polinómico: O(n·W) parece polinomial pero W puede ser enorme.
+   Si W es gigante y n pequeño, quizá otra técnica convenga.
+
+🔑 Reconstruir la solución: si te piden CUÁLES objetos, guarda la tabla
+   2D y recórrela hacia atrás comparando dp[i][c] con dp[i-1][c].
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• 0/1 Knapsack: max valor sin pasar la capacidad; cada objeto entero o no.
+• Recurrencia: max(no tomar, valor + tomar si cabe).
+• Optimización 1D: bucle de capacidad hacia ABAJO para 0/1.
+• Subset Sum / Partition: knapsack booleano (¿suma S posible?).
+• Coin Change: unbounded knapsack; bucle hacia ARRIBA (repetible).
+• Complejidad pseudo-polinómica O(n·W).
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}

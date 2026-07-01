@@ -1,0 +1,165 @@
+\chapter[\emj{📈}~DP: Longest Increasing Subsequence (LIS)]{\emj{📈}~DP: Longest Increasing Subsequence (LIS)}
+
+\begin{dsaquees}
+
+De una lista de números 📊, encontrar la subsecuencia CRECIENTE más larga:
+los números van subiendo (no importa si te saltas algunos, pero deben ir
+en orden y de menor a mayor).
+
+Ejemplo: en [10, 9, 2, 5, 3, 7, 101, 18] una subida larga es [2, 3, 7,
+18] o [2, 5, 7, 101], ambas de largo 4. Hay dos formas de resolverlo: una
+simple $O(n^2)$ y una astuta $O(n \log n)$ con búsqueda binaria.
+
+\end{dsaquees}
+
+\begin{dsanino}
+
+Imagina que anotas tu estatura 📏 cada año, pero en desorden. Quieres
+encontrar la racha más larga en la que fuiste creciendo, aunque tengas
+que ignorar algunos años.
+
+La forma fácil: para cada número te preguntas "¿cuál es la subida más
+larga que TERMINA justo aquí?". Miras todos los números anteriores más
+pequeños y te quedas con la mejor racha, más uno.
+
+La forma lista: vas armando una "fila de paciencia". Cada número nuevo
+reemplaza al primer número de la fila que sea igual o más grande que él
+(así la fila queda lo más chica posible). Al final, el LARGO de esa fila
+es la respuesta. Es como un solitario de cartas donde apilas de forma
+ordenada.
+
+\end{dsanino}
+
+\begin{dsaotraforma}
+
+El LIS busca la subsecuencia estrictamente creciente más larga de un
+arreglo (los elementos conservan su orden original, no tienen que ser
+contiguos).
+
+\textbf{Enfoque DP $O(n^2)$}: \verb|dp[i]| = longitud del LIS que termina
+en el índice $i$. Para cada $i$, mira todos los $j < i$ con
+\verb|nums[j] < nums[i]| y toma \verb|dp[i] = max(dp[i], dp[j] + 1)|.
+
+\textbf{Enfoque $O(n \log n)$}: mantén un arreglo \verb|tails| donde
+\verb|tails[k]| es el menor valor con el que puede terminar una
+subsecuencia creciente de longitud $k+1$. Por cada número, usa búsqueda
+binaria (\verb|lower_bound|) para colocarlo; el tamaño final de
+\verb|tails| es la respuesta. Ojo: \verb|tails| NO es el LIS real, solo
+su longitud.
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+nums = [10, 9, 2, 5, 3, 7, 101, 18]
+
+Método O(n log n) construyendo 'tails' (lower_bound reemplaza):
+
+  10 -> tails=[10]
+   9 -> reemplaza 10   -> [9]
+   2 -> reemplaza 9    -> [2]
+   5 -> agrega         -> [2,5]
+   3 -> reemplaza 5    -> [2,3]
+   7 -> agrega         -> [2,3,7]
+ 101 -> agrega         -> [2,3,7,101]
+  18 -> reemplaza 101  -> [2,3,7,18]
+
+Longitud de tails = 4  => LIS = 4
+(tails = [2,3,7,18] NO es la subsecuencia real, pero su LARGO sí es 4)
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+CÓMO FUNCIONA (O(n log n))
+- tails vacío. Por cada x:
+  * Busca con lower_bound la primera posición con valor >= x.
+  * Si no existe (x es mayor que todos) -> agrega x al final.
+  * Si existe -> reemplaza ese valor por x (mantiene tails "apretado").
+- La longitud de tails es el LIS.
+
+📝 PSEUDOCÓDIGO (O(n log n))
+──────────────────────────────────────────────────────────────
+
+función lis(nums):
+    tails = []
+    PARA cada x en nums:
+        pos = lower_bound(tails, x)     // primer >= x
+        SI pos == fin(tails): tails.push(x)
+        SINO: tails[pos] = x
+    return longitud(tails)
+
+💻 CÓDIGO C++ (DP O(n^2), fácil de entender)
+──────────────────────────────────────────────────────────────
+
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int lisDP(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> dp(n, 1);                 // cada elemento es un LIS de 1
+    int best = n ? 1 : 0;
+    for (int i = 1; i < n; i++)
+        for (int j = 0; j < i; j++)
+            if (nums[j] < nums[i]) {
+                dp[i] = max(dp[i], dp[j] + 1);
+                best = max(best, dp[i]);
+            }
+    return best;
+}
+
+💻 CÓDIGO C++ (O(n log n) con búsqueda binaria)
+──────────────────────────────────────────────────────────────
+
+int lisFast(vector<int>& nums) {
+    vector<int> tails;
+    for (int x : nums) {
+        auto it = lower_bound(tails.begin(), tails.end(), x);
+        if (it == tails.end()) tails.push_back(x);  // extiende
+        else *it = x;                               // reemplaza
+    }
+    return tails.size();
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Enfoque       │ Tiempo       │ Espacio
+  ──────────────┼──────────────┼──────────
+  DP clásico    │ O(n^2)       │ O(n)
+  Binary search │ O(n log n)   │ O(n)
+
+* Para LIS no decreciente (permite iguales), usa upper_bound.
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ "Longest Increasing Subsequence" (LC 300): si te piden solo la
+   LONGITUD, ve directo al $O(n \log n)$. Si piden reconstruir la
+   subsecuencia real, el DP $O(n^2)$ con arreglo de padres es más claro.
+
+💡 Estricto vs no decreciente: \verb|lower_bound| da LIS estrictamente
+   creciente; \verb|upper_bound| permite elementos iguales (no
+   decreciente). Un detalle que cambia la respuesta.
+
+⚠️ tails no es la subsecuencia: mucha gente cree que \verb|tails| ES el
+   LIS. Solo su LONGITUD es correcta; los valores pueden no formar una
+   subsecuencia válida.
+
+🔑 Disfraces del LIS: "Russian Doll Envelopes", "Number of LIS",
+   "Longest Chain of Pairs" son LIS con un ordenamiento previo. Reconocer
+   el patrón vale oro.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• LIS: subsecuencia creciente más larga (respeta orden, permite huecos).
+• DP O(n²): dp[i] = mejor LIS que termina en i; mira los j < i menores.
+• O(n log n): arreglo tails + \verb|lower_bound|; su longitud es el LIS.
+• tails da la LONGITUD correcta, no la subsecuencia real.
+• Estricto -> \verb|lower_bound|; no decreciente -> \verb|upper_bound|.
+• Muchos problemas se reducen a LIS tras ordenar.
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}

@@ -1,0 +1,171 @@
+\chapter[\emj{🔤}~DP en Cadenas: LCS y Edit Distance]{\emj{🔤}~DP en Cadenas: LCS y Edit Distance}
+
+\begin{dsaquees}
+
+Comparar dos palabras o textos 📝 para ver qué tanto se parecen. Dos
+preguntas clásicas:
+
+\begin{itemize}
+\item LCS (Longest Common Subsequence): ¿cuál es la secuencia de letras
+      más larga que aparece en AMBAS, en el mismo orden (aunque no
+      pegadas)?
+\item Edit Distance: ¿cuántos cambios mínimos (insertar, borrar,
+      sustituir una letra) necesito para convertir una palabra en la
+      otra?
+\end{itemize}
+
+Ambas se resuelven con una tabla 2D donde cada celda compara un prefijo
+de una cadena contra un prefijo de la otra.
+
+\end{dsaquees}
+
+\begin{dsanino}
+
+Tienes dos collares de letras 📿 y quieres saber qué tanto se parecen.
+
+Para el LCS: buscas las letras que puedes ir tachando en los dos collares
+al mismo tiempo, en orden, formando la palabra escondida más larga que
+comparten. Si las puntas coinciden, esa letra cuenta y avanzas en las
+dos. Si no, pruebas quitar la punta de un collar o del otro y te quedas
+con la mejor opción.
+
+Para el Edit Distance: imagina que el corrector de tu celular 📱 quiere
+cambiar una palabra por otra. Cuenta cuántos "arreglos" mínimos hace:
+meter una letra, quitar una, o cambiar una por otra. Menos arreglos =
+más parecidas. Escribes todo en una tabla para no repetir cuentas, y la
+esquina te da la respuesta.
+
+\end{dsanino}
+
+\begin{dsaotraforma}
+
+Ambos problemas usan una tabla \verb|dp[i][j]| que compara el prefijo de
+largo $i$ de la cadena $A$ con el prefijo de largo $j$ de la cadena $B$.
+
+\textbf{LCS} (longest common subsequence): si $A_i = B_j$ entonces
+$dp[i][j] = dp[i-1][j-1] + 1$; si no, $dp[i][j] = \max(dp[i-1][j],\,
+dp[i][j-1])$.
+
+\textbf{Edit Distance} (distancia de Levenshtein): mínimo de inserciones,
+borrados y sustituciones. Si las letras coinciden, no cuesta nada; si no,
+$1 + \min$ de las tres operaciones.
+
+Son la base de: diff de archivos, autocorrector, alineamiento de ADN y
+detección de plagio.
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+LCS de "ABCBDAB" y "BDCAB"   (respuesta: "BCAB", largo 4)
+
+        ""  B  D  C  A  B
+    ""   0  0  0  0  0  0
+    A    0  0  0  0  1  1
+    B    0  1  1  1  1  2
+    C    0  1  1  2  2  2
+    B    0  1  1  2  2  3
+    D    0  1  2  2  2  3
+    A    0  1  2  2  3  3
+    B    0  1  2  2  3  4   <- LCS = 4
+
+Diagonal +1 si las letras coinciden; si no, el máximo de izq/arriba.
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+CÓMO FUNCIONA
+- Tabla (n+1) x (m+1); fila/columna 0 = cadena vacía.
+- LCS: si A[i-1]==B[j-1] -> diagonal+1; si no -> max(arriba, izquierda).
+- Edit Distance: si coinciden -> diagonal; si no -> 1 + min(insertar,
+  borrar, sustituir) = 1 + min(dp[i][j-1], dp[i-1][j], dp[i-1][j-1]).
+
+📝 PSEUDOCÓDIGO (LCS)
+──────────────────────────────────────────────────────────────
+
+función lcs(A, B):
+    dp = tabla (n+1) x (m+1) de ceros
+    PARA i desde 1 hasta n:
+        PARA j desde 1 hasta m:
+            SI A[i-1] == B[j-1]:
+                dp[i][j] = dp[i-1][j-1] + 1
+            SINO:
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+    return dp[n][m]
+
+💻 CÓDIGO C++ (LCS)
+──────────────────────────────────────────────────────────────
+
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int lcs(const string& A, const string& B) {
+    int n = A.size(), m = B.size();
+    vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+    for (int i = 1; i <= n; i++)
+        for (int j = 1; j <= m; j++)
+            if (A[i-1] == B[j-1]) dp[i][j] = dp[i-1][j-1] + 1;
+            else dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+    return dp[n][m];
+}
+
+💻 CÓDIGO C++ (Edit Distance / Levenshtein)
+──────────────────────────────────────────────────────────────
+
+int editDistance(const string& A, const string& B) {
+    int n = A.size(), m = B.size();
+    vector<vector<int>> dp(n + 1, vector<int>(m + 1));
+    for (int i = 0; i <= n; i++) dp[i][0] = i;   // borrar todo A
+    for (int j = 0; j <= m; j++) dp[0][j] = j;   // insertar todo B
+    for (int i = 1; i <= n; i++)
+        for (int j = 1; j <= m; j++)
+            if (A[i-1] == B[j-1]) dp[i][j] = dp[i-1][j-1];  // sin costo
+            else dp[i][j] = 1 + min({ dp[i][j-1],    // insertar
+                                      dp[i-1][j],    // borrar
+                                      dp[i-1][j-1] });// sustituir
+    return dp[n][m];
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Problema        │ Tiempo     │ Espacio
+  ────────────────┼────────────┼──────────────
+  LCS             │ O(n·m)     │ O(n·m) o O(m) 1D
+  Edit Distance   │ O(n·m)     │ O(n·m) o O(m) 1D
+
+* Se puede reducir a O(m) espacio guardando solo la fila anterior.
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ Subsequence vs Substring: LCS permite huecos (subsecuencia); "longest
+   common substring" exige letras contiguas y usa otra recurrencia
+   (reinicia a 0 cuando no coinciden). No los confundas.
+
+💡 "Edit Distance" (LC 72) es de los DP 2D más preguntados. La clave son
+   los tres vecinos: izquierda (insertar), arriba (borrar), diagonal
+   (sustituir).
+
+⚠️ Casos base primero: la fila 0 y la columna 0 no son ceros en Edit
+   Distance: valen 0,1,2,3\ldots (convertir a/desde la cadena vacía).
+
+🔑 Reconstruir la subsecuencia: recorre la tabla desde \verb|dp[n][m]|
+   hacia atrás; cuando las letras coinciden, esa letra va en el LCS y te
+   mueves en diagonal.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• LCS: subsecuencia común más larga (permite huecos, respeta el orden).
+• LCS: diagonal+1 si coinciden; si no, max(arriba, izquierda).
+• Edit Distance: mínimos insert/borrar/sustituir para igualar cadenas.
+• Edit Distance: 1 + min(izq, arriba, diagonal) si no coinciden.
+• Ambos O(n·m); reducibles a O(m) espacio con una fila.
+• Usos: diff, autocorrector, ADN, plagio.
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}

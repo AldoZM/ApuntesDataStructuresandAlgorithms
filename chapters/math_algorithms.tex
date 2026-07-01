@@ -1,0 +1,176 @@
+\chapter[\emj{🧮}~Matemáticas: GCD, Criba y Exponenciación Rápida]{\emj{🧮}~Algoritmos Matemáticos Esenciales}
+
+\begin{dsaquees}
+
+Un puñado de trucos matemáticos que aparecen escondidos en muchísimos
+problemas 🧮:
+
+\begin{itemize}
+\item GCD (Euclides): el máximo común divisor de dos números, en un
+      parpadeo.
+\item Criba de Eratóstenes: encontrar TODOS los números primos hasta N
+      rapidísimo.
+\item Exponenciación rápida: calcular $a^b$ en $O(\log b)$ en vez de
+      multiplicar $b$ veces.
+\item Aritmética modular: trabajar con residuos para no desbordar con
+      números gigantes.
+\end{itemize}
+
+\end{dsaquees}
+
+\begin{dsanino}
+
+Cuatro herramientas de matemáticas mágicas 🎩:
+
+GCD: para saber el pedazo más grande con el que puedes medir dos cuerdas
+🪢 de distinto largo sin que sobre. Vas restando la chica de la grande (o
+usando el residuo) hasta que quedan iguales: ese es el GCD.
+
+Criba: quieres una lista de números primos (los que solo se dividen entre
+1 y ellos mismos). Tachas todos los múltiplos de 2, luego de 3, luego de
+5\ldots y los que quedan sin tachar son primos.
+
+Exponenciación rápida: para calcular 2 elevado a 16, en vez de multiplicar
+2 dieciséis veces, elevas al cuadrado: 2, 4, 16, 256\ldots ¡en 4 pasos!
+Cada vez duplicas el exponente. Menos trabajo, mismo resultado.
+
+\end{dsanino}
+
+\begin{dsaotraforma}
+
+\textbf{GCD (algoritmo de Euclides)}: $\gcd(a, b) = \gcd(b, a \bmod b)$
+hasta que $b = 0$. $O(\log \min(a,b))$. De ahí sale el LCM:
+$\mathrm{lcm}(a,b) = a / \gcd(a,b) \cdot b$.
+
+\textbf{Criba de Eratóstenes}: marca como no-primos los múltiplos de cada
+primo desde 2. Genera todos los primos hasta $N$ en
+$O(N \log \log N)$.
+
+\textbf{Exponenciación rápida (binary exponentiation)}: usa la
+representación binaria del exponente. Si $b$ es par,
+$a^b = (a^{b/2})^2$; si es impar, $a^b = a \cdot a^{b-1}$. $O(\log b)$.
+Combinada con módulo evita overflow: base de la exponenciación modular
+usada en criptografía y hashing.
+
+\textbf{Aritmética modular}: $(x + y) \bmod m$, $(x \cdot y) \bmod m$
+mantienen los números acotados. Regla clave: aplica el módulo tras cada
+operación para no desbordar.
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+EUCLIDES  gcd(48, 18):
+  gcd(48,18) -> 48 mod 18 = 12 -> gcd(18,12)
+  gcd(18,12) -> 18 mod 12 = 6  -> gcd(12,6)
+  gcd(12,6)  -> 12 mod 6  = 0  -> gcd(6,0) = 6
+  GCD = 6
+
+CRIBA hasta 20 (X = tachado, no primo):
+  2  3  4X 5  6X 7  8X 9X 10X 11 12X 13 14X 15X 16X 17 18X 19 20X
+  Primos: 2 3 5 7 11 13 17 19
+
+EXP RÁPIDA  2^10:
+  10 = 1010 binario
+  2^10 = 2^8 * 2^2 = 256 * 4 = 1024  (4 cuadrados, no 10 multiplic.)
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+GCD (Euclides)
+- gcd(a, b): si b == 0 return a; si no gcd(b, a % b).
+
+EXPONENCIACIÓN RÁPIDA (con módulo)
+- Mientras el exponente > 0: si es impar, multiplica el resultado por la
+  base; eleva la base al cuadrado; divide el exponente entre 2.
+
+📝 PSEUDOCÓDIGO (exponenciación modular)
+──────────────────────────────────────────────────────────────
+
+función powMod(a, b, m):
+    resultado = 1; a = a mod m
+    MIENTRAS b > 0:
+        SI b es impar: resultado = resultado * a mod m
+        a = a * a mod m
+        b = b / 2            // desplaza un bit
+    return resultado
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <vector>
+using namespace std;
+
+// GCD y LCM
+long long gcd(long long a, long long b) {
+    return b == 0 ? a : gcd(b, a % b);
+}
+long long lcm(long long a, long long b) {
+    return a / gcd(a, b) * b;         // divide primero: evita overflow
+}
+
+// Exponenciación modular rápida -> O(log b)
+long long powMod(long long a, long long b, long long m) {
+    long long res = 1; a %= m;
+    while (b > 0) {
+        if (b & 1) res = res * a % m;  // bit impar
+        a = a * a % m;                 // eleva al cuadrado
+        b >>= 1;                       // siguiente bit
+    }
+    return res;
+}
+
+// Criba de Eratóstenes -> primos hasta n
+vector<bool> criba(int n) {
+    vector<bool> esPrimo(n + 1, true);
+    esPrimo[0] = esPrimo[1] = false;
+    for (long long i = 2; i * i <= n; i++)
+        if (esPrimo[i])
+            for (long long j = i * i; j <= n; j += i)  // desde i*i
+                esPrimo[j] = false;
+    return esPrimo;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Algoritmo         │ Tiempo
+  ──────────────────┼──────────────────
+  GCD (Euclides)    │ O(log min(a,b))
+  Exp. rápida       │ O(log b)
+  Criba             │ O(n log log n)
+
+* La criba usa O(n) memoria (un bool por número hasta n).
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ powMod es la base de todo: hashing polinómico, inverso modular (por
+   Fermat: $a^{m-2} \bmod m$ cuando $m$ es primo), y criptografía. Tenlo
+   memorizado.
+
+💡 Criba desde i·i: al marcar múltiplos de $i$, empieza en $i^2$ (los
+   menores ya fueron marcados por primos más chicos). Pequeña
+   optimización que preguntan.
+
+⚠️ Overflow: en \verb|a * a % m| con long long y $m$ grande puedes
+   desbordar. Si $m \sim 10^{18}$, usa \verb|__int128| o multiplicación
+   modular segura.
+
+🔑 GCD para simplificar: muchos problemas de fracciones, rotaciones de
+   arreglos ("rotate array by k" usa \verb|gcd(n,k)| ciclos) y geometría
+   de rejilla se apoyan en el GCD.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• GCD (Euclides): gcd(a,b) = gcd(b, a mod b); O(log min).
+• LCM = a / gcd(a,b) · b (divide primero para no desbordar).
+• Criba: tacha múltiplos desde i·i; primos hasta n en O(n log log n).
+• Exponenciación rápida: eleva al cuadrado; O(log b).
+• powMod evita overflow y es base de hashing e inverso modular.
+• Aritmética modular: aplica el módulo tras cada operación.
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}

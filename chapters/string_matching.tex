@@ -1,0 +1,187 @@
+\chapter[\emj{🔎}~Búsqueda de Patrones: KMP y Rabin-Karp]{\emj{🔎}~Búsqueda de Patrones en Texto: KMP y Rabin-Karp}
+
+\begin{dsaquees}
+
+Buscar una palabra (patrón) dentro de un texto largo 📃, como el
+Ctrl+F de tu navegador. La forma ingenua compara letra por letra desde
+cada posición: lenta ($O(n \cdot m)$) porque repite comparaciones.
+
+Dos formas inteligentes de hacerlo en $O(n + m)$:
+\begin{itemize}
+\item KMP: precalcula cuánto puede "saltar" el patrón cuando falla, sin
+      retroceder en el texto.
+\item Rabin-Karp: convierte cada ventana del texto en un número (hash) y
+      compara números en vez de letras.
+\end{itemize}
+
+\end{dsaquees}
+
+\begin{dsanino}
+
+Quieres encontrar la palabra "ABABC" dentro de un texto larguísimo 🔤.
+
+La forma tonta: la comparas empezando en cada letra, y si falla, vuelves
+a empezar todo desde la siguiente letra. Repites trabajo que ya hiciste.
+
+KMP es más listo: cuando ya comparaste "ABAB" y falla la siguiente letra,
+KMP sabe que "AB" del inicio del patrón ya coincide, así que NO vuelve
+hasta el principio; salta directo y sigue. Es como cuando ya memorizaste
+parte de una canción y no empiezas desde cero cada vez que te equivocas.
+
+Rabin-Karp usa otro truco: le pone un "número de identidad" (huella) a
+cada pedazo del texto del tamaño de la palabra, y compara huellas. Si dos
+huellas son iguales, probablemente encontró la palabra.
+
+\end{dsanino}
+
+\begin{dsaotraforma}
+
+\textbf{KMP (Knuth-Morris-Pratt)} evita retroceder en el texto usando un
+arreglo de "prefijos-sufijos" (\verb|lps|, longest proper prefix which is
+also suffix). \verb|lps[i]| dice, para el prefijo del patrón hasta $i$,
+cuántos caracteres del inicio coinciden con el final. Cuando una
+comparación falla, el patrón salta a \verb|lps[j-1]| en vez de reiniciar.
+Total: $O(n + m)$.
+
+\textbf{Rabin-Karp} calcula un hash rodante (rolling hash) de cada
+ventana del texto de longitud $m$ y lo compara con el hash del patrón.
+El rolling hash actualiza en $O(1)$ al deslizar la ventana (quita la
+letra que sale, agrega la que entra). Promedio $O(n + m)$; peor caso
+$O(n \cdot m)$ si hay muchas colisiones de hash. Brilla para buscar
+MÚLTIPLES patrones a la vez.
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+KMP: patrón = "ABABCABAB"
+
+Construir lps (prefijo propio = sufijo más largo):
+  índice:  A  B  A  B  C  A  B  A  B
+  lps:     0  0  1  2  0  1  2  3  4
+
+Significado: si fallas en la posición 8 (ya casaste "ABABCABA"),
+saltas a lps[7]=3, o sea reusas "ABA" ya emparejado. No retrocedes
+en el texto.
+
+RABIN-KARP: rolling hash
+  texto: "ABCDE",  patrón "CDE" (largo 3)
+  hash("ABC") -> desliza -> hash("BCD") -> hash("CDE") == hash patrón!
+  (al deslizar: quita 'A', agrega 'D', todo en O(1))
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+KMP EN 2 FASES
+1. Precalcula lps[] del patrón: O(m).
+2. Recorre el texto con dos índices (i en texto, j en patrón). Si
+   coinciden, avanza ambos. Si falla y j>0, j = lps[j-1] (salta). Si
+   j llega a m, encontraste una ocurrencia.
+
+📝 PSEUDOCÓDIGO (construir lps)
+──────────────────────────────────────────────────────────────
+
+función buildLPS(patrón):
+    lps[0] = 0; len = 0; i = 1
+    MIENTRAS i < m:
+        SI patrón[i] == patrón[len]:
+            len++; lps[i] = len; i++
+        SINO SI len > 0:
+            len = lps[len-1]          // retrocede en el patrón
+        SINO:
+            lps[i] = 0; i++
+    return lps
+
+💻 CÓDIGO C++ (KMP)
+──────────────────────────────────────────────────────────────
+
+#include <string>
+#include <vector>
+using namespace std;
+
+vector<int> buildLPS(const string& p) {
+    int m = p.size(); vector<int> lps(m, 0);
+    for (int i = 1, len = 0; i < m; ) {
+        if (p[i] == p[len]) lps[i++] = ++len;
+        else if (len) len = lps[len-1];
+        else lps[i++] = 0;
+    }
+    return lps;
+}
+
+int kmpSearch(const string& text, const string& pat) {
+    vector<int> lps = buildLPS(pat);
+    int n = text.size(), m = pat.size();
+    for (int i = 0, j = 0; i < n; ) {
+        if (text[i] == pat[j]) { i++; j++;
+            if (j == m) return i - m;      // ocurrencia encontrada
+        } else if (j) j = lps[j-1];        // salta usando lps
+        else i++;
+    }
+    return -1;
+}
+
+💻 CÓDIGO C++ (Rabin-Karp, rolling hash)
+──────────────────────────────────────────────────────────────
+
+int rabinKarp(const string& text, const string& pat) {
+    int n = text.size(), m = pat.size();
+    if (m > n) return -1;
+    const long long B = 256, MOD = 1e9 + 7;
+    long long hp = 0, ht = 0, pow = 1;
+    for (int i = 0; i < m; i++) {
+        hp = (hp * B + pat[i]) % MOD;
+        ht = (ht * B + text[i]) % MOD;
+        if (i) pow = pow * B % MOD;
+    }
+    for (int i = 0; i + m <= n; i++) {
+        if (hp == ht && text.compare(i, m, pat) == 0) return i; // verifica
+        if (i + m < n)                                  // desliza ventana
+            ht = ((ht - text[i]*pow % MOD + MOD) * B + text[i+m]) % MOD;
+    }
+    return -1;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Algoritmo     │ Tiempo          │ Nota
+  ──────────────┼─────────────────┼──────────────────────
+  Naive         │ O(n·m)          │ compara desde cada pos
+  KMP           │ O(n + m)        │ nunca retrocede en texto
+  Rabin-Karp    │ O(n + m) prom.  │ O(n·m) peor (colisiones)
+
+* Rabin-Karp brilla buscando múltiples patrones a la vez.
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ El corazón de KMP es el lps: si sabes construir el arreglo de
+   prefijos-sufijos, KMP sale solo. Practica el lps hasta que sea
+   automático.
+
+💡 "Implement strStr()" (LC 28) y "Repeated String Match" son KMP
+   directos. "Longest Happy Prefix" (LC 1392) es literalmente
+   \verb|lps[m-1]|.
+
+⚠️ Rabin-Karp necesita verificación: dos hashes iguales NO garantizan
+   igualdad (colisión). Siempre compara los caracteres reales al hacer
+   match de hash.
+
+🔑 Rolling hash reutilizable: la técnica de hash rodante de Rabin-Karp
+   sirve para detectar substrings duplicados, comparar rangos de texto en
+   O(1) y problemas de "longest duplicate substring".
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• Buscar un patrón de largo m en un texto de largo n.
+• Naive O(n·m); KMP y Rabin-Karp O(n + m).
+• KMP: arreglo lps (prefijo propio = sufijo) para saltar sin retroceder.
+• Rabin-Karp: rolling hash de cada ventana; compara números.
+• Rabin-Karp exige verificar el match real (colisiones de hash).
+• Rabin-Karp es ideal para múltiples patrones a la vez.
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}

@@ -1,0 +1,167 @@
+\chapter[\emj{🪣}~Counting, Radix y Bucket Sort (No Comparación)]{\emj{🪣}~Counting, Radix y Bucket Sort (Ordenar sin Comparar)}
+
+\begin{dsaquees}
+
+Todos los ordenamientos anteriores (Quick, Merge, Heap) COMPARAN pares de
+elementos, y por eso ninguno baja de $O(n \log n)$. Estos tres hacen
+trampa 🎯: no comparan, CUENTAN o REPARTEN, y logran $O(n)$ cuando los
+datos cumplen ciertas condiciones (rango pequeño, enteros, distribución
+uniforme).
+
+\begin{itemize}
+\item Counting Sort: cuenta cuántas veces aparece cada valor.
+\item Radix Sort: ordena dígito por dígito.
+\item Bucket Sort: reparte en cubetas y ordena cada una.
+\end{itemize}
+
+\end{dsaquees}
+
+\begin{dsanino}
+
+Imagina que quieres ordenar las cartas de un juego 🃏 numeradas del 1 al
+10. En vez de comparar carta con carta, haces 10 montoncitos en la mesa,
+uno por número. Avientas cada carta a su montoncito y luego recoges los
+montoncitos en orden: 1, 2, 3\ldots ¡Listo, ya están ordenadas y nunca
+comparaste dos cartas! Eso es Counting Sort.
+
+Si los números fueran gigantes (como 375), lo haces por partes: primero
+ordenas por el último dígito, luego por el de en medio, luego por el
+primero. Como una fila que se reorganiza tres veces. Eso es Radix Sort.
+Trucos que solo funcionan cuando los números no son "cualquier cosa".
+
+\end{dsanino}
+
+\begin{dsaotraforma}
+
+Los ordenamientos por comparación tienen una cota inferior de
+$\Omega(n \log n)$. Estos algoritmos la rompen porque \textbf{no comparan}
+elementos entre sí; usan la estructura de los datos.
+
+\textbf{Counting Sort}: cuenta la frecuencia de cada valor en un rango
+$[0, k]$ y reconstruye el arreglo ordenado. $O(n + k)$. Estable. Solo
+sirve si $k$ (rango) no es mucho mayor que $n$.
+
+\textbf{Radix Sort}: aplica Counting Sort dígito por dígito, del menos al
+más significativo (LSD). $O(d \cdot (n + b))$ con $d$ dígitos y base $b$.
+Ideal para enteros o strings de longitud fija.
+
+\textbf{Bucket Sort}: reparte los elementos en cubetas según su valor,
+ordena cada cubeta (con otro sort) y concatena. $O(n)$ promedio si la
+distribución es uniforme; $O(n^2)$ en el peor caso.
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+COUNTING SORT de [2, 5, 3, 0, 2, 3, 0, 3]  (rango 0..5)
+
+Conteo de cada valor:
+  valor:  0  1  2  3  4  5
+  veces:  2  0  2  3  0  1
+
+Reconstruir en orden leyendo el conteo:
+  0,0, 2,2, 3,3,3, 5  ->  [0, 0, 2, 2, 3, 3, 3, 5]
+
+RADIX SORT de [170, 45, 75, 90, 802, 24, 2, 66]
+  por unidades:  [170,90,802,2,24,45,75,66]
+  por decenas :  [802,2,24,45,66,170,75,90]
+  por centenas:  [2,24,45,66,75,90,170,802]  <- ordenado
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+COUNTING SORT (estable)
+1. Cuenta cuántas veces aparece cada valor (arreglo count de tamaño k+1).
+2. Acumula (prefix sum) para saber la posición final de cada valor.
+3. Recorre el original de DERECHA a IZQUIERDA colocando cada elemento
+   (así se mantiene estable).
+
+📝 PSEUDOCÓDIGO (counting sort)
+──────────────────────────────────────────────────────────────
+
+función countingSort(a, k):        // valores en [0, k]
+    count = arreglo de ceros de tamaño k+1
+    PARA cada x en a: count[x]++
+    PARA i desde 1 hasta k: count[i] += count[i-1]   // prefijos
+    salida = arreglo del tamaño de a
+    PARA i desde n-1 hasta 0:       // de derecha a izquierda = estable
+        salida[--count[a[i]]] = a[i]
+    return salida
+
+💻 CÓDIGO C++ (Counting Sort)
+──────────────────────────────────────────────────────────────
+
+#include <vector>
+using namespace std;
+
+vector<int> countingSort(vector<int>& a, int k) {
+    vector<int> count(k + 1, 0), out(a.size());
+    for (int x : a) count[x]++;                 // frecuencias
+    for (int i = 1; i <= k; i++) count[i] += count[i-1]; // prefijos
+    for (int i = a.size() - 1; i >= 0; i--)     // estable
+        out[--count[a[i]]] = a[i];
+    return out;
+}
+
+💻 CÓDIGO C++ (Radix Sort, LSD para enteros >= 0)
+──────────────────────────────────────────────────────────────
+
+#include <algorithm>
+void radixSort(vector<int>& a) {
+    if (a.empty()) return;
+    int maxv = *max_element(a.begin(), a.end());
+    for (int exp = 1; maxv / exp > 0; exp *= 10) {  // dígito por dígito
+        vector<int> out(a.size()), count(10, 0);
+        for (int x : a) count[(x / exp) % 10]++;
+        for (int i = 1; i < 10; i++) count[i] += count[i-1];
+        for (int i = a.size() - 1; i >= 0; i--) {
+            int d = (a[i] / exp) % 10;
+            out[--count[d]] = a[i];
+        }
+        a = out;
+    }
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Algoritmo     │ Tiempo          │ Estable │ Cuándo usar
+  ──────────────┼─────────────────┼─────────┼──────────────────
+  Counting      │ O(n + k)        │ Sí      │ rango k pequeño
+  Radix (LSD)   │ O(d·(n + b))    │ Sí      │ enteros/strings
+  Bucket        │ O(n) promedio   │ Sí*     │ datos uniformes
+
+* k = rango, d = número de dígitos, b = base.
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ Rompen la cota O(n log n) porque NO comparan. Si un entrevistador
+   pregunta "¿se puede ordenar en menos de O(n log n)?", la respuesta es
+   "sí, si los datos lo permiten (rango acotado, enteros)".
+
+💡 "Sort Colors" (LC 75): ordenar un arreglo de 0,1,2 es Counting Sort
+   trivial (o Dutch flag en una pasada). "Maximum Gap" (LC 164) usa
+   Bucket Sort para lograr O(n).
+
+⚠️ Counting Sort explota si k es enorme: ordenar valores hasta $10^9$
+   con counting necesitaría un arreglo de mil millones. Solo sirve con
+   rango chico.
+
+🔑 Estabilidad importa en Radix: cada pasada por dígito DEBE ser estable
+   (por eso usa Counting Sort). Si no, el orden de los dígitos previos se
+   pierde y el resultado es incorrecto.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• No comparan: cuentan o reparten, rompen la cota O(n log n).
+• Counting Sort: cuenta frecuencias; O(n + k); estable; rango k pequeño.
+• Radix Sort: Counting dígito por dígito (LSD); enteros/strings.
+• Bucket Sort: reparte en cubetas + ordena cada una; O(n) si uniforme.
+• Radix depende de que cada pasada sea estable.
+• Úsalos solo cuando los datos cumplan las condiciones (rango, tipo).
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}

@@ -1,0 +1,173 @@
+\chapter[\emj{🤑}~Greedy (Algoritmos Golosos)]{\emj{🤑}~Greedy (Algoritmos Golosos)}
+
+\begin{dsaquees}
+
+Tomar SIEMPRE la mejor opción del momento 🍰, sin pensar en el futuro,
+esperando que esas decisiones locales sumen la mejor solución global.
+
+Si quieres dar cambio con la menor cantidad de monedas, tomas la moneda
+más grande que quepa una y otra vez. Eso es ser "goloso": eliges lo mejor
+AHORA y no reconsideras. A veces funciona perfecto (monedas normales),
+a veces falla (monedas raras), y ahí está el arte: saber CUÁNDO un
+problema se puede resolver golosamente.
+
+\end{dsaquees}
+
+\begin{dsanino}
+
+Imagina que tienes una mochila y quieres meter la mayor cantidad de
+dulces 🍬, pero solo puedes agarrar de a uno rapidísimo. La regla golosa
+dice: "agarra el dulce más grande que veas, no lo pienses". Sigues
+agarrando el más grande que quede, hasta llenarte.
+
+A veces esa regla te da lo mejor. Pero ojo: si los dulces vinieran
+pegados de formas raras, agarrar siempre el más grande podría dejarte sin
+espacio para dos medianos que juntos valían más. Por eso, antes de ser
+goloso, hay que estar SEGURO de que "lo mejor ahorita" también es "lo
+mejor al final". Cuando eso es cierto, ser goloso es rapidísimo y fácil.
+
+\end{dsanino}
+
+\begin{dsaotraforma}
+
+Un algoritmo greedy construye la solución paso a paso, eligiendo en cada
+etapa la opción que se ve mejor localmente (según un criterio), sin
+retroceder.
+
+Solo da el óptimo si el problema cumple dos propiedades:
+\begin{itemize}
+\item \textbf{Greedy choice property}: una elección local óptima lleva a
+      una solución global óptima.
+\item \textbf{Subestructura óptima}: la solución óptima contiene
+      soluciones óptimas de sus subproblemas.
+\end{itemize}
+
+Si NO se cumplen, greedy falla y hay que usar Programación Dinámica.
+Ejemplos donde greedy SÍ funciona: activity selection, intervalos,
+código de Huffman, Dijkstra, MST (Kruskal/Prim), fractional knapsack.
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+ACTIVITY SELECTION (máximo de reuniones sin traslape):
+
+Reuniones (inicio, fin):
+  A(1,3)  B(2,5)  C(4,7)  D(6,8)  E(5,9)
+
+Paso 1: ordena por HORA DE FIN:  A(3) B(5) C(7) D(8) E(9)
+Paso 2: toma A. Última fin = 3.
+        B empieza en 2 < 3 -> choca, salta.
+        C empieza en 4 >= 3 -> toma C. Última fin = 7.
+        D empieza en 6 < 7 -> choca, salta.
+        E empieza en 5 < 7 -> choca, salta.
+Resultado: {A, C} -> 2 reuniones (óptimo).
+
+Criterio goloso ganador: SIEMPRE la que TERMINA más temprano.
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+PATRÓN GREEDY (3 pasos)
+1. Encuentra el criterio de ordenamiento correcto (el "más pequeño",
+   el que "termina antes", el "más valioso por kilo"...).
+2. Ordena por ese criterio.
+3. Recorre una vez tomando lo que quepa/no choque.
+
+📝 PSEUDOCÓDIGO (activity selection)
+──────────────────────────────────────────────────────────────
+
+función maxActividades(intervalos):
+    ordenar intervalos por hora de FIN ascendente
+    finAnterior = -infinito; conteo = 0
+    PARA cada (inicio, fin) en intervalos:
+        SI inicio >= finAnterior:
+            conteo++; finAnterior = fin       // se toma
+    return conteo
+
+💻 CÓDIGO C++ (activity selection / non-overlapping intervals)
+──────────────────────────────────────────────────────────────
+
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int maxActividades(vector<pair<int,int>>& iv) {   // {inicio, fin}
+    sort(iv.begin(), iv.end(),
+         [](auto& a, auto& b){ return a.second < b.second; }); // por fin
+    int fin = INT_MIN, cont = 0;
+    for (auto& [ini, f] : iv) {
+        if (ini >= fin) { cont++; fin = f; }      // no choca -> tómala
+    }
+    return cont;
+}
+
+💻 CÓDIGO C++ (fractional knapsack: greedy SÍ funciona)
+──────────────────────────────────────────────────────────────
+
+// A diferencia del 0/1 knapsack (que es DP), aquí puedes partir objetos.
+double fractionalKnapsack(int W, vector<pair<int,int>>& items) {
+    // items = {valor, peso}; ordena por valor/peso DESC
+    sort(items.begin(), items.end(), [](auto& a, auto& b){
+        return (double)a.first/a.second > (double)b.first/b.second;
+    });
+    double total = 0;
+    for (auto& [val, peso] : items) {
+        if (W >= peso) { total += val; W -= peso; }   // cabe entero
+        else { total += val * ((double)W / peso); break; } // fracción
+    }
+    return total;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Problema            │ Tiempo      │ Domina
+  ────────────────────┼─────────────┼──────────────
+  Activity selection  │ O(n log n)  │ el sort
+  Fractional knapsack │ O(n log n)  │ el sort
+  Recorrido greedy    │ O(n)        │ una pasada
+
+* Casi siempre el costo es el ORDENAMIENTO inicial.
+\end{lstlisting}
+
+\begin{lstlisting}[language=C++]
+💡 Problemas greedy clásicos y su criterio ganador:
+   - Intervalos sin traslape (LC 435): ordena por FIN, quita los que chocan.
+   - Merge Intervals (LC 56): ordena por INICIO, fusiona solapados.
+   - Jump Game (LC 55): mantén el alcance máximo; si lo superas, pierdes.
+   - Gas Station (LC 134): si el tanque total >= 0, hay solución única.
+   - Huffman: combina siempre los dos nodos de menor frecuencia (min-heap).
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ El reto es DEMOSTRAR que greedy funciona. Si no puedes justificar por
+   qué la elección local da el óptimo global, probablemente NO sea greedy
+   y necesites DP. No lo uses "de fe".
+
+💡 Contraejemplo de monedas: con monedas {1, 3, 4} y cambio de 6, greedy
+   da 4+1+1 (3 monedas) pero lo óptimo es 3+3 (2 monedas). Por eso "coin
+   change" general es DP, no greedy.
+
+⚠️ El criterio de ordenamiento lo es TODO. En activity selection ordenar
+   por duración o por inicio FALLA; solo ordenar por hora de fin da el
+   óptimo. Piensa bien el criterio.
+
+🔑 Greedy vs DP: si "elegir lo mejor ahora" nunca te arrepiente ->
+   greedy (rápido). Si necesitas explorar combinaciones y recordar
+   subproblemas -> DP.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• Greedy: elige lo mejor local en cada paso, sin retroceder.
+• Solo da el óptimo con greedy-choice + subestructura óptima.
+• Patrón: encuentra criterio -> ordena -> recorre tomando lo que quepa.
+• Activity selection: ordena por hora de FIN.
+• Fractional knapsack SÍ es greedy; el 0/1 knapsack NO (es DP).
+• Si no puedes demostrar que funciona, usa DP.
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}
