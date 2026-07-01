@@ -143,16 +143,36 @@
 \lstset{style=cpp}
 
 % --- Estilo para diagramas ASCII (coloreado por clase de caracter) ---
+% Los glifos unicode se emiten con \boxfont\char"XXXX en el reemplazo para
+% evitar la recursion con \newunicodechar (que dispara "semantic nest size").
 \lstdefinestyle{diagrama}{
   basicstyle=\ttfamily\small\color{white},
   columns=fullflexible,
   keepspaces=true,
   breaklines=false,
+  frame=none,
+  numbers=none,
   literate=
-    % lineas / esqueleto (gris tenue) -- ASCII + un pequeño subset de box-drawing
+    % lineas / esqueleto (gris tenue) -- ASCII
     {|}{{\color{diagLine}|}}1 {-}{{\color{diagLine}-}}1
     {+}{{\color{diagLine}+}}1 {/}{{\color{diagLine}/}}1
-    {─}{{\color{diagLine}─}}1 {│}{{\color{diagLine}│}}1,
+    % lineas / esqueleto -- unicode box-drawing
+    {─}{{\color{diagLine}\boxfont\char"2500}}1 {│}{{\color{diagLine}\boxfont\char"2502}}1
+    {┌}{{\color{diagLine}\boxfont\char"250C}}1 {┐}{{\color{diagLine}\boxfont\char"2510}}1
+    {└}{{\color{diagLine}\boxfont\char"2514}}1 {┘}{{\color{diagLine}\boxfont\char"2518}}1
+    {├}{{\color{diagLine}\boxfont\char"251C}}1 {┤}{{\color{diagLine}\boxfont\char"2524}}1
+    {┬}{{\color{diagLine}\boxfont\char"252C}}1 {┴}{{\color{diagLine}\boxfont\char"2534}}1
+    {┼}{{\color{diagLine}\boxfont\char"253C}}1
+    {═}{{\color{diagLine}\boxfont\char"2550}}1 {║}{{\color{diagLine}\boxfont\char"2551}}1
+    {╱}{{\color{diagLine}\boxfont\char"2571}}1 {╲}{{\color{diagLine}\boxfont\char"2572}}1
+    % flechas (amarillo)
+    {→}{{\color{n-yellow}\boxfont\char"2192}}1 {←}{{\color{n-yellow}\boxfont\char"2190}}1
+    {↑}{{\color{n-yellow}\boxfont\char"2191}}1 {↓}{{\color{n-yellow}\boxfont\char"2193}}1
+    {↔}{{\color{n-yellow}\boxfont\char"2194}}1 {⇄}{{\color{n-yellow}\boxfont\char"21C4}}1
+    {◄}{{\color{n-yellow}\boxfont\char"25C4}}1 {►}{{\color{n-yellow}\boxfont\char"25BA}}1
+    {▲}{{\color{n-yellow}\boxfont\char"25B2}}1 {▼}{{\color{n-yellow}\boxfont\char"25BC}}1
+    % nodos (lime)
+    {[}{{\color{n-lime}[}}1 {]}{{\color{n-lime}]}}1,
 }
 
 % --- tcolorbox environments ---
