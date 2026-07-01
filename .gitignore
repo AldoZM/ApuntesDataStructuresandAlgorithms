@@ -20,3 +20,6 @@ desktop.ini
 04_Algoritmos_Ordenamiento/*.pdf
 05_Algoritmos_Busqueda/*.pdf
 06_Patrones_Entrevista/*.pdf
+
+# Artefacto de tcolorbox/listings (se regenera al compilar)
+*.listing
