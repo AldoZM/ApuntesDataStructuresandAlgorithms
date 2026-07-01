@@ -97,13 +97,26 @@
 }
 
 % --- Estilo de Código C++ ---
+\definecolor{comentario}{RGB}{128, 160, 194}   % azul grisáceo para comentarios
 \lstdefinestyle{cpp}{
   language=C++,
   basicstyle=\ttfamily\small\color{white},
+  % Clase 1: keywords de C++ (if/for/while/return/class/struct...)
   keywordstyle=\color{n-cyan}\bfseries,
-  commentstyle=\color{codegray}\itshape,
+  % Clase 2: tipos y contenedores STL
+  keywords=[2]{std,string,vector,queue,deque,stack,priority_queue,unordered_map,unordered_set,map,set,pair,array,tuple,size_t,greater,less,list,iterator},
+  keywordstyle=[2]\color{n-orange}\bfseries,
+  % Clase 3: pseudocódigo en español (control de flujo)
+  keywords=[3]{SI,SINO,MIENTRAS,PARA,REPETIR,HASTA,DESDE,funcion,romper,continuar,retornar,devolver,cada,ENTONCES,VECES},
+  keywordstyle=[3]\color{n-pink}\bfseries,
+  % Clase 4: constantes y literales especiales
+  keywords=[4]{true,false,nullptr,NULL,INFINITO,VERDADERO,FALSO,INF},
+  keywordstyle=[4]\color{n-yellow}\bfseries,
+  % Preprocesador (#include, #define) en morado claro
+  moredelim=[l][\color{n-pink}]{\#},
+  commentstyle=\color{comentario}\itshape,
   stringstyle=\color{n-lime},
-  numberstyle=\tiny\color{n-yellow},
+  numberstyle=\tiny\color{codegray},
   showstringspaces=false,
   breaklines=true,
   frame=single,
