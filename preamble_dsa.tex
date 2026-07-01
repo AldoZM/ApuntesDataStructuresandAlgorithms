@@ -72,6 +72,7 @@
 \definecolor{moradooscu}{RGB}{88, 28, 135}
 \definecolor{cianoscuro}{RGB}{14, 116, 144}
 \definecolor{grisclaro}{RGB}{200, 200, 200}
+\definecolor{diagLine}{RGB}{140, 140, 140}   % gris tenue: esqueleto de diagramas
 \definecolor{codegray}{RGB}{130, 130, 130}
 
 % --- MODO OSCURO GLOBAL ---
@@ -140,6 +141,19 @@
     {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
 }
 \lstset{style=cpp}
+
+% --- Estilo para diagramas ASCII (coloreado por clase de caracter) ---
+\lstdefinestyle{diagrama}{
+  basicstyle=\ttfamily\small\color{white},
+  columns=fullflexible,
+  keepspaces=true,
+  breaklines=false,
+  literate=
+    % lineas / esqueleto (gris tenue) -- ASCII + un pequeño subset de box-drawing
+    {|}{{\color{diagLine}|}}1 {-}{{\color{diagLine}-}}1
+    {+}{{\color{diagLine}+}}1 {/}{{\color{diagLine}/}}1
+    {─}{{\color{diagLine}─}}1 {│}{{\color{diagLine}│}}1,
+}
 
 % --- tcolorbox environments ---
 \newtcolorbox{dsaquees}{
