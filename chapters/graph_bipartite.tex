@@ -1,0 +1,135 @@
+\chapter[\emj{🎨}~Grafo Bipartito (2-Coloring)]{\emj{🎨}~Grafo Bipartito (Coloreo con 2 Colores)}
+
+\begin{dsaquees}
+
+Repartir a un grupo de personas en DOS equipos 🔴🔵 de modo que cada
+persona quede en equipo CONTRARIO al de todos sus rivales. Si logras
+hacerlo sin conflictos, el grafo es bipartito.
+
+El truco: pinta a alguien de rojo, obliga a todos sus vecinos a ser
+azules, a los vecinos de esos a ser rojos, y así. Si en algún momento
+alguien DEBE ser rojo y azul a la vez (un vecino ya tiene tu mismo
+color), es imposible: el grafo NO es bipartito.
+
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
+Un grafo es \textbf{bipartito} si sus vértices se pueden partir en dos
+conjuntos disjuntos tal que toda arista conecta un vértice de un
+conjunto con uno del otro (ninguna arista queda dentro del mismo
+conjunto).
+
+Se verifica con un coloreo de 2 colores por BFS o DFS: asigna un color
+al nodo inicial y el color OPUESTO a cada vecino. Si encuentras una
+arista entre dos nodos del MISMO color, no es bipartito.
+
+Teorema clave: un grafo es bipartito \textbf{si y solo si} no contiene
+ningún ciclo de longitud impar.
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+BIPARTITO (ciclo par)          NO BIPARTITO (ciclo impar)
+
+  A(R) ─── B(A)                  A(R) ─── B(A)
+   │        │                     │  ╲      │
+  D(A) ─── C(R)                   │   ╲     │
+                                 D(A) ─ C(R)? A-C exige A(R)-C debe ser
+  2 equipos: {A,C} y {B,D}       azul, pero C ya conecta con B(A)...
+  Toda arista cruza -> SÍ        triangulo A-B-C (ciclo 3) -> NO
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+CÓMO FUNCIONA (BFS coloring)
+1. color[] = -1 (sin colorear) para todos.
+2. Por cada componente no coloreada: colorea el inicio con 0, mételo a
+   la Queue.
+3. Al sacar u, cada vecino v: si no tiene color, dale el opuesto
+   (1 - color[u]); si ya tiene el MISMO color que u -> NO bipartito.
+
+📝 PSEUDOCÓDIGO
+──────────────────────────────────────────────────────────────
+
+función esBipartito(V, adj):
+    color = arreglo de -1
+    PARA cada nodo s sin color:
+        color[s] = 0; q = Queue con s
+        MIENTRAS q no vacia:
+            u = q.dequeue()
+            PARA cada vecino v de u:
+                SI color[v] == -1:
+                    color[v] = 1 - color[u]; q.enqueue(v)
+                SINO SI color[v] == color[u]:
+                    return FALSO
+    return VERDADERO
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+#include <vector>
+#include <queue>
+using namespace std;
+
+bool isBipartite(int V, vector<vector<int>>& adj) {
+    vector<int> color(V, -1);
+    for (int s = 0; s < V; s++) {
+        if (color[s] != -1) continue;      // ya visitado
+        color[s] = 0;
+        queue<int> q; q.push(s);
+        while (!q.empty()) {
+            int u = q.front(); q.pop();
+            for (int v : adj[u]) {
+                if (color[v] == -1) {
+                    color[v] = 1 - color[u];   // color opuesto
+                    q.push(v);
+                } else if (color[v] == color[u]) {
+                    return false;              // conflicto
+                }
+            }
+        }
+    }
+    return true;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Recurso     │ Costo
+  ────────────┼─────────────
+  Tiempo      │ O(V + E)
+  Espacio     │ O(V)
+
+* Recorre cada nodo y arista una vez; el array color es O(V).
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ "Is Graph Bipartite?" (LeetCode 785) y "Possible Bipartition" (886):
+   ambos son 2-coloring puro. Recuerda recorrer TODAS las componentes
+   (el grafo puede estar desconectado).
+
+💡 Aplicación real: asignar tareas a 2 máquinas, detectar conflictos de
+   horarios, o modelar relaciones "esto vs aquello" (matching bipartito).
+
+⚠️ Grafo desconectado: si olvidas el bucle externo sobre nodos sin
+   color, solo verificas una componente y das un falso positivo.
+
+🔑 Ciclo impar = no bipartito: si te preguntan la intuición, esa es la
+   frase. Un triángulo (ciclo de 3) nunca es bipartito.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• Bipartito: partir los nodos en 2 grupos; toda arista cruza entre ellos.
+• Se verifica coloreando con 2 colores por BFS o DFS.
+• Conflicto: una arista une dos nodos del mismo color -> no bipartito.
+• Equivalente: no tiene ciclos de longitud impar.
+• Recorre TODAS las componentes (grafo puede estar desconectado).
+• O(V + E).
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}

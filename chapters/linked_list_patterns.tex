@@ -1,0 +1,160 @@
+\chapter[\emj{🧵}~Patrones de Linked List (Reverse, Merge, Reorder)]{\emj{🧵}~Patrones de Linked List}
+
+\begin{dsaquees}
+
+La mayoría de los problemas de listas enlazadas en entrevistas se
+reducen a "manipular punteros con cuidado" 🪡. Tres patrones cubren casi
+todo:
+
+\begin{itemize}
+\item Invertir: darle la vuelta a las flechas, una por una.
+\item Fusionar dos listas ordenadas: como cerrar un cierre 🤐, tomando
+      cada vez el elemento más pequeño de las dos.
+\item Reordenar: partir, invertir e intercalar.
+\end{itemize}
+
+El secreto siempre es el mismo: usa un \textbf{dummy node} (nodo falso al
+inicio) y muévete con punteros temporales para no perder el resto de la
+cadena.
+
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
+Los patrones más rentables sobre listas enlazadas:
+
+\begin{itemize}
+\item \textbf{Reverse}: tres punteros (\verb|prev|, \verb|cur|,
+      \verb|next|). En cada paso, apunta \verb|cur->next| hacia atrás y
+      avanza. $O(n)$ tiempo, $O(1)$ espacio.
+\item \textbf{Merge Two Sorted Lists}: un dummy y un puntero \verb|tail|;
+      vas enganchando el menor de las dos cabezas. Base del Merge Sort
+      sobre listas.
+\item \textbf{Reorder / intercalar}: encuentra el medio (fast \& slow),
+      invierte la segunda mitad y entrelaza ambas.
+\item \textbf{Remove N-th from end}: dos punteros separados por N; cuando
+      el de adelante llega al final, el de atrás está justo antes del
+      objetivo.
+\end{itemize}
+
+El \textbf{dummy node} evita casos borde al modificar la cabeza.
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+REVERSE (3 punteros):
+  NULL <- 1    2 -> 3 -> NULL     prev=NULL cur=1
+          ^    ^
+        prev  cur    guarda next, apunta cur->next=prev, avanza
+
+  Resultado: NULL <- 1 <- 2 <- 3   (head ahora es 3)
+
+MERGE dos listas ordenadas:
+  L1: 1 -> 3 -> 5      dummy -> 1 -> 2 -> 3 -> 4 -> 5 -> 6
+  L2: 2 -> 4 -> 6      (toma el menor de cada cabeza en cada paso)
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+REVERSE (iterativo, 3 punteros)
+- prev=NULL, cur=head. En cada paso: guarda next, cur->next=prev,
+  prev=cur, cur=next. Al final prev es la nueva cabeza.
+
+MERGE (con dummy)
+- dummy y tail. Mientras ambas listas tengan nodos, engancha el menor
+  y avanza esa lista. Al final pega la que sobró.
+
+📝 PSEUDOCÓDIGO (reverse)
+──────────────────────────────────────────────────────────────
+
+función reverse(head):
+    prev = NULL; cur = head
+    MIENTRAS cur != NULL:
+        sig = cur.next      // guarda el resto
+        cur.next = prev     // voltea la flecha
+        prev = cur          // avanza prev
+        cur = sig           // avanza cur
+    return prev             // nueva cabeza
+
+💻 CÓDIGO C++
+──────────────────────────────────────────────────────────────
+
+struct Node { int val; Node* next; };
+
+// Invertir -> O(n) tiempo, O(1) espacio
+Node* reverseList(Node* head) {
+    Node* prev = nullptr;
+    while (head) {
+        Node* next = head->next;
+        head->next = prev;
+        prev = head;
+        head = next;
+    }
+    return prev;
+}
+
+// Fusionar dos listas ordenadas
+Node* mergeTwoLists(Node* a, Node* b) {
+    Node dummy{0, nullptr};
+    Node* tail = &dummy;
+    while (a && b) {
+        if (a->val <= b->val) { tail->next = a; a = a->next; }
+        else                  { tail->next = b; b = b->next; }
+        tail = tail->next;
+    }
+    tail->next = a ? a : b;     // engancha lo que sobró
+    return dummy.next;
+}
+
+// Eliminar el N-ésimo desde el final (two pointers)
+Node* removeNthFromEnd(Node* head, int n) {
+    Node dummy{0, head};
+    Node *fast = &dummy, *slow = &dummy;
+    for (int i = 0; i < n; i++) fast = fast->next;   // separa N
+    while (fast->next) { fast = fast->next; slow = slow->next; }
+    slow->next = slow->next->next;                   // salta el objetivo
+    return dummy.next;
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Patrón            │ Tiempo  │ Espacio
+  ──────────────────┼─────────┼──────────
+  Reverse           │ O(n)    │ O(1)
+  Merge 2 sorted    │ O(n+m)  │ O(1)
+  Reorder           │ O(n)    │ O(1)
+  Remove N-th end   │ O(n)    │ O(1)
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ "Reverse Linked List" (206), "Merge Two Sorted Lists" (21), "Reorder
+   List" (143), "Remove Nth Node From End" (19): el póker de listas.
+   Domínalos y cubres la mayoría de preguntas de listas.
+
+💡 Dummy node siempre: cuando la operación puede cambiar la cabeza
+   (borrar el primer nodo, fusionar), un nodo falso al inicio elimina el
+   caso especial y limpia el código.
+
+⚠️ No pierdas la referencia: antes de reasignar \verb|cur->next|,
+   SIEMPRE guarda el siguiente en una variable temporal, o pierdes el
+   resto de la lista.
+
+🔑 Merge K listas: usa una min-heap con las K cabezas -> O(N log K). Es
+   la generalización de "Merge Two Lists" que suele venir después.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• Reverse: 3 punteros (prev, cur, next); voltea flechas; O(1) espacio.
+• Merge ordenadas: dummy + tail, engancha el menor cada vez.
+• Reorder: medio (fast/slow) + invertir 2da mitad + intercalar.
+• Remove N-th: dos punteros separados por N.
+• Usa dummy node cuando la cabeza pueda cambiar.
+• Guarda el 'next' antes de reasignar punteros.
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}

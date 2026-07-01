@@ -1,0 +1,159 @@
+\chapter[\emj{🌁}~Puntos de Articulación y Puentes (Tarjan)]{\emj{🌁}~Puntos de Articulación y Puentes (Tarjan)}
+
+\begin{dsaquees}
+
+Una red de ciudades conectadas por carreteras 🛣️. Algunas conexiones
+son tan críticas que, si se rompen, dejan zonas incomunicadas:
+
+\begin{itemize}
+\item Puente (bridge): una CARRETERA que, si la quitas, parte el mapa en
+      pedazos aislados.
+\item Punto de articulación (cut vertex): una CIUDAD que, si desaparece
+      (con todas sus carreteras), desconecta el mapa.
+\end{itemize}
+
+Son los "puntos débiles" de una red. Tarjan los encuentra en un solo
+recorrido DFS midiendo, para cada nodo, qué tan "atrás" puede regresar
+sin usar la arista por la que llegó.
+
+\end{dsaquees}
+
+\begin{dsaotraforma}
+
+En un grafo no dirigido conexo:
+\begin{itemize}
+\item Un \textbf{puente} es una arista cuya eliminación aumenta el número
+      de componentes conexas.
+\item Un \textbf{punto de articulación} es un vértice cuya eliminación
+      (y la de sus aristas) hace lo mismo.
+\end{itemize}
+
+El algoritmo de Tarjan usa DFS con dos marcas por nodo:
+\verb|disc[u]| (tiempo de descubrimiento) y \verb|low[u]| (el menor
+\verb|disc| alcanzable desde $u$ usando aristas del árbol DFS y a lo
+sumo una arista "de retorno"). Para una arista de árbol $u \to v$:
+\begin{itemize}
+\item Es \textbf{puente} si \verb|low[v] > disc[u]| (v no puede volver a
+      u ni a un ancestro sin esa arista).
+\item $u$ es \textbf{articulación} si \verb|low[v] >= disc[u]| (con
+      manejo especial de la raíz: lo es si tiene 2+ hijos en el DFS).
+\end{itemize}
+
+\end{dsaotraforma}
+
+\begin{dsadiagrama}
+\begin{verbatim}
+Grafo:
+   0 ─── 1 ─── 2
+         │     │
+         3 ─── 4 ─── 5
+
+disc = tiempo de descubrimiento, low = mínimo alcanzable
+
+Arista 4-5: al quitarla, el 5 queda aislado -> PUENTE
+Arista 0-1: al quitarla, el 0 queda aislado -> PUENTE
+Vertice 1: al quitarlo, el 0 se desconecta -> ARTICULACIÓN
+Vertice 4: al quitarlo, el 5 se desconecta -> ARTICULACIÓN
+
+El ciclo 1-2-4-3-1 NO tiene puentes (hay ruta alterna).
+\end{verbatim}
+\end{dsadiagrama}
+
+\begin{lstlisting}[language=C++]
+CÓMO FUNCIONA (Tarjan, un solo DFS)
+1. disc[u] = low[u] = timer++ al visitar u.
+2. Por cada vecino v:
+   - Si v es el padre: ignora.
+   - Si v ya visitado: low[u] = min(low[u], disc[v])  (arista de retorno)
+   - Si no: DFS(v); low[u] = min(low[u], low[v]);
+       * low[v] > disc[u]  -> arista (u,v) es PUENTE
+       * low[v] >= disc[u] -> u es ARTICULACIÓN (raíz: 2+ hijos)
+
+📝 PSEUDOCÓDIGO (puentes)
+──────────────────────────────────────────────────────────────
+
+función dfs(u, padre):
+    disc[u] = low[u] = timer++
+    PARA cada vecino v de u:
+        SI v == padre: continuar
+        SI disc[v] != -1:                    // ya visitado
+            low[u] = min(low[u], disc[v])
+        SINO:
+            dfs(v, u)
+            low[u] = min(low[u], low[v])
+            SI low[v] > disc[u]:
+                registrar (u, v) como PUENTE
+
+💻 CÓDIGO C++ (puentes y articulaciones)
+──────────────────────────────────────────────────────────────
+
+#include <vector>
+using namespace std;
+
+vector<int> disc, low;
+vector<bool> esArtic;
+vector<pair<int,int>> puentes;
+int timer_ = 0;
+
+void dfs(int u, int parent, vector<vector<int>>& adj) {
+    disc[u] = low[u] = timer_++;
+    int hijos = 0;
+    for (int v : adj[u]) {
+        if (v == parent) continue;
+        if (disc[v] != -1) {
+            low[u] = min(low[u], disc[v]);     // arista de retorno
+        } else {
+            hijos++;
+            dfs(v, u, adj);
+            low[u] = min(low[u], low[v]);
+            if (low[v] > disc[u])
+                puentes.push_back({u, v});      // PUENTE
+            if (parent != -1 && low[v] >= disc[u])
+                esArtic[u] = true;              // ARTICULACIÓN
+        }
+    }
+    if (parent == -1 && hijos > 1)
+        esArtic[u] = true;                      // raíz con 2+ hijos
+}
+
+⏱️ COMPLEJIDAD (Big-O)
+──────────────────────────────────────────────────────────────
+
+  Recurso     │ Costo
+  ────────────┼─────────────
+  Tiempo      │ O(V + E)
+  Espacio     │ O(V)
+
+* Un solo DFS calcula puentes Y articulaciones a la vez.
+\end{lstlisting}
+
+\begin{dsaentrevistas}
+
+✅ "Critical Connections in a Network" (LeetCode 1192): es exactamente
+   encontrar todos los puentes. Respuesta directa con Tarjan.
+
+💡 disc vs low: \verb|disc| es "cuándo te descubrí"; \verb|low| es "lo más
+   arriba que puedes trepar". Si un hijo no puede trepar por encima de
+   ti, la arista o el nodo son críticos. Explicarlo así suma puntos.
+
+⚠️ Cuidado con la raíz: la regla \verb|low[v] >= disc[u]| falla para la
+   raíz del DFS. La raíz es articulación solo si tiene 2 o más hijos en
+   el árbol DFS.
+
+🔑 Aristas múltiples: si hay dos aristas paralelas entre u y v, ninguna
+   es puente (hay ruta alterna). Trátalo con cuidado si el enunciado las
+   permite.
+
+\end{dsaentrevistas}
+
+\begin{dsaresumen}
+
+• Puente: arista que, al quitarla, desconecta el grafo.
+• Punto de articulación: vértice que, al quitarlo, lo desconecta.
+• Tarjan: un DFS con disc[] (descubrimiento) y low[] (mínimo alcanzable).
+• Puente si low[v] > disc[u]; articulación si low[v] >= disc[u].
+• Raíz es articulación solo con 2+ hijos en el DFS.
+• Todo en O(V + E).
+════════════════════════════════════════════════════════════════
+
+\end{dsaresumen}
