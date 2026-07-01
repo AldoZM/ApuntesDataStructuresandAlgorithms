@@ -96,27 +96,30 @@
   \def\emj#1{}%
 }
 
-% --- Estilo de Código C++ ---
-\definecolor{comentario}{RGB}{128, 160, 194}   % azul grisáceo para comentarios
-\definecolor{operador}{RGB}{255, 155, 120}     % coral para operadores (= -> && == ...)
+% --- Estilo de Código C++ (paleta VS Code Dark+) ---
+\definecolor{vscKeyword}{RGB}{86, 156, 214}    % azul: int, double, const, class, using...
+\definecolor{vscControl}{RGB}{197, 134, 192}   % púrpura: if, for, return, try, catch + pseudocódigo
+\definecolor{vscType}{RGB}{78, 201, 176}       % teal: std, vector, string, map (clases/STL)
+\definecolor{vscString}{RGB}{206, 145, 120}    % salmón: strings
+\definecolor{vscComment}{RGB}{106, 153, 85}    % verde: comentarios
 \lstdefinestyle{cpp}{
   language=C++,
-  basicstyle=\ttfamily\small\color{white},
-  % Clase 1: keywords de C++ (if/for/while/return/class/struct...)
-  keywordstyle=\color{n-cyan}\bfseries,
-  % Clase 2: tipos y contenedores STL
+  basicstyle=\ttfamily\small\color{white},    % operadores y variables: blanco (como VS Code)
+  % Clase 1: keywords de tipo/declaración (int, double, const, class, using...) -> azul
+  keywordstyle=\color{vscKeyword},
+  % Clase 2: clases y contenedores STL -> teal
   keywords=[2]{std,string,vector,queue,deque,stack,priority_queue,unordered_map,unordered_set,map,set,pair,array,tuple,size_t,greater,less,list,iterator},
-  keywordstyle=[2]\color{n-orange}\bfseries,
-  % Clase 3: pseudocódigo en español (control de flujo)
-  keywords=[3]{SI,SINO,MIENTRAS,PARA,REPETIR,HASTA,DESDE,funcion,romper,continuar,retornar,devolver,cada,ENTONCES,VECES},
-  keywordstyle=[3]\color{n-pink}\bfseries,
-  % Clase 4: constantes y literales especiales
-  keywords=[4]{true,false,nullptr,NULL,INFINITO,VERDADERO,FALSO,INF},
-  keywordstyle=[4]\color{n-yellow}\bfseries,
-  % Preprocesador (#include, #define) en morado claro
-  moredelim=[l][\color{n-pink}]{\#},
-  commentstyle=\color{comentario}\itshape,
-  stringstyle=\color{n-lime},
+  keywordstyle=[2]\color{vscType},
+  % Clase 3: control de flujo (C++ y pseudocódigo español) -> púrpura
+  keywords=[3]{if,else,for,while,do,return,switch,case,break,continue,goto,try,catch,throw,SI,SINO,MIENTRAS,PARA,REPETIR,HASTA,DESDE,funcion,romper,continuar,retornar,devolver,cada,ENTONCES,VECES},
+  keywordstyle=[3]\color{vscControl},
+  % Clase 4: constantes/macros -> azul (como VS Code)
+  keywords=[4]{NULL,INFINITO,VERDADERO,FALSO,INF},
+  keywordstyle=[4]\color{vscKeyword},
+  % Preprocesador (#include, #define) -> púrpura
+  moredelim=[l][\color{vscControl}]{\#},
+  commentstyle=\color{vscComment},
+  stringstyle=\color{vscString},
   numberstyle=\tiny\color{codegray},
   showstringspaces=false,
   breaklines=true,
@@ -134,30 +137,7 @@
     {ó}{{\'{o}}}1 {ú}{{\'{u}}}1 {ñ}{{\~{n}}}1
     {Á}{{\'{A}}}1 {É}{{\'{E}}}1 {Í}{{\'{I}}}1
     {Ó}{{\'{O}}}1 {Ú}{{\'{U}}}1 {Ñ}{{\~{N}}}1
-    {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
-    % --- Operadores estilo VS Code (multi-carácter primero) ---
-    {->}{{\color{operador}->}}2
-    {==}{{\color{operador}==}}2
-    {!=}{{\color{operador}!=}}2
-    {<=}{{\color{operador}<=}}2
-    {>=}{{\color{operador}>=}}2
-    {\&\&}{{\color{operador}\&\&}}2
-    {||}{{\color{operador}||}}2
-    {<<}{{\color{operador}<<}}2
-    {>>}{{\color{operador}>>}}2
-    {++}{{\color{operador}++}}2
-    {--}{{\color{operador}\texttt{-}\texttt{-}}}2
-    {+=}{{\color{operador}+=}}2
-    {-=}{{\color{operador}-=}}2
-    {=}{{\color{operador}=}}1
-    {+}{{\color{operador}+}}1
-    {-}{{\color{operador}-}}1
-    {*}{{\color{operador}*}}1
-    {<}{{\color{operador}<}}1
-    {>}{{\color{operador}>}}1
-    {!}{{\color{operador}!}}1
-    {\&}{{\color{operador}\&}}1
-    {|}{{\color{operador}|}}1,
+    {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1,
 }
 \lstset{style=cpp}
 
