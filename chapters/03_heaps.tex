@@ -48,7 +48,7 @@ Fórmulas mágicas para el índice `i`:
 \end{verbatim}
 \end{dsadiagrama}
 
-\begin{lstlisting}[language=C++]
+\begin{lstlisting}
 1. Insert: Agregas el nuevo valor al final del array (la hoja más a
    la izquierda disponible). Luego lo comparas con su padre y lo
    subes si es necesario (Bubble Up / Heapify Up). O(log n).
@@ -123,7 +123,7 @@ int main() {
   Search           │ O(n)      │ No es un BST, hay que buscar todo
 \end{lstlisting}
 
-\begin{lstlisting}[language=C++]
+\begin{lstlisting}
 ✅ "Top K Elements": Si te piden los K elementos más grandes, usa un
    Min-Heap de tamaño K. Si te piden los más chicos, usa un Max-Heap.
 

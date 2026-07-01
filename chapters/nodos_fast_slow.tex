@@ -53,7 +53,7 @@ fast llega a NULL  =>  slow queda en 3 (el medio)
 \end{verbatim}
 \end{dsadiagrama}
 
-\begin{lstlisting}[language=C++]
+\begin{lstlisting}
 DETECTAR CICLO
 - slow = head, fast = head.
 - Avanza slow 1 y fast 2 mientras fast y fast->next existan.
@@ -116,7 +116,7 @@ Node* middleNode(Node* head) {
 * La gran ventaja es el O(1) de memoria (sin HashSet de nodos vistos).
 \end{lstlisting}
 
-\begin{lstlisting}[language=C++]
+\begin{lstlisting}
 💡 Otros usos del patrón:
    - Palíndromo de lista: encuentra el medio, invierte la 2da mitad y
      compara.

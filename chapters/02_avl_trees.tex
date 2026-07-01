@@ -45,7 +45,7 @@ Rotación Doble (LR Rotation):
 \end{verbatim}
 \end{dsadiagrama}
 
-\begin{lstlisting}[language=C++]
+\begin{lstlisting}
 1. Insert: Igual que un BST, pero después de insertar, el árbol revisa
    la altura de los nodos hacia arriba. Si encuentra uno desbalanceado,
    aplica una de las 4 rotaciones (LL, RR, LR, RL).
@@ -151,7 +151,7 @@ int main() {
 * A diferencia del BST normal, el peor caso en AVL sigue siendo O(log n).
 \end{lstlisting}
 
-\begin{lstlisting}[language=C++]
+\begin{lstlisting}
 ✅ ¿Por qué AVL y no BST?: La respuesta siempre es "Balance Garantizado".
    Un AVL nunca se convertirá en una Linked List.
 

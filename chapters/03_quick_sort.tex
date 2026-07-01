@@ -46,7 +46,7 @@ Se repite el proceso para [3, 1, 2] y para [6, 8, 10].
 \end{verbatim}
 \end{dsadiagrama}
 
-\begin{lstlisting}[language=C++]
+\begin{lstlisting}
 1. Caso base: Si el rango tiene 0 o 1 elementos, ya está ordenado.
 2. Partition:
    - Eliges un Pivot (el primero, el último, el medio o uno aleatorio).
@@ -121,7 +121,7 @@ int main() {
   Espacio     │ O(log n)      │ Stack de recursión
 \end{lstlisting}
 
-\begin{lstlisting}[language=C++]
+\begin{lstlisting}
 ✅ std::sort: En C++, `std::sort` usa "Introsort", que empieza con 
    Quick Sort y cambia a Heap Sort si la recursión es muy profunda.
 

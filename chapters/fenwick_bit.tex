@@ -75,7 +75,7 @@ Cada salto quita/suma un bit → a lo más log(n) pasos.
 \end{verbatim}
 \end{dsacomofunciona}
 
-\begin{lstlisting}[language=C++]
+\begin{lstlisting}
 CÓMO FUNCIONA (1-indexado)
 - lowbit(i) = i & (-i) aísla el bit menos significativo.
 - update(i, d): mientras i <= n: tree[i] += d; i += lowbit(i).

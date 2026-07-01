@@ -79,7 +79,7 @@ DETECCIÓN de ciclo negativo (pasada extra):
 \end{verbatim}
 \end{dsacomofunciona}
 
-\begin{lstlisting}[language=C++]
+\begin{lstlisting}
 CÓMO FUNCIONA
 1. dist[origen] = 0, el resto = infinito.
 2. Repite V-1 veces: por CADA arista (u, v, peso), relaja:
@@ -141,7 +141,7 @@ bool bellmanFord(int V, vector<Edge>& edges, int src, vector<long long>& dist) {
 * Más lento que Dijkstra (O(E log V)) pero admite pesos negativos.
 \end{lstlisting}
 
-\begin{lstlisting}[language=C++]
+\begin{lstlisting}
 ✅ Optimización: si en una pasada completa NO se relajó ninguna arista,
    ya terminaste antes de tiempo (early exit).
 

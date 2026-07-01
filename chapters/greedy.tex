@@ -67,7 +67,7 @@ Criterio goloso ganador: SIEMPRE la que TERMINA más temprano.
 \end{verbatim}
 \end{dsadiagrama}
 
-\begin{lstlisting}[language=C++]
+\begin{lstlisting}
 PATRÓN GREEDY (3 pasos)
 1. Encuentra el criterio de ordenamiento correcto (el "más pequeño",
    el que "termina antes", el "más valioso por kilo"...).
@@ -131,7 +131,7 @@ double fractionalKnapsack(int W, vector<pair<int,int>>& items) {
 * Casi siempre el costo es el ORDENAMIENTO inicial.
 \end{lstlisting}
 
-\begin{lstlisting}[language=C++]
+\begin{lstlisting}
 💡 Problemas greedy clásicos y su criterio ganador:
    - Intervalos sin traslape (LC 435): ordena por FIN, quita los que chocan.
    - Merge Intervals (LC 56): ordena por INICIO, fusiona solapados.
