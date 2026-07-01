@@ -76,7 +76,7 @@ CÓMO FUNCIONA (0/1 knapsack)
   el mismo objeto dos veces).
 - dp[c] = max(dp[c], valor + dp[c - peso]).
 
-📝 PSEUDOCÓDIGO (0/1 knapsack 1D)
+PSEUDOCÓDIGO (0/1 knapsack 1D)
 ──────────────────────────────────────────────────────────────
 
 función knapsack(pesos, valores, W):
@@ -86,7 +86,7 @@ función knapsack(pesos, valores, W):
             dp[c] = max(dp[c], valores[i] + dp[c - pesos[i]])
     return dp[W]
 
-💻 CÓDIGO C++ (0/1 knapsack, 1D)
+CÓDIGO C++ (0/1 knapsack, 1D)
 ──────────────────────────────────────────────────────────────
 
 #include <vector>
@@ -101,7 +101,7 @@ int knapsack(vector<int>& peso, vector<int>& valor, int W) {
     return dp[W];
 }
 
-💻 CÓDIGO C++ (Subset Sum: ¿existe subconjunto que sume S?)
+CÓDIGO C++ (Subset Sum: ¿existe subconjunto que sume S?)
 ──────────────────────────────────────────────────────────────
 
 bool subsetSum(vector<int>& nums, int S) {
@@ -113,7 +113,7 @@ bool subsetSum(vector<int>& nums, int S) {
     return dp[S];
 }
 
-💻 CÓDIGO C++ (Coin Change: mínimo de monedas, unbounded)
+CÓDIGO C++ (Coin Change: mínimo de monedas, unbounded)
 ──────────────────────────────────────────────────────────────
 
 int coinChange(vector<int>& coins, int amount) {
@@ -125,7 +125,7 @@ int coinChange(vector<int>& coins, int amount) {
     return dp[amount] > amount ? -1 : dp[amount];
 }
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Problema      │ Tiempo     │ Espacio

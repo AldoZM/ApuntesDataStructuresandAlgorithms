@@ -88,7 +88,7 @@ IMPLEMENTACIÓN PROPIA (chaining)
 4. Get: recorre la lista del bucket buscando la clave.
 5. Si load factor > umbral -> rehash (nueva capacidad, reinsertar todo).
 
-📝 PSEUDOCÓDIGO (get con chaining)
+PSEUDOCÓDIGO (get con chaining)
 ──────────────────────────────────────────────────────────────
 
 función get(clave):
@@ -97,7 +97,7 @@ función get(clave):
         SI par.clave == clave: return par.valor
     return NO_ENCONTRADO
 
-💻 CÓDIGO C++ (hash map propio con chaining)
+CÓDIGO C++ (hash map propio con chaining)
 ──────────────────────────────────────────────────────────────
 
 #include <vector>
@@ -138,7 +138,7 @@ public:
     }
 };
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Método            │ Promedio │ Peor caso

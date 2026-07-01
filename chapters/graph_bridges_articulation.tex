@@ -92,7 +92,7 @@ CÓMO FUNCIONA (Tarjan, un solo DFS)
        * low[v] > disc[u]  -> arista (u,v) es PUENTE
        * low[v] >= disc[u] -> u es ARTICULACIÓN (raíz: 2+ hijos)
 
-📝 PSEUDOCÓDIGO (puentes)
+PSEUDOCÓDIGO (puentes)
 ──────────────────────────────────────────────────────────────
 
 función dfs(u, padre):
@@ -107,7 +107,7 @@ función dfs(u, padre):
             SI low[v] > disc[u]:
                 registrar (u, v) como PUENTE
 
-💻 CÓDIGO C++ (puentes y articulaciones)
+CÓDIGO C++ (puentes y articulaciones)
 ──────────────────────────────────────────────────────────────
 
 #include <vector>
@@ -139,7 +139,7 @@ void dfs(int u, int parent, vector<vector<int>>& adj) {
         esArtic[u] = true;                      // raíz con 2+ hijos
 }
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Recurso     │ Costo

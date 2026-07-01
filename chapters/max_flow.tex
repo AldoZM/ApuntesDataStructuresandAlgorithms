@@ -91,7 +91,7 @@ EDMONDS-KARP (BFS para el camino de aumento)
    Resta ese flujo en las aristas y súmalo en las inversas.
 4. Repite hasta que el BFS ya no alcance t. Suma total = flujo máximo.
 
-📝 PSEUDOCÓDIGO
+PSEUDOCÓDIGO
 ──────────────────────────────────────────────────────────────
 
 función maxFlow(cap, s, t):
@@ -106,7 +106,7 @@ función maxFlow(cap, s, t):
         flujo += cuello
     return flujo
 
-💻 CÓDIGO C++ (Edmonds-Karp)
+CÓDIGO C++ (Edmonds-Karp)
 ──────────────────────────────────────────────────────────────
 
 #include <vector>
@@ -152,7 +152,7 @@ long long maxFlow(vector<vector<long long>>& cap, int s, int t) {
     return flow;
 }
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Algoritmo         │ Tiempo       │ Nota

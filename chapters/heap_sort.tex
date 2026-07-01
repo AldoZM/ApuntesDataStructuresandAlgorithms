@@ -73,7 +73,7 @@ CÓMO FUNCIONA
 - Build: aplica heapify desde el último padre (n/2 - 1) hacia el 0.
 - Sort: swap(0, fin); reduce tamaño; heapify(0). Repite.
 
-📝 PSEUDOCÓDIGO
+PSEUDOCÓDIGO
 ──────────────────────────────────────────────────────────────
 
 función heapify(a, n, i):
@@ -90,7 +90,7 @@ función heapSort(a, n):
         intercambiar(a[0], a[i])                     // saca el max
         heapify(a, i, 0)                             // reacomoda
 
-💻 CÓDIGO C++
+CÓDIGO C++
 ──────────────────────────────────────────────────────────────
 
 #include <vector>
@@ -112,7 +112,7 @@ void heapSort(vector<int>& a) {
     }
 }
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Caso        │ Tiempo        │ Nota

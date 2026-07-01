@@ -52,7 +52,7 @@ Insertando: "CAT", "CAR", "DO", "DOG"
 3. startsWith(prefix): Igual que search, pero no importa si `isEnd` 
    es true; con que el camino exista, el prefijo es válido. O(L).
 
-📝 PSEUDOCÓDIGO
+PSEUDOCÓDIGO
 ──────────────────────────────────────────────────────────────
 
 // Insertar palabra en el Trie
@@ -64,7 +64,7 @@ función insertar(palabra):
         actual = actual.hijos[letra]
     actual.esFinDePalabra = VERDADERO
 
-💻 CÓDIGO C++
+CÓDIGO C++
 ──────────────────────────────────────────────────────────────
 
 #include <iostream>
@@ -129,7 +129,7 @@ int main() {
     return 0;
 }
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Operación        │ Tiempo    │ Espacio

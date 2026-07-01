@@ -74,7 +74,7 @@ PATRÓN GREEDY (3 pasos)
 2. Ordena por ese criterio.
 3. Recorre una vez tomando lo que quepa/no choque.
 
-📝 PSEUDOCÓDIGO (activity selection)
+PSEUDOCÓDIGO (activity selection)
 ──────────────────────────────────────────────────────────────
 
 función maxActividades(intervalos):
@@ -85,7 +85,7 @@ función maxActividades(intervalos):
             conteo++; finAnterior = fin       // se toma
     return conteo
 
-💻 CÓDIGO C++ (activity selection / non-overlapping intervals)
+CÓDIGO C++ (activity selection / non-overlapping intervals)
 ──────────────────────────────────────────────────────────────
 
 #include <vector>
@@ -102,7 +102,7 @@ int maxActividades(vector<pair<int,int>>& iv) {   // {inicio, fin}
     return cont;
 }
 
-💻 CÓDIGO C++ (fractional knapsack: greedy SÍ funciona)
+CÓDIGO C++ (fractional knapsack: greedy SÍ funciona)
 ──────────────────────────────────────────────────────────────
 
 // A diferencia del 0/1 knapsack (que es DP), aquí puedes partir objetos.
@@ -119,7 +119,7 @@ double fractionalKnapsack(int W, vector<pair<int,int>>& items) {
     return total;
 }
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Problema            │ Tiempo      │ Domina

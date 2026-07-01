@@ -86,7 +86,7 @@ CÓMO FUNCIONA
    si dist[u] + peso < dist[v], entonces dist[v] = dist[u] + peso.
 3. Pasada V-ésima: si alguna arista aún relaja -> ciclo negativo.
 
-📝 PSEUDOCÓDIGO
+PSEUDOCÓDIGO
 ──────────────────────────────────────────────────────────────
 
 función bellmanFord(V, aristas, origen):
@@ -102,7 +102,7 @@ función bellmanFord(V, aristas, origen):
             return "CICLO NEGATIVO"
     return dist
 
-💻 CÓDIGO C++
+CÓDIGO C++
 ──────────────────────────────────────────────────────────────
 
 #include <iostream>
@@ -131,7 +131,7 @@ bool bellmanFord(int V, vector<Edge>& edges, int src, vector<long long>& dist) {
     return true;
 }
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Caso        │ Tiempo      │ Espacio

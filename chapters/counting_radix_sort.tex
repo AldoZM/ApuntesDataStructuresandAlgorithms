@@ -76,7 +76,7 @@ COUNTING SORT (estable)
 3. Recorre el original de DERECHA a IZQUIERDA colocando cada elemento
    (así se mantiene estable).
 
-📝 PSEUDOCÓDIGO (counting sort)
+PSEUDOCÓDIGO (counting sort)
 ──────────────────────────────────────────────────────────────
 
 función countingSort(a, k):        // valores en [0, k]
@@ -88,7 +88,7 @@ función countingSort(a, k):        // valores en [0, k]
         salida[--count[a[i]]] = a[i]
     return salida
 
-💻 CÓDIGO C++ (Counting Sort)
+CÓDIGO C++ (Counting Sort)
 ──────────────────────────────────────────────────────────────
 
 #include <vector>
@@ -103,7 +103,7 @@ vector<int> countingSort(vector<int>& a, int k) {
     return out;
 }
 
-💻 CÓDIGO C++ (Radix Sort, LSD para enteros >= 0)
+CÓDIGO C++ (Radix Sort, LSD para enteros >= 0)
 ──────────────────────────────────────────────────────────────
 
 #include <algorithm>
@@ -122,7 +122,7 @@ void radixSort(vector<int>& a) {
     }
 }
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Algoritmo     │ Tiempo          │ Estable │ Cuándo usar

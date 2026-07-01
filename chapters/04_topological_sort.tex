@@ -84,7 +84,7 @@ ALGORITMO DE KAHN (BFS con grados de entrada)
      Si su in-degree llega a 0, mételo a la Queue.
 4. Si el resultado tiene menos nodos que V -> HAY CICLO (no es DAG).
 
-📝 PSEUDOCÓDIGO (Kahn)
+PSEUDOCÓDIGO (Kahn)
 ──────────────────────────────────────────────────────────────
 
 función topoSort(V, adj):
@@ -100,7 +100,7 @@ función topoSort(V, adj):
     SI orden.size < V: return "CICLO DETECTADO"
     return orden
 
-💻 CÓDIGO C++ (Kahn)
+CÓDIGO C++ (Kahn)
 ──────────────────────────────────────────────────────────────
 
 #include <iostream>
@@ -129,7 +129,7 @@ vector<int> topoSort(int V, vector<vector<int>>& adj) {
     return orden;
 }
 
-💻 CÓDIGO C++ (DFS, post-orden invertido)
+CÓDIGO C++ (DFS, post-orden invertido)
 ──────────────────────────────────────────────────────────────
 
 void dfs(int u, vector<vector<int>>& adj,
@@ -141,7 +141,7 @@ void dfs(int u, vector<vector<int>>& adj,
 }
 // El orden topológico es 'pila' invertida.
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Método      │ Tiempo      │ Espacio

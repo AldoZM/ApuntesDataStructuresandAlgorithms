@@ -82,7 +82,7 @@ CÓMO FUNCIONA (1-indexado)
 - query(i): suma = 0; mientras i > 0: suma += tree[i]; i -= lowbit(i).
 - rango(l, r) = query(r) - query(l-1).
 
-📝 PSEUDOCÓDIGO
+PSEUDOCÓDIGO
 ──────────────────────────────────────────────────────────────
 
 función update(i, delta):
@@ -97,7 +97,7 @@ función query(i):             // suma de 1..i
         i -= i & (-i)         // retrocede quitando el bit
     return suma
 
-💻 CÓDIGO C++
+CÓDIGO C++
 ──────────────────────────────────────────────────────────────
 
 #include <vector>
@@ -120,7 +120,7 @@ struct Fenwick {
     }
 };
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Operación       │ Tiempo     │ Espacio

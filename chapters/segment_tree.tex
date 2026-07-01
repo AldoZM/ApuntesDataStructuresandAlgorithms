@@ -82,7 +82,7 @@ CÓMO FUNCIONA (suma, array de tamaño 4n)
   -> tree[node]; si no, combina las dos mitades.
 - update(node, l, r, pos, val): baja a la hoja, cámbiala y recombina.
 
-📝 PSEUDOCÓDIGO (query de rango)
+PSEUDOCÓDIGO (query de rango)
 ──────────────────────────────────────────────────────────────
 
 función query(nodo, l, r, ql, qr):
@@ -92,7 +92,7 @@ función query(nodo, l, r, ql, qr):
     return query(2*nodo,   l,     mid, ql, qr)
          + query(2*nodo+1, mid+1, r,   ql, qr)
 
-💻 CÓDIGO C++ (Segment Tree de suma)
+CÓDIGO C++ (Segment Tree de suma)
 ──────────────────────────────────────────────────────────────
 
 #include <vector>
@@ -127,7 +127,7 @@ struct SegTree {
     }
 };
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Operación       │ Tiempo     │ Espacio

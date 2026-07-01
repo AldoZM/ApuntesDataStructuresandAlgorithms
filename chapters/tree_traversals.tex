@@ -92,7 +92,7 @@ LEVEL-ORDER (BFS)
 - Para separar por niveles: procesa exactamente queue.size() nodos
   por iteración del bucle externo.
 
-📝 PSEUDOCÓDIGO (level-order por niveles)
+PSEUDOCÓDIGO (level-order por niveles)
 ──────────────────────────────────────────────────────────────
 
 función levelOrder(root):
@@ -107,7 +107,7 @@ función levelOrder(root):
             SI nodo.der: q.enqueue(nodo.der)
         // aqui termina un nivel
 
-💻 CÓDIGO C++ (DFS recursivo)
+CÓDIGO C++ (DFS recursivo)
 ──────────────────────────────────────────────────────────────
 
 struct Node { int val; Node *left, *right; };
@@ -119,7 +119,7 @@ void inorder(Node* n)   { if(!n) return; inorder(n->left);
 void postorder(Node* n) { if(!n) return; postorder(n->left);
                           postorder(n->right); cout<<n->val<<" "; }
 
-💻 CÓDIGO C++ (inorder iterativo con Stack)
+CÓDIGO C++ (inorder iterativo con Stack)
 ──────────────────────────────────────────────────────────────
 
 #include <stack>
@@ -137,7 +137,7 @@ vector<int> inorderIter(Node* root) {
     return res;
 }
 
-💻 CÓDIGO C++ (level-order con Queue)
+CÓDIGO C++ (level-order con Queue)
 ──────────────────────────────────────────────────────────────
 
 #include <queue>
@@ -159,7 +159,7 @@ vector<vector<int>> levelOrder(Node* root) {
     return res;
 }
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Recorrido     │ Tiempo  │ Espacio

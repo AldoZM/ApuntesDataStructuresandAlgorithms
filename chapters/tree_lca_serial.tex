@@ -84,7 +84,7 @@ LCA EN ÁRBOL BINARIO GENERAL (DFS)
 3. Si ambos lados devuelven algo -> este nodo es el LCA.
 4. Si solo un lado devuelve algo -> propaga ese resultado hacia arriba.
 
-📝 PSEUDOCÓDIGO (LCA general)
+PSEUDOCÓDIGO (LCA general)
 ──────────────────────────────────────────────────────────────
 
 función lca(nodo, p, q):
@@ -94,7 +94,7 @@ función lca(nodo, p, q):
     SI izq != NULL Y der != NULL: return nodo   // p y q en lados distintos
     return (izq != NULL) ? izq : der
 
-💻 CÓDIGO C++ (LCA general y en BST)
+CÓDIGO C++ (LCA general y en BST)
 ──────────────────────────────────────────────────────────────
 
 struct Node { int val; Node *left, *right; };
@@ -118,7 +118,7 @@ Node* lcaBST(Node* root, int p, int q) {
     return nullptr;
 }
 
-💻 CÓDIGO C++ (serializar / deserializar, preorder)
+CÓDIGO C++ (serializar / deserializar, preorder)
 ──────────────────────────────────────────────────────────────
 
 #include <string>
@@ -141,7 +141,7 @@ Node* deserializeH(istringstream& in) {
     return n;
 }
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Operación         │ Tiempo  │ Espacio

@@ -83,7 +83,7 @@ MULTI-SOURCE BFS
 - Encola TODAS las fuentes con distancia 0 antes del bucle. El resto
   del BFS es idéntico.
 
-📝 PSEUDOCÓDIGO (multi-source en grid)
+PSEUDOCÓDIGO (multi-source en grid)
 ──────────────────────────────────────────────────────────────
 
 función multiSourceBFS(grid, fuentes):
@@ -99,7 +99,7 @@ función multiSourceBFS(grid, fuentes):
                 q.push((nr,nc))
     return dist
 
-💻 CÓDIGO C++ (BFS en grid)
+CÓDIGO C++ (BFS en grid)
 ──────────────────────────────────────────────────────────────
 
 #include <vector>
@@ -129,7 +129,7 @@ vector<vector<int>> bfsGrid(vector<vector<int>>& grid,
     return dist;
 }
 
-💻 CÓDIGO C++ (0-1 BFS con deque)
+CÓDIGO C++ (0-1 BFS con deque)
 ──────────────────────────────────────────────────────────────
 
 #include <deque>
@@ -151,7 +151,7 @@ vector<int> zeroOneBFS(int V, vector<vector<pair<int,int>>>& adj, int src) {
     return dist;
 }
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Variante        │ Tiempo      │ Nota

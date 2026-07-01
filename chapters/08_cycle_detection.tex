@@ -84,7 +84,7 @@ DIRIGIDO (DFS con 3 colores)
 - color[u] = GRIS al entrar, NEGRO al salir.
 - Si un vecino v es GRIS -> hay ciclo (arista hacia atrás).
 
-📝 PSEUDOCÓDIGO (dirigido, 3 colores)
+PSEUDOCÓDIGO (dirigido, 3 colores)
 ──────────────────────────────────────────────────────────────
 
 función tieneCicloDirigido(u):
@@ -95,7 +95,7 @@ función tieneCicloDirigido(u):
     color[u] = NEGRO
     return false
 
-💻 CÓDIGO C++ (no dirigido, con padre)
+CÓDIGO C++ (no dirigido, con padre)
 ──────────────────────────────────────────────────────────────
 
 #include <vector>
@@ -114,7 +114,7 @@ bool dfsUndirected(int u, int parent, vector<vector<int>>& adj,
     return false;
 }
 
-💻 CÓDIGO C++ (dirigido, 3 colores)
+CÓDIGO C++ (dirigido, 3 colores)
 ──────────────────────────────────────────────────────────────
 
 bool dfsDirected(int u, vector<vector<int>>& adj, vector<int>& color) {
@@ -127,7 +127,7 @@ bool dfsDirected(int u, vector<vector<int>>& adj, vector<int>& color) {
     return false;
 }
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Método            │ Tiempo      │ Espacio

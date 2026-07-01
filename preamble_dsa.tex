@@ -98,6 +98,7 @@
 
 % --- Estilo de Código C++ ---
 \definecolor{comentario}{RGB}{128, 160, 194}   % azul grisáceo para comentarios
+\definecolor{operador}{RGB}{255, 155, 120}     % coral para operadores (= -> && == ...)
 \lstdefinestyle{cpp}{
   language=C++,
   basicstyle=\ttfamily\small\color{white},
@@ -133,7 +134,30 @@
     {ó}{{\'{o}}}1 {ú}{{\'{u}}}1 {ñ}{{\~{n}}}1
     {Á}{{\'{A}}}1 {É}{{\'{E}}}1 {Í}{{\'{I}}}1
     {Ó}{{\'{O}}}1 {Ú}{{\'{U}}}1 {Ñ}{{\~{N}}}1
-    {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1,
+    {¿}{{\textquestiondown}}1 {¡}{{\textexclamdown}}1
+    % --- Operadores estilo VS Code (multi-carácter primero) ---
+    {->}{{\color{operador}->}}2
+    {==}{{\color{operador}==}}2
+    {!=}{{\color{operador}!=}}2
+    {<=}{{\color{operador}<=}}2
+    {>=}{{\color{operador}>=}}2
+    {\&\&}{{\color{operador}\&\&}}2
+    {||}{{\color{operador}||}}2
+    {<<}{{\color{operador}<<}}2
+    {>>}{{\color{operador}>>}}2
+    {++}{{\color{operador}++}}2
+    {--}{{\color{operador}\texttt{-}\texttt{-}}}2
+    {+=}{{\color{operador}+=}}2
+    {-=}{{\color{operador}-=}}2
+    {=}{{\color{operador}=}}1
+    {+}{{\color{operador}+}}1
+    {-}{{\color{operador}-}}1
+    {*}{{\color{operador}*}}1
+    {<}{{\color{operador}<}}1
+    {>}{{\color{operador}>}}1
+    {!}{{\color{operador}!}}1
+    {\&}{{\color{operador}\&}}1
+    {|}{{\color{operador}|}}1,
 }
 \lstset{style=cpp}
 

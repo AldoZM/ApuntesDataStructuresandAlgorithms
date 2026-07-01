@@ -91,7 +91,7 @@ PATRÓN GENERAL (DFS post-orden que retorna un valor)
 - Combina sus resultados para el nodo actual.
 - Actualiza una respuesta global si hace falta (ej. diámetro).
 
-📝 PSEUDOCÓDIGO (diámetro)
+PSEUDOCÓDIGO (diámetro)
 ──────────────────────────────────────────────────────────────
 
 diametro = 0
@@ -104,7 +104,7 @@ función altura(nodo):
 
 // llamar altura(root); la respuesta queda en 'diametro'
 
-💻 CÓDIGO C++
+CÓDIGO C++
 ──────────────────────────────────────────────────────────────
 
 struct Node { int val; Node *left, *right; };
@@ -141,7 +141,7 @@ bool hasPathSum(Node* n, int target) {
            hasPathSum(n->right, target - n->val);
 }
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Propiedad     │ Tiempo  │ Espacio

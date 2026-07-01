@@ -2,7 +2,7 @@
 
 \begin{dsaquees}
 
-Comparar dos palabras o textos 📝 para ver qué tanto se parecen. Dos
+Comparar dos palabras o textos para ver qué tanto se parecen. Dos
 preguntas clásicas:
 
 \begin{itemize}
@@ -80,7 +80,7 @@ CÓMO FUNCIONA
 - Edit Distance: si coinciden -> diagonal; si no -> 1 + min(insertar,
   borrar, sustituir) = 1 + min(dp[i][j-1], dp[i-1][j], dp[i-1][j-1]).
 
-📝 PSEUDOCÓDIGO (LCS)
+PSEUDOCÓDIGO (LCS)
 ──────────────────────────────────────────────────────────────
 
 función lcs(A, B):
@@ -93,7 +93,7 @@ función lcs(A, B):
                 dp[i][j] = max(dp[i-1][j], dp[i][j-1])
     return dp[n][m]
 
-💻 CÓDIGO C++ (LCS)
+CÓDIGO C++ (LCS)
 ──────────────────────────────────────────────────────────────
 
 #include <string>
@@ -111,7 +111,7 @@ int lcs(const string& A, const string& B) {
     return dp[n][m];
 }
 
-💻 CÓDIGO C++ (Edit Distance / Levenshtein)
+CÓDIGO C++ (Edit Distance / Levenshtein)
 ──────────────────────────────────────────────────────────────
 
 int editDistance(const string& A, const string& B) {
@@ -128,7 +128,7 @@ int editDistance(const string& A, const string& B) {
     return dp[n][m];
 }
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Problema        │ Tiempo     │ Espacio

@@ -78,7 +78,7 @@ KMP EN 2 FASES
    coinciden, avanza ambos. Si falla y j>0, j = lps[j-1] (salta). Si
    j llega a m, encontraste una ocurrencia.
 
-📝 PSEUDOCÓDIGO (construir lps)
+PSEUDOCÓDIGO (construir lps)
 ──────────────────────────────────────────────────────────────
 
 función buildLPS(patrón):
@@ -92,7 +92,7 @@ función buildLPS(patrón):
             lps[i] = 0; i++
     return lps
 
-💻 CÓDIGO C++ (KMP)
+CÓDIGO C++ (KMP)
 ──────────────────────────────────────────────────────────────
 
 #include <string>
@@ -121,7 +121,7 @@ int kmpSearch(const string& text, const string& pat) {
     return -1;
 }
 
-💻 CÓDIGO C++ (Rabin-Karp, rolling hash)
+CÓDIGO C++ (Rabin-Karp, rolling hash)
 ──────────────────────────────────────────────────────────────
 
 int rabinKarp(const string& text, const string& pat) {
@@ -142,7 +142,7 @@ int rabinKarp(const string& text, const string& pat) {
     return -1;
 }
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Algoritmo     │ Tiempo          │ Nota

@@ -86,7 +86,7 @@ KRUSKAL (goloso por aristas + Union-Find)
    (find(u) != find(v)), agrégala al MST y hazles union().
 3. Para cuando el MST tenga V-1 aristas.
 
-📝 PSEUDOCÓDIGO (Kruskal)
+PSEUDOCÓDIGO (Kruskal)
 ──────────────────────────────────────────────────────────────
 
 función kruskal(V, aristas):
@@ -100,7 +100,7 @@ función kruskal(V, aristas):
             SI usadas == V-1: romper
     return mst
 
-💻 CÓDIGO C++ (Kruskal)
+CÓDIGO C++ (Kruskal)
 ──────────────────────────────────────────────────────────────
 
 #include <iostream>
@@ -135,7 +135,7 @@ long long kruskal(int V, vector<array<int,3>>& edges) {
     return total;
 }
 
-💻 CÓDIGO C++ (Prim con min-heap)
+CÓDIGO C++ (Prim con min-heap)
 ──────────────────────────────────────────────────────────────
 
 #include <queue>
@@ -156,7 +156,7 @@ long long prim(int V, vector<vector<pair<int,int>>>& adj) {
     return total;
 }
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Algoritmo   │ Tiempo          │ Mejor para

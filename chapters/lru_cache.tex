@@ -88,7 +88,7 @@ CÓMO FUNCIONA (todo O(1))
 - put(k,v): si existe, actualiza y mueve al frente; si no, crea al
   frente. Si superas la capacidad, borra el nodo antes del tail.
 
-📝 PSEUDOCÓDIGO
+PSEUDOCÓDIGO
 ──────────────────────────────────────────────────────────────
 
 get(clave):
@@ -105,7 +105,7 @@ put(clave, valor):
         nodo = nuevo Nodo(clave, valor)
         insertarAlFrente(nodo); mapa[clave] = nodo
 
-💻 CÓDIGO C++
+CÓDIGO C++
 ──────────────────────────────────────────────────────────────
 
 #include <unordered_map>
@@ -148,7 +148,7 @@ public:
     }
 };
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Operación   │ Tiempo  │ Espacio

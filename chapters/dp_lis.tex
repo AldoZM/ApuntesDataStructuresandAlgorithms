@@ -77,7 +77,7 @@ CÓMO FUNCIONA (O(n log n))
   * Si existe -> reemplaza ese valor por x (mantiene tails "apretado").
 - La longitud de tails es el LIS.
 
-📝 PSEUDOCÓDIGO (O(n log n))
+PSEUDOCÓDIGO (O(n log n))
 ──────────────────────────────────────────────────────────────
 
 función lis(nums):
@@ -88,7 +88,7 @@ función lis(nums):
         SINO: tails[pos] = x
     return longitud(tails)
 
-💻 CÓDIGO C++ (DP O(n^2), fácil de entender)
+CÓDIGO C++ (DP O(n^2), fácil de entender)
 ──────────────────────────────────────────────────────────────
 
 #include <vector>
@@ -108,7 +108,7 @@ int lisDP(vector<int>& nums) {
     return best;
 }
 
-💻 CÓDIGO C++ (O(n log n) con búsqueda binaria)
+CÓDIGO C++ (O(n log n) con búsqueda binaria)
 ──────────────────────────────────────────────────────────────
 
 int lisFast(vector<int>& nums) {
@@ -121,7 +121,7 @@ int lisFast(vector<int>& nums) {
     return tails.size();
 }
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Enfoque       │ Tiempo       │ Espacio

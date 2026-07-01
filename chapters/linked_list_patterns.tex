@@ -65,7 +65,7 @@ MERGE (con dummy)
 - dummy y tail. Mientras ambas listas tengan nodos, engancha el menor
   y avanza esa lista. Al final pega la que sobró.
 
-📝 PSEUDOCÓDIGO (reverse)
+PSEUDOCÓDIGO (reverse)
 ──────────────────────────────────────────────────────────────
 
 función reverse(head):
@@ -77,7 +77,7 @@ función reverse(head):
         cur = sig           // avanza cur
     return prev             // nueva cabeza
 
-💻 CÓDIGO C++
+CÓDIGO C++
 ──────────────────────────────────────────────────────────────
 
 struct Node { int val; Node* next; };
@@ -117,7 +117,7 @@ Node* removeNthFromEnd(Node* head, int n) {
     return dummy.next;
 }
 
-⏱️ COMPLEJIDAD (Big-O)
+COMPLEJIDAD (Big-O)
 ──────────────────────────────────────────────────────────────
 
   Patrón            │ Tiempo  │ Espacio
